@@ -1,0 +1,44 @@
+<header>
+  <button id="logoutBtn">Logout</button>
+</header>
+<dialog id="loginDialog">
+  <form>
+    <div class="line">
+      <label for="email">Email</label>
+      <input type="text" id="email" placeholder="Your email address">
+    </div>
+    <div class="line">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Password">
+    </div>
+    <div class="line">
+      <label for="server">Server</label>
+      <input type="text" id="server" placeholder="Server name">
+    </div>
+    <div class="line">
+      <label for="database">Database</label>
+      <input type="text" id="database" placeholder="The database name">
+    </div>
+    <div class="line error" id="loginError" style="display: none;">
+      Invalid User or Password
+    </div>
+    <div class="line">
+      <button id="loginBtn">Login</button>
+    </div>
+  </form>
+</dialog>
+<dialog id="deviceDialog">
+  <form>
+    <div class="line">
+      <label for="devices">Device</label>
+      <select id="devices"></select>
+    </div>
+    <div class="line">
+      <button id="okBtn">OK</button>
+    </div>
+  </form>
+</dialog>
+<script src="../.dev/api.js"></script>
+<script src="../.dev/rison.js"></script>
+<script src="../bower_components/dialog-polyfill/dialog-polyfill.js"></script>
+<script src="../.dev/login.js"></script>

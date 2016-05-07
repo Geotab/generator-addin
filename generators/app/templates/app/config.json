@@ -1,0 +1,19 @@
+{
+  "name": "<%= title %>",
+  "supportEmail": "<%= supportEmail %>",
+  "version": "0.0.1",
+  "items": [{
+    "url": "<%= url %>",
+    "path": "<%= path %>",
+    "icon": "images/icon.svg",
+    "menuName": {
+      "en": "<%= menuName %>"
+    }
+  }],
+  "dev": {
+    "root": "<%= root %>",
+    "dist": {
+      "host": "https://example.com/addins/<%= root %>/"
+    }
+  }
+}
