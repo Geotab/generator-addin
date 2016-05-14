@@ -1,31 +1,43 @@
-# generator-addin [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
-> MyGeotab/Geotab Drive add-in generator
+# generator-addin [![NPM version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/Geotab/generator-addin.svg?branch=master)](https://travis-ci.org/Geotab/generator-addin) [![Coverage Status](https://coveralls.io/repos/github/Geotab/generator-addin/badge.svg?branch=master)](https://coveralls.io/github/Geotab/generator-addin?branch=master)
+> Yeoamn generator for MyGeotab/Geotab Drive add-ins
 
-## Installation
+## Features
+Leverage modern package managers.
+  - [NPM](https://www.npmjs.com/)
+  - [Bower](http://bower.io)
+  
+#### Local Debugging
+  - Run and debug the add-in localy without having to add to test database. MyGeotabApi mocks the API object passes to add-in to make requests to you test database.
+  - Mock state - Drive add-in will try to use HTML5 features to mock Andoid/IOS device features (ex. Geoloaction)
+  - Automagically lint your scripts
+  - Built-in preview server with BrowserSync
+  - The gulpfile makes use of [ES2015 features](https://babeljs.io/docs/learn-es2015/) by using [Babel](https://babeljs.io)
+  
+#### Release Build Process
+  - Automagically lint your scripts
+  - Minify, Obfuscate and Image optimization
+  - Sandbox CSS as to not effect parent document CSS
+  - Convert URLs to deployment location
+  
+#### Unit testing
+  - Spec testing with [Mocha](https://mochajs.org/) and [Chai](http://chaijs.com/)
+  - Functional testing with [Zombie.js](http://zombie.js.org/)
 
-First, install [Yeoman](http://yeoman.io) and generator-addin using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+## Getting Started
+- Install dependencies: `npm install -g yo gulp-cli bower`
+- Install the generator: `npm install -g generator-addin`
+- Run `yo addin` to scaffold your addin
+- Run `gulp serve` to preview and watch for changes
+- Run `bower install --save <package>` to install frontend dependencies
+- Run `gulp test` to run the tests
+- Run `gulp build` to build your addin for production
 
-```bash
-npm install -g yo
-npm install -g generator-addin
-```
-
-Then generate your new project:
-
-```bash
-yo addin
-```
-
-## Getting To Know Yeoman
-
- * Yeoman has a heart of gold.
- * Yeoman is a person with feelings and opinions, but is very easy to work with.
- * Yeoman can be too opinionated at times but is easily convinced not to be.
- * Feel free to [learn more about Yeoman](http://yeoman.io/).
+## Documentation
+For information on MyGeotab and Geotab Drive addins or the MyGeotab API head over to the [MyGeotab SDK](https://my.geotab.com/sdk/default.html)
 
 ## License
 
-Apache-2.0 © [Geotab Inc](https://github.com/geotab)
+Apache-2.0 © [Geotab Inc](https://geotab.com)
 
 
 [npm-image]: https://badge.fury.io/js/generator-addin.svg
