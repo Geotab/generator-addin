@@ -4,7 +4,7 @@ var assert = require('yeoman-assert');
 var helpers = require('yeoman-test');
 var fs = require('fs');
 
-describe('generator-addin:config.js', function () {
+describe('generator-addin:config.json', function () {
   var props = {
     name: 'my addin',
     path: 'GettingStartedLink/',
