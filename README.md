@@ -1,4 +1,4 @@
-# generator-addin [![NPM version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/Geotab/generator-addin.svg?branch=master)](https://travis-ci.org/Geotab/generator-addin) [![Coverage Status](https://coveralls.io/repos/github/Geotab/generator-addin/badge.svg?branch=master)](https://coveralls.io/github/Geotab/generator-addin?branch=master)
+# generator-addin [![NPM version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/Geotab/generator-addin.svg?branch=master)](https://travis-ci.org/Geotab/generator-addin)
 > Yeoamn generator for MyGeotab/Geotab Drive add-ins
 
 ## Features
@@ -44,7 +44,3 @@ Apache-2.0 © [Geotab Inc](https://geotab.com)
 [npm-url]: https://npmjs.org/package/generator-addin
 [travis-image]: https://travis-ci.org/geotab/generator-addin.svg?branch=master
 [travis-url]: https://travis-ci.org/geotab/generator-addin
-[daviddm-image]: https://david-dm.org/geotab/generator-addin.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/geotab/generator-addin
-[coveralls-image]: https://coveralls.io/repos/geotab/generator-addin/badge.svg
-[coveralls-url]: https://coveralls.io/r/geotab/generator-addin
