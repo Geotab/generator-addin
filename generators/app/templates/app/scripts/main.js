@@ -1,7 +1,7 @@
 /**
  * @returns {{initialize: Function, focus: Function, blur: Function}}
  */
-geotab.addin.myaddin = function () {
+geotab.addin.<%= root %> = function () {
   'use strict';
 
   // the root container
