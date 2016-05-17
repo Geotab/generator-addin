@@ -63,7 +63,7 @@ gulp.task('json', () => {
   return gulp.src('app/config.json')
     .pipe($.jsonEditor(json => {
       var options = json.dev;
-      var distHost = options.dist.path;
+      var distHost = options.dist.host;
       for (let i = 0; i < json.items.length; i++) {
         json.items[i].url = distHost + json.items[i].url;
         json.items[i].icon = distHost + json.items[i].icon;
