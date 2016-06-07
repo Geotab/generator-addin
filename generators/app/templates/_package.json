@@ -17,7 +17,7 @@
         "gulp-autoprefixer": "^3.0.1",
         "gulp-babel": "^6.1.1",
         "gulp-cache": "^0.4.2",
-        "gulp-cdnify": "^1.0.5",
+        "gulp-cdnizer": "^1.1.6",
         "gulp-css-sandbox": "^0.0.0",
         "gulp-cssnano": "^2.0.0",
         "gulp-eslint": "^0.13.2",
