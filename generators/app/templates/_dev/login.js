@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (addin.isInitialize) {
           addin.focus(api, state);
         } else {
-          addin = geotab.addin[name] = addin(api, state);
+          addin = typeof addin === 'function' ? geotab.addin[name] = addin(api, state) : addin;
           addin.initialize(api, state, function () {
             addin.isInitialize = true;
             addin.focus(api, state);
@@ -131,6 +131,9 @@ document.addEventListener('DOMContentLoaded', function () {
           api.forget();
         }
 
+        Object.keys(geotab.addin).forEach(function(name) {
+          geotab.addin[name].isInitialize = false;
+        });
         device = null;
         state.device = device;
         localStorage.setItem('_device', JSON.stringify(device));
