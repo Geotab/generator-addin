@@ -63,12 +63,20 @@ module.exports = yeoman.Base.extend({
       name: 'supportEmail',
       message: 'What is the support contact email address for the add-in?',
       default: ''
+    }, {
+      type: 'input',
+      name: 'host',
+      message: 'What is the deployment host URL?',
+      default: 'https://www.example.com/myaddin/'
     }];
 
     this.prompt(prompts, function (props) {
       props.camelName = camelCase(props.name);
       props.fileName = props.camelName + '.html';
       props.isDriveAddin = props.path === 'DriveAppLink/';
+      if (props.host && props.host.indexOf('/', props.host.length - 1) === -1){
+        props.host += '/';
+      }
       this.props = props;
       done();
     }.bind(this));
@@ -145,7 +153,8 @@ module.exports = yeoman.Base.extend({
           url: this.props.fileName,
           path: this.props.path,
           menuName: this.props.menuName,
-          root: this.props.camelName
+          root: this.props.camelName,
+          host: this.props.host
         }
       );
     },
