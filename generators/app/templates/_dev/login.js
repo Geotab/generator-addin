@@ -65,8 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
 
-    function initializeDevice(isDriveAddin) {
-      if (isDriveAddin && !device) {
+    function initializeDevice() {
         // Mock device for drive addin
         api.call('Get', {
           typeName: 'Device',
@@ -90,12 +89,9 @@ document.addEventListener('DOMContentLoaded', function () {
           });
           elDevices.innerHTML = '<option>Select Device</option>' + options.join('');
           elDeviceDialog.showModal();
-        }, function () {
-
+        }, function (e) {
+            console.error(`Could not get vehicles: ${e.message}`);
         });
-      } else {
-        initalizeAddin();
-      }
     }
 
     function intializeInterface(isDriveAddin) {
@@ -137,7 +133,9 @@ document.addEventListener('DOMContentLoaded', function () {
         device = null;
         state.device = device;
         localStorage.setItem('_device', JSON.stringify(device));
-        initializeDevice(isDriveAddin);
+        if (isDriveAddin) {
+          initializeDevice();
+        }
         Object.keys(geotab.addin).forEach(function (name) {
           geotab.addin[name].blur(api, state);
         });
@@ -213,8 +211,6 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!isDriveAddin) {
         initalizeAddin();
       } else {
-        initializeDevice(true);
-
         // mock Drive properties
         api.mobile = {
           exists: function () {
@@ -264,6 +260,12 @@ document.addEventListener('DOMContentLoaded', function () {
         state.background = false;
         state.online = true;
         state.deviceCommunicating = true;
+      }
+
+      if (!device) {
+        initializeDevice();
+      } else {
+        initalizeAddin();
       }
     }
 
