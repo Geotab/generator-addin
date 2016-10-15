@@ -66,32 +66,32 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function initializeDevice() {
-        // Mock device for drive addin
-        api.call('Get', {
-          typeName: 'Device',
-          resultsLimit: 1000,
-          search: {
-            fromDate: new Date()
+      // Mock device for drive addin
+      api.call('Get', {
+        typeName: 'Device',
+        resultsLimit: 1000,
+        search: {
+          fromDate: new Date()
+        }
+      }, function (devices) {
+        var options = devices.sort(function (d1, d2) {
+          var name1 = d1.name.toLowerCase();
+          var name2 = d2.name.toLowerCase();
+          if (name1 < name2) {
+            return -1;
+          } else if (name1 > name2) {
+            return 1;
+          } else {
+            return 0;
           }
-        }, function (devices) {
-          var options = devices.sort(function (d1, d2) {
-            var name1 = d1.name.toLowerCase();
-            var name2 = d2.name.toLowerCase();
-            if (name1 < name2) {
-              return -1;
-            } else if (name1 > name2) {
-              return 1;
-            } else {
-              return 0;
-            }
-          }).map(function (d) {
-            return '<option value="' + d.id + '">' + d.name + '</option>';
-          });
-          elDevices.innerHTML = '<option>Select Device</option>' + options.join('');
-          elDeviceDialog.showModal();
-        }, function (e) {
-            console.error(`Could not get vehicles: ${e.message}`);
+        }).map(function (d) {
+          return '<option value="' + d.id + '">' + d.name + '</option>';
         });
+        elDevices.innerHTML = '<option>Select Device</option>' + options.join('');
+        elDeviceDialog.showModal();
+      }, function (e) {
+        console.error(`Could not get vehicles: ${e.message}`);
+      });
     }
 
     function intializeInterface(isDriveAddin) {
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
           api.forget();
         }
 
-        Object.keys(geotab.addin).forEach(function(name) {
+        Object.keys(geotab.addin).forEach(function (name) {
           geotab.addin[name].isInitialize = false;
         });
         device = null;
@@ -210,57 +210,57 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (!isDriveAddin) {
         initalizeAddin();
-      } else {
-        // mock Drive properties
-        api.mobile = {
-          exists: function () {
-            return true;
-          },
-          getVersion: function () {
-            return '1.1.1';
-          },
-          speak: function (message) {
-            if (!('SpeechSynthesisUtterance' in window)) {
-              console.log('This browser does not supports speech synthesis');
-            } else {
-              var utterThis = new SpeechSynthesisUtterance(message);
-              utterThis.lang = 'en-US';
-              window.speechSynthesis.speak(utterThis);
-            }
-          },
-          notify: function (message, title, id, jsonData, permanent) {
-            var notification,
-              options = {
-                tag: id,
-                body: message,
-                data: jsonData
-              };
-
-            if (!('Notification' in window)) {
-              console.log('This browser does not support notifications');
-            } else if (Notification.permission === 'granted') {
-              notification = new Notification(title, options);
-            } else if (Notification.permission !== 'denied') {
-              Notification.requestPermission(function (permission) {
-                if (permission === 'granted') {
-                  notification = new Notification(title, options);
-                }
-              });
-            }
-          },
-          geolocation: navigator.geolocation
-        };
-
-        api.user = JSON.parse(localStorage.getItem('_user'));
-
-        // Drive properties
-        state.device = device;
-        state.driving = true;
-        state.charging = true;
-        state.background = false;
-        state.online = true;
-        state.deviceCommunicating = true;
+        return;
       }
+      // mock Drive properties
+      api.mobile = {
+        exists: function () {
+          return true;
+        },
+        getVersion: function () {
+          return '1.1.1';
+        },
+        speak: function (message) {
+          if (!('SpeechSynthesisUtterance' in window)) {
+            console.log('This browser does not supports speech synthesis');
+          } else {
+            var utterThis = new SpeechSynthesisUtterance(message);
+            utterThis.lang = 'en-US';
+            window.speechSynthesis.speak(utterThis);
+          }
+        },
+        notify: function (message, title, id, jsonData, permanent) {
+          var notification,
+            options = {
+              tag: id,
+              body: message,
+              data: jsonData
+            };
+
+          if (!('Notification' in window)) {
+            console.log('This browser does not support notifications');
+          } else if (Notification.permission === 'granted') {
+            notification = new Notification(title, options);
+          } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission(function (permission) {
+              if (permission === 'granted') {
+                notification = new Notification(title, options);
+              }
+            });
+          }
+        },
+        geolocation: navigator.geolocation
+      };
+
+      api.user = JSON.parse(localStorage.getItem('_user'));
+
+      // Drive properties
+      state.device = device;
+      state.driving = true;
+      state.charging = true;
+      state.background = false;
+      state.online = true;
+      state.deviceCommunicating = true;
 
       if (!device) {
         initializeDevice();
