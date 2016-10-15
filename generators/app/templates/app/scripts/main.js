@@ -40,6 +40,12 @@ geotab.addin.<%= root %> = function () {
       freshState.setState({
         hello: 'world'
       });
+
+      // getting the current user to display in the UI
+      freshApi.getSession(session => {
+        document.querySelector('#<%= root %>-user').textContent = `${session.userName}'s`;
+      });
+
       // show main content
       elAddin.className = '';
     },
