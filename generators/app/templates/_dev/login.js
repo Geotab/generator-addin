@@ -108,8 +108,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         elLoginError.style.display = 'none';
 
-        authenticationCallback(server, database, email, password, function () {
+        authenticationCallback(server, database, email, password, function (err) {
           elLoginDialog.showModal();
+          if (err) {
+            elLoginError.textContent = err;
+          }
           elLoginError.style.display = 'block';
         });
 
