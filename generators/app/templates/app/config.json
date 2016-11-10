@@ -13,7 +13,7 @@
   "dev": {
     "root": "<%= root %>",
     "dist": {
-      "host": "https://example.com/addins/<%= root %>/"
+      "host": "<%= host %>"
     }
   }
 }

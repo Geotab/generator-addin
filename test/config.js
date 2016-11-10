@@ -9,7 +9,8 @@ describe('generator-addin:config.json', function () {
     name: 'my addin',
     path: 'GettingStartedLink/',
     menuName: 'my addin button',
-    supportEmail: 'zom@bie.com'
+    supportEmail: 'zom@bie.com',
+    host: 'http://eat.brains.com/myaddin'
   }, config;
 
   before(function (done) {
@@ -38,5 +39,8 @@ describe('generator-addin:config.json', function () {
   });
   it('has correct root id', function () {
     assert.equal(config.dev.root, 'myAddin');
+  });
+  it('has correct host', function () {
+    assert.equal(config.dev.dist.host, props.host + '/');
   });
 });

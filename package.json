@@ -1,6 +1,6 @@
 {
   "name": "generator-addin",
-  "version": "0.1.1",
+  "version": "0.1.9",
   "description": "MyGeotab/Geotab Drive add-in generator",
   "homepage": "https://github.com/geotab/generator-addin",
   "author": {
@@ -32,7 +32,6 @@
     "yeoman-test": "^1.0.0"
   },
   "eslintConfig": {
-    "extends": "xo-space",
     "env": {
       "es6": true,
       "node": true,
@@ -54,7 +53,7 @@
   },
   "repository": "https://github.com/Geotab/generator-addin",
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha test --timeout 10000"
   },
   "license": "Apache-2.0"
 }
