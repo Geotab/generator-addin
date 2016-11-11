@@ -66,7 +66,9 @@ gulp.task('json', () => {
       var distHost = options.dist.host;
       for (let i = 0; i < json.items.length; i++) {
         json.items[i].url = distHost + json.items[i].url;
-        json.items[i].icon = distHost + json.items[i].icon;
+        if (json.items[i].icon.indexOf('data:image') === -1) {
+          json.items[i].icon = distHost + json.items[i].icon;
+        }
       }
       // remove dev options
       delete json.dev;
