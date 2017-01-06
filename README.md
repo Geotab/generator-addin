@@ -1,5 +1,5 @@
 # generator-addin [![NPM version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/Geotab/generator-addin.svg?branch=master)](https://travis-ci.org/Geotab/generator-addin)
-> Yeoamn generator for MyGeotab/Geotab Drive add-ins
+> Yeoman generator for MyGeotab/Geotab Drive add-ins
 
 ## Features
 Leverage modern package managers.
