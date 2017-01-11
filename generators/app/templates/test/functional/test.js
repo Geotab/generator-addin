@@ -41,7 +41,7 @@ Browser.localhost(mockServer, 9000);
 
 describe('User visits addin', function () {
 
-  const browser = new Browser();
+  const browser = new Browser({runScripts: false});
 
   // to enable zombie debugging, uncomment this line
   // browser.debug();
@@ -76,7 +76,7 @@ describe('User visits addin', function () {
 
   describe('Show addin content after initialized and focus is called', function () {
     it('should display date select control', function () {
-      browser.assert.style('#<%= root %>:not(.hidden)', 'display', '');
+      browser.assert.style('#<%= root %>', 'display', '');
     });
   });
 
