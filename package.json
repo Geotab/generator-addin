@@ -1,12 +1,12 @@
 {
   "name": "generator-addin",
-  "version": "0.1.11",
+  "version": "1.0.0",
   "description": "MyGeotab/Geotab Drive add-in generator",
   "homepage": "https://github.com/geotab/generator-addin",
   "author": {
-    "name": "The Geotab team",
+    "name": "The Geotab Team",
     "email": "support@geotab.com",
-    "url": "https://geotab.com"
+    "url": "https://geotab.com/sdk"
   },
   "files": [
     "generators"
