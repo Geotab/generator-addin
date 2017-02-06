@@ -30,7 +30,7 @@ module.exports = yeoman.Base.extend({
       default: false,
       choices: [{
         name: 'Root',
-        value: '/'
+        value: ''
       }, {
         name: 'Getting Started',
         value: 'GettingStartedLink/'
@@ -74,7 +74,7 @@ module.exports = yeoman.Base.extend({
       props.camelName = camelCase(props.name);
       props.fileName = props.camelName + '.html';
       props.isDriveAddin = props.path === 'DriveAppLink/';
-      if (props.host && props.host.indexOf('/', props.host.length - 1) === -1){
+      if (props.host && props.host.indexOf('/', props.host.length - 1) === -1) {
         props.host += '/';
       }
       this.props = props;
@@ -139,7 +139,8 @@ module.exports = yeoman.Base.extend({
         this.templatePath('app/addin.html'),
         this.destinationPath('app/' + this.props.fileName), {
           title: this.props.name,
-          root: this.props.camelName
+          root: this.props.camelName,
+          isDriveAddin: this.props.isDriveAddin
         }
       );
     },
@@ -203,9 +204,11 @@ module.exports = yeoman.Base.extend({
         this.destinationPath('.dev/api.js')
       );
 
-      this.fs.copy(
+      this.fs.copyTpl(
         this.templatePath('_dev/login.html'),
-        this.destinationPath('.dev/login.html')
+        this.destinationPath('.dev/login.html'), {
+          isDriveAddin: this.props.isDriveAddin
+        }
       );
 
       this.fs.copy(
@@ -216,6 +219,16 @@ module.exports = yeoman.Base.extend({
       this.fs.copy(
         this.templatePath('_dev/rison.js'),
         this.destinationPath('.dev/rison.js')
+      );
+
+      this.fs.copy(
+        this.templatePath('_dev/style/styleGuide.css'),
+        this.destinationPath('.dev/style/styleGuide.css')
+      );
+
+      this.fs.copy(
+        this.templatePath('_dev/style/styleGuideMyGeotab.html'),
+        this.destinationPath('.dev/style/styleGuideMyGeotab.html')
       );
     }
   },

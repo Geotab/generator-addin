@@ -1,5 +1,9 @@
 <header>
   <button id="logoutBtn">Logout</button>
+  <% if (!isDriveAddin) { %>
+    <a target="_blank" href="../.dev/style/styleGuideMyGeotab.html" class="dev-button">Style Guide</a>
+  <% } %>
+    <a id="logoutBtn" class="dev-button">Logout</a>
 </header>
 <dialog id="loginDialog">
   <form>
@@ -42,3 +46,15 @@
 <script src="../.dev/rison.js"></script>
 <script src="../bower_components/dialog-polyfill/dialog-polyfill.js"></script>
 <script src="../.dev/login.js"></script>
+
+<script>
+    let parentStyles = geotab.isDriveAddin ? ['https://my.geotab.com/drive/app/css/geotabdrive.less'] : ['https://my.geotab.com/geotab/checkmate/app.less?skin=my_geotab'];
+    let addStyleSheet = location => {
+        let head = document.getElementsByTagName('head')[0];
+        let s = document.createElement('link');
+        s.setAttribute('rel', 'stylesheet');
+        s.setAttribute('href', location);
+        head.appendChild(s);
+    };
+    parentStyles.forEach(addStyleSheet);
+</script>

@@ -23,7 +23,13 @@ describe('generator-addin:app', function () {
       'app/scripts/main.js',
       'app/styles/main.css',
       'test/functional/test.js',
-      'test/functional/mocks/mocks.js'
+      'test/functional/mocks/mocks.js',
+      '.dev/api.js',
+      '.dev/login.js',
+      '.dev/login.html',
+      '.dev/rison.js',
+      '.dev/style/styleGuide.css',
+      '.dev/style/styleGuideMyGeotab.html'
     ]);
   });
 });

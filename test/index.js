@@ -6,9 +6,10 @@ var fs = require('fs');
 
 describe('generator-addin:index.html', function () {
   var props = {
-    name: 'my addin',
-    path: 'DriveAppLink/'
-  }, js;
+      name: 'my addin',
+      path: ''
+    },
+    js;
 
   before(function (done) {
     helpers.run(path.join(__dirname, '../generators/app'))
@@ -25,6 +26,46 @@ describe('generator-addin:index.html', function () {
   });
   it('has correct selector', function () {
     assert.equal(true, js.indexOf('id="myAddin"') > -1);
+  });
+
+});
+
+describe('generator-addin:index.html MyGeotab', function () {
+  var props = {
+      name: 'my addin',
+      path: ''
+    },
+    js;
+
+  before(function (done) {
+    helpers.run(path.join(__dirname, '../generators/app'))
+      .withPrompts(props)
+      .on('end', done);
+  });
+
+  it('has correct ontent for MyGeotab Add-in', function () {
+    js = fs.readFileSync('app/myAddin.html', 'utf8');
+    assert.equal(true, js.indexOf('<header class="geotabPageHeader">') > -1);
+  });
+
+});
+
+describe('generator-addin:index.html Drive', function () {
+  var props = {
+      name: 'my addin',
+      path: 'DriveAppLink/'
+    },
+    js;
+
+  before(function (done) {
+    helpers.run(path.join(__dirname, '../generators/app'))
+      .withPrompts(props)
+      .on('end', done);
+  });
+
+  it('has correct ontent for Drive Add-in', function () {
+    js = fs.readFileSync('app/myAddin.html', 'utf8');
+    assert.equal(true, js.indexOf('<h1>My Add-In</h1>') > -1);
   });
 
 });

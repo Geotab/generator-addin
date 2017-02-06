@@ -142,7 +142,7 @@ let mockAddinHost = sourceDir => {
       return item.path.indexOf('DriveAppLink') > -1;
     });
 
-    if (parsed.pathname === '/' || parsed.pathname.match(/\.html$/)) {
+    if (parsed.pathname === '/' || parsed.pathname.indexOf(config.dev.root + '.html') > -1) {
       htmlSource = fs.readFileSync(parsed.pathname === '/' ? sourceDir + '/' + config.dev.root + '.html' : parsed.pathname, 'utf8');
 
       pos = htmlSource.indexOf(script);
