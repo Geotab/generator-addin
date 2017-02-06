@@ -69,6 +69,9 @@ var GeotabApi = function (getCredentialsCallback, newOptions, customCredentialSt
      */
     handleError = function (error, errorCallback) {
       var errorString;
+      if (error.errors.length > 0) {
+        error = error.errors[0];
+      }
       if (error && error.name && error.message) {
         errorString = error.name + ': ' + error.message;
       } else if (error.target || (error instanceof XMLHttpRequest && error.status === 0)) {
