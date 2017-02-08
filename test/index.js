@@ -65,7 +65,7 @@ describe('generator-addin:index.html Drive', function () {
 
   it('has correct ontent for Drive Add-in', function () {
     js = fs.readFileSync('app/myAddin.html', 'utf8');
-    assert.equal(true, js.indexOf('<h1>My Add-In</h1>') > -1);
+    assert.equal(true, js.indexOf('<h2 class="panel__title">') > -1);
   });
 
 });
