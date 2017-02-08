@@ -164,7 +164,8 @@ module.exports = yeoman.Base.extend({
       this.fs.copyTpl(
         this.templatePath('app/scripts/main.js'),
         this.destinationPath('app/scripts/main.js'), {
-          root: this.props.camelName
+          root: this.props.camelName,
+          isDriveAddin: this.props.isDriveAddin
         }
       );
     },

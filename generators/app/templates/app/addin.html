@@ -32,13 +32,16 @@
 
   <div id="<%= root %>" class="hidden">
     <% if (isDriveAddin) { %>
-      <h1>My Add-In</h1>
-      <h3>by: <span id="addinwork-user"></span></h3>
+      <section class="panel">
+        <h2 class="panel__title"><%= title %></h2>
+        <p>Driver: <span id="<%= root %>-driver"></span></p>
+        <p>Vehicle: <span id="<%= root %>-vehicle"></span></p>
+      </section>
     <% } else { %>
         <header class="geotabPageHeader">
-          <h1 class="geotabPageName">My Add-In <span class="subdued">with sub title</span></h1>
+          <h1 class="geotabPageName"><%= title %> <span class="subdued">sub title</span></h1>
           <div class="pageNameSecondary">
-            <h3 class="geotabSecondaryTitle">by: <span id="addinwork-user"></span></h3>
+            <h3 class="geotabSecondaryTitle">by: <span id="<%= root %>-user"></span></h3>
           </div>
         </header>
     <% } %>
