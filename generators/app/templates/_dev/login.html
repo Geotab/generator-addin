@@ -1,92 +1,102 @@
+<% if (isDriveAddin) { %>
+  <link rel="stylesheet" href="https://my.geotab.com/drive/app/css/geotabdrive.less">
+<% } else { %>
+  <link rel="stylesheet" href="https://my.geotab.com/geotab/checkmate/app.less?skin=my_geotab">
+<% } %>
 <style>
-    body {
-        height: initial;
-        width: initial;
-        font-size: 16px;
-    }
+body {
+      height: initial;
+      width: initial;
+  }
 
-    body>div {
-        margin: 1em;
-    }
+  body>div {
+      margin: 1em;
+  }
 
-    .dev-dialog {
-        border: 1px solid rgba(0, 0, 0, 0.3);
-        border-radius: 6px;
-        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-    }
+  .dev-dialog {
+    <% if (isDriveAddin) { %>
+      font-size: 1.5rem;
+    <% } %>
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      border-radius: 6px;
+      box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  }
 
-    .dev-dialog::backdrop {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.8);
-    }
+  .dev-dialog::backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+  }
 
-    .dev-header {
-        background-color: #eee;
-        flex-direction: row;
-        flax-wrap: wrap;
-        justify-content: flex-end;
-        display: flex;
-        border-bottom: 1px solid #ccc;
-    }
-
-    .dev-button {
-        padding: 5px 10px;
-        display: inline;
-        background: #bbb repeat-x bottom;
-        border: none;
-        color: #fff;
-        cursor: pointer;
-        font-weight: bold;
-        border-radius: 5px;
-        -moz-border-radius: 5px;
-        -webkit-border-radius: 5px;
-        text-shadow: 1px 1px #666;
-        text-decoration: none;
-        margin: 0.5em 0.5em 0.5em 0;
-    }
-
-    .dev-button:hover {
-        background-position: 0 -48px;
-        filter: brightness(108%);
-    }
-
-    .dev-button:active {
-        background-position: 0 top;
-        position: relative;
-        top: 1px;
-        padding: 6px 10px 4px;
-    }
-
-    .dev-form {
-      flex-direction: column;
+  .dev-header {
+    <% if (isDriveAddin) { %>
+      font-size: 1.5rem;
+    <% } %>
+      background-color: #eee;
+      flex-direction: row;
       flax-wrap: wrap;
       justify-content: flex-end;
       display: flex;
-    }
+      border-bottom: 1px solid #ccc;
+  }
 
-    .dev-form label {
-        display: none;
-    }
+  .dev-button {
+      padding: 5px 10px;
+      display: inline;
+      background: #bbb repeat-x bottom;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 5px;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+      text-shadow: 1px 1px #666;
+      text-decoration: none;
+      margin: 0.5em 0.5em 0.5em 0;
+  }
 
-    .dev-form input,
-    .dev-form select {
-        border-radius: 0.5em;
-        padding: 0.5em;
-    }
+  .dev-button:hover {
+      background-position: 0 -48px;
+      filter: brightness(108%);
+  }
 
-    .dev-form input {
-        border-radius: 0.5em;
-        padding: 0.5em;
-    }
+  .dev-button:active {
+      background-position: 0 top;
+      position: relative;
+      top: 1px;
+      padding: 6px 10px 4px;
+  }
 
-    .dev-form .line {
-        display: block;
-        margin: 0.5em 0;
-    }
+  .dev-form {
+    flex-direction: column;
+    flax-wrap: wrap;
+    justify-content: flex-end;
+    display: flex;
+  }
+
+  .dev-form label {
+      display: none;
+  }
+
+  .dev-form input,
+  .dev-form select {
+      border-radius: 0.5em;
+      padding: 0.5em;
+  }
+
+  .dev-form input {
+      border-radius: 0.5em;
+      padding: 0.5em;
+  }
+
+  .dev-form .line {
+      display: block;
+      margin: 0.5em 0;
+  }
 </style>
 <header class="dev-header">
   <% if (!isDriveAddin) { %>
@@ -135,15 +145,3 @@
 <script src="../.dev/rison.js"></script>
 <script src="../bower_components/dialog-polyfill/dialog-polyfill.js"></script>
 <script src="../.dev/login.js"></script>
-
-<script>
-    let parentStyles = geotab.isDriveAddin ? ['https://my.geotab.com/drive/app/css/geotabdrive.less'] : ['https://my.geotab.com/geotab/checkmate/app.less?skin=my_geotab'];
-    let addStyleSheet = location => {
-        let head = document.getElementsByTagName('head')[0];
-        let s = document.createElement('link');
-        s.setAttribute('rel', 'stylesheet');
-        s.setAttribute('href', location);
-        head.appendChild(s);
-    };
-    parentStyles.forEach(addStyleSheet);
-</script>
