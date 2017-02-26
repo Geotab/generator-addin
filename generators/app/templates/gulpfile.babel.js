@@ -153,7 +153,7 @@ let mockAddinHost = sourceDir => {
 
     if (parsed.pathname === '/' || parsed.pathname.indexOf(config.dev.root + '.html') > -1) {
       if (isButton) {
-        htmlSource = fs.readFileSync('.dev/button.html', 'utf8');
+        htmlSource = fs.readFileSync('.dev/button.html', 'utf8').replace('{icon}', `style="background-image: url(${config.items[0].icon})"` || '');
       } else {
         htmlSource = fs.readFileSync(parsed.pathname === '/' ? `${sourceDir}/${config.dev.root}.html` : parsed.pathname, 'utf8');
       }
