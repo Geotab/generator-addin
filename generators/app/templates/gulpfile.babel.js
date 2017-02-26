@@ -133,13 +133,13 @@ gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 let mockAddinHost = sourceDir => {
   return (req, res, next) => {
     var body = '<body>';
-    var script = '<script';
+    var script = '<head';
     var parsed = url.parse(req.url);
     var pos;
     var htmlSource;
     var config = JSON.parse(fs.readFileSync('./app/config.json'));
     var isDriveAddin = config.items.some(function (item) {
-      return item.path.indexOf('DriveAppLink') > -1;
+      return item.path && item.path.indexOf('DriveAppLink') > -1;
     });
 
     if (parsed.pathname === '/' || parsed.pathname.indexOf(config.dev.root + '.html') > -1) {
@@ -147,7 +147,7 @@ let mockAddinHost = sourceDir => {
 
       pos = htmlSource.indexOf(script);
       if (pos > -1) {
-        htmlSource = htmlSource.substring(0, pos) + `<script>window.geotab = {addin: {}, isDriveAddin: ${isDriveAddin}};</script>` + htmlSource.substring(pos);
+        htmlSource = htmlSource.substring(0, pos) + `<script>window.geotab = {addin: {}, customButtons: {}, isDriveAddin: ${isDriveAddin}};</script>` + htmlSource.substring(pos);
       }
 
       pos = htmlSource.indexOf(body);

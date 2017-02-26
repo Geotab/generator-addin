@@ -25,6 +25,33 @@ module.exports = yeoman.Base.extend({
       default: this.appname
     }, {
       type: 'list',
+      name: 'type',
+      message: 'What type of add-in do you want to create?',
+      default: 'MyGeotabPage',
+      choices: [{
+        name: 'MyGeotab Add-In Page',
+        value: 'MyGeotabPage'
+      }, {
+        name: 'MyGeotab Add-In Button',
+        value: 'MyGeotabButton'
+      }, {
+        name: 'Geotab Drive Add-In Page',
+        value: 'DrivePage'
+      }]
+    }, {
+      type: 'input',
+      name: 'supportEmail',
+      message: 'What is the support contact email address for the add-in?',
+      default: ''
+    }, {
+      type: 'input',
+      name: 'host',
+      message: 'What is the deployment host URL?',
+      default: 'https://www.example.com/myaddin/'
+    }];
+
+    var MyGeotabPagePrompts = [{
+      type: 'list',
       name: 'path',
       message: 'Select where your add-in will be located in MyGeotab side nav tree: (Geotab Drive specific add-in must choose "Geotab Drive")',
       default: false,
@@ -49,36 +76,105 @@ module.exports = yeoman.Base.extend({
       }, {
         name: 'Administration',
         value: 'AdministrationLink/'
-      }, {
-        name: 'Geotab Drive',
-        value: 'DriveAppLink/'
       }]
     }, {
       type: 'input',
       name: 'menuName',
       message: 'What is the add-in menu item name?',
       default: this.appname
+    }];
+
+    var MyGeotabButtonPrompts = [{
+      type: 'list',
+      name: 'page',
+      message: 'Select which page your add-in button will be located in MyGeotab',
+      default: 'Map',
+      choices: [{
+        name: 'Map',
+        value: 'map'
+      }, {
+        name: 'Trips History',
+        value: 'tripsHistory'
+      }, {
+        name: 'Vehicles',
+        value: 'devices'
+      }, {
+        name: 'Vehicle Edit',
+        value: 'device'
+      }, {
+        name: 'Zones',
+        value: 'zones'
+      }, {
+        name: 'Users',
+        value: 'users'
+      }, {
+        name: 'Rules',
+        value: 'rules'
+      }, {
+        name: 'Exceptions',
+        value: 'exceptions'
+      }, {
+        name: 'Custom Reports',
+        value: 'customReports'
+      }, {
+        name: 'Engine Faults',
+        value: 'engineFaults'
+      }, {
+        name: 'Speed Profile',
+        value: 'speedProfile'
+      }, {
+        name: 'Duty Status Logs',
+        value: 'hosLogs'
+      }, {
+        name: 'Groups',
+        value: 'groupsTree'
+      }, {
+        name: 'Routes',
+        value: 'routes'
+      }, {
+        name: 'Fuel Usage',
+        value: 'fuelUsage'
+      }, {
+        name: 'Engine Measurements',
+        value: 'engineMeasurements'
+      }]
     }, {
       type: 'input',
-      name: 'supportEmail',
-      message: 'What is the support contact email address for the add-in?',
-      default: ''
-    }, {
-      type: 'input',
-      name: 'host',
-      message: 'What is the deployment host URL?',
-      default: 'https://www.example.com/myaddin/'
+      name: 'menuName',
+      message: 'What is the add-in button text?',
+      default: this.appname
     }];
 
     this.prompt(prompts, function (props) {
+      var nextPrompts;
+
       props.camelName = camelCase(props.name);
-      props.fileName = props.camelName + '.html';
-      props.isDriveAddin = props.path === 'DriveAppLink/';
       if (props.host && props.host.indexOf('/', props.host.length - 1) === -1) {
         props.host += '/';
       }
-      this.props = props;
-      done();
+
+      switch (props.type) {
+        case 'MyGeotabPage':
+          nextPrompts = MyGeotabPagePrompts;
+          break;
+        case 'MyGeotabButton':
+          nextPrompts = MyGeotabButtonPrompts;
+          props.isButton = true;
+          break;
+        case 'DrivePage':
+          nextPrompts = [MyGeotabPagePrompts[1]];
+          props.isDriveAddin = true;
+          props.path === 'DriveAppLink/'
+          break;
+      }
+
+      this.prompt(nextPrompts, function (props2) {
+        Object.assign(props, props2);
+        this.props = props;
+
+        done();
+      }.bind(this));
+
     }.bind(this));
   },
 
@@ -137,10 +233,12 @@ module.exports = yeoman.Base.extend({
     index: function () {
       this.fs.copyTpl(
         this.templatePath('app/addin.html'),
-        this.destinationPath('app/' + this.props.fileName), {
+        this.destinationPath('app/' + this.props.camelName + '.html'), {
           title: this.props.name,
           root: this.props.camelName,
-          isDriveAddin: this.props.isDriveAddin
+          isDriveAddin: this.props.isDriveAddin,
+          isButton: this.props.isButton,
+          click: this.props.camelName + (this.props.isButton ? '.js' : '.html')
         }
       );
     },
@@ -151,30 +249,43 @@ module.exports = yeoman.Base.extend({
         this.destinationPath('app/config.json'), {
           title: this.props.name,
           supportEmail: this.props.supportEmail,
-          url: this.props.fileName,
+          url: this.props.camelName + (this.props.isButton ? '.js' : '.html'),
           path: this.props.path,
+          page: this.props.page,
           menuName: this.props.menuName,
           root: this.props.camelName,
-          host: this.props.host
+          host: this.props.host,
+          isButton: this.props.isButton
         }
       );
     },
 
     scripts: function () {
-      this.fs.copyTpl(
-        this.templatePath('app/scripts/main.js'),
-        this.destinationPath('app/scripts/main.js'), {
-          root: this.props.camelName,
-          isDriveAddin: this.props.isDriveAddin
-        }
-      );
+      if (this.props.isButton) {
+        this.fs.copyTpl(
+          this.templatePath('app/button.js'),
+          this.destinationPath('app/' + this.props.camelName + '.js'), {
+            root: this.props.camelName
+          }
+        );
+      } else {
+        this.fs.copyTpl(
+          this.templatePath('app/scripts/main.js'),
+          this.destinationPath('app/scripts/main.js'), {
+            root: this.props.camelName,
+            isDriveAddin: this.props.isDriveAddin
+          }
+        );
+      }
     },
 
     css: function () {
-      this.fs.copy(
-        this.templatePath('app/styles/main.css'),
-        this.destinationPath('app/styles/main.css')
-      );
+      if (!this.props.isButton) {
+        this.fs.copy(
+          this.templatePath('app/styles/main.css'),
+          this.destinationPath('app/styles/main.css')
+        );
+      }
     },
 
     icon: function () {

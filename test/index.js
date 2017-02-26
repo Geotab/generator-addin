@@ -7,7 +7,8 @@ var fs = require('fs');
 describe('generator-addin:index.html', function () {
   var props = {
       name: 'my addin',
-      path: ''
+      path: '',
+      type: 'MyGeotabPage'
     },
     js;
 
@@ -53,7 +54,8 @@ describe('generator-addin:index.html MyGeotab', function () {
 describe('generator-addin:index.html Drive', function () {
   var props = {
       name: 'my addin',
-      path: 'DriveAppLink/'
+      path: 'DriveAppLink/',
+      type: 'DrivePage'
     },
     js;
 
