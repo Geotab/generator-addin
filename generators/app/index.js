@@ -231,9 +231,10 @@ module.exports = yeoman.Base.extend({
     },
 
     index: function () {
+      var indexLocation = this.props.isButton ? '.dev/button.html' : `app/${this.props.camelName}.html`;
       this.fs.copyTpl(
         this.templatePath('app/addin.html'),
-        this.destinationPath('app/' + this.props.camelName + '.html'), {
+        this.destinationPath(indexLocation), {
           title: this.props.name,
           root: this.props.camelName,
           isDriveAddin: this.props.isDriveAddin,

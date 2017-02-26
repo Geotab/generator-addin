@@ -65,9 +65,15 @@ gulp.task('json', () => {
       var options = json.dev;
       var distHost = options.dist.host;
       for (let i = 0; i < json.items.length; i++) {
-        json.items[i].url = distHost + json.items[i].url;
-        if (json.items[i].icon.indexOf('data:image') === -1) {
-          json.items[i].icon = distHost + json.items[i].icon;
+        let item = json.items[i];
+        if (Boolean(item.url)) {
+          item.url = distHost + item.url;
+        }
+        if (Boolean(item.click)) {
+          item.click = distHost + item.click;
+        }
+        if (Boolean(item.icon) && item.icon.indexOf('data:image') === -1) {
+          item.icon = distHost + item.icon;
         }
       }
       // remove dev options
@@ -141,9 +147,16 @@ let mockAddinHost = sourceDir => {
     var isDriveAddin = config.items.some(function (item) {
       return item.path && item.path.indexOf('DriveAppLink') > -1;
     });
+    var isButton = config.items.some(function (item) {
+      return Boolean(item.page);
+    });
 
     if (parsed.pathname === '/' || parsed.pathname.indexOf(config.dev.root + '.html') > -1) {
-      htmlSource = fs.readFileSync(parsed.pathname === '/' ? sourceDir + '/' + config.dev.root + '.html' : parsed.pathname, 'utf8');
+      if (isButton) {
+        htmlSource = fs.readFileSync('.dev/button.html', 'utf8');
+      } else {
+        htmlSource = fs.readFileSync(parsed.pathname === '/' ? `${sourceDir}/${config.dev.root}.html` : parsed.pathname, 'utf8');
+      }
 
       pos = htmlSource.indexOf(script);
       if (pos > -1) {

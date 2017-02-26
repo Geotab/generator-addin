@@ -6,7 +6,6 @@ var commonFiles = [
   'bower.json',
   'gulpfile.babel.js',
   'package.json',
-  'app/myAddin.html',
   'app/config.json',
   'app/images/icon.svg',
   'test/functional/test.js',
@@ -31,6 +30,7 @@ describe('generator-addin:page', function () {
 
   it('creates files for add-in page', function () {
     assert.file(commonFiles.concat([
+      'app/myAddin.html',
       'app/scripts/main.js',
       'app/styles/main.css'
     ]));
@@ -49,6 +49,7 @@ describe('generator-addin:button', function () {
 
   it('creates files for add-in button', function () {
     assert.file(commonFiles.concat([
+      '.dev/button.html',
       'app/myAddin.js'
     ]));
   });
