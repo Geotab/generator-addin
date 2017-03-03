@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= title %></title>
 
+  <% if (!isButton) { %>
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
   <!-- endbower -->
@@ -25,13 +26,35 @@
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
   <!-- endbuild -->
-
+  <% } else { %>
+  <script src="{click}"></script>
+  <% } %>
 </head>
 
 <body>
 
-  <div id="<%= root %>" class="hidden">
-      <h1>Welcome to <span id="<%= root %>-user">my</span> add-in</h1>
+  <div id="<%= root %>" <% if (!isButton) { %>class="hidden"<% } %>>
+    <% if (isDriveAddin) { %>
+      <section class="panel">
+        <h2 class="panel__title"><%= title %></h2>
+        <p>Driver: <span id="<%= root %>-driver"></span></p>
+        <p>Vehicle: <span id="<%= root %>-vehicle"></span></p>
+      </section>
+    <% } else if (isButton) { %>
+      <div class="checkmateFormPage">
+          <div class="checkmateToolbarContainer">
+          <span class="checkmateToolbar">
+              <button class="geotabButton customButton noTranslate"><span class="icon" {icon}></span><%= title %></button>
+          </div>
+      </div>
+    <% } else { %>
+        <header class="geotabPageHeader">
+          <h1 class="geotabPageName"><%= title %> <span class="subdued">sub title</span></h1>
+          <div class="pageNameSecondary">
+            <h3 class="geotabSecondaryTitle">by: <span id="<%= root %>-user"></span></h3>
+          </div>
+        </header>
+    <% } %>
   </div>
 
 </body>

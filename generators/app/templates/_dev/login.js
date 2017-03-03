@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var elDevices = elDeviceDialog.querySelector('#devices');
   var elDevicesOkBtn = elDeviceDialog.querySelector('#okBtn');
   var elLogoutBtn = document.querySelector('#logoutBtn');
+  var elAddinButton = document.querySelector('.customButton');
 
   var injectStyles = function () {
     var styleSheets = ['../bower_components/dialog-polyfill/dialog-polyfill.css'];
@@ -32,6 +33,14 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!elLoginDialog.showModal) {
     dialogPolyfill.registerDialog(elLoginDialog);
     dialogPolyfill.registerDialog(elDeviceDialog);
+  }
+
+  if (elAddinButton) {
+    elAddinButton.addEventListener('click', function (e) {
+      Object.keys(geotab.customButtons).forEach(function (name) {
+        geotab.customButtons[name](e, api, state);
+      });
+    });
   }
 
   var GeotabLogin = (function () {

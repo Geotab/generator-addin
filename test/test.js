@@ -6,9 +6,11 @@ var fs = require('fs');
 
 describe('generator-addin:test.js', function () {
   var props = {
-    name: 'my addin',
-    path: 'DriveAppLink/'
-  }, js;
+      name: 'my addin',
+      path: 'DriveAppLink/',
+      type: 'DrivePage'
+    },
+    js;
 
   before(function (done) {
     helpers.run(path.join(__dirname, '../generators/app'))

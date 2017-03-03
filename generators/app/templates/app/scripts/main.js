@@ -36,18 +36,36 @@ geotab.addin.<%= root %> = function () {
      * @param {object} freshState - The page state object allows access to URL, page navigation and global group filter.
      */
     focus: function (freshApi, freshState) {
-      // example of setting url state
+      <% if (isDriveAddin) { %> // getting the current user to display in the UI
+      freshApi.getSession(session => {
+        freshApi.call('Get', {
+          typeName: 'Device',
+          search: {
+            id: freshState.device.id
+          }
+        }, result => {
+          let device = result[0];
+
+          elAddin.querySelector('#<%= root %>-driver').textContent = session.userName;
+          elAddin.querySelector('#<%= root %>-vehicle').textContent = device.name;
+
+          // show main content
+          elAddin.className = '';
+        }, err => {
+          console.error(err);
+        });
+      });<% } else { %> // example of setting url state
       freshState.setState({
         hello: 'world'
       });
 
       // getting the current user to display in the UI
       freshApi.getSession(session => {
-        document.querySelector('#<%= root %>-user').textContent = `${session.userName}'s`;
+        elAddin.querySelector('#<%= root %>-user').textContent = session.userName;
       });
 
       // show main content
-      elAddin.className = '';
+      elAddin.className = '';<% } %>
     },
 
     /**

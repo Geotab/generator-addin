@@ -41,7 +41,9 @@ Browser.localhost(mockServer, 9000);
 
 describe('User visits addin', function () {
 
-  const browser = new Browser({runScripts: false});
+  const browser = new Browser({
+    runScripts: false
+  });
 
   // to enable zombie debugging, uncomment this line
   // browser.debug();
@@ -58,7 +60,7 @@ describe('User visits addin', function () {
       .fill('Password', mocks.login.password)
       .fill('Database', mocks.login.database)
       .fill('Server', mockServer)
-      .pressButton('Login', done);
+      .clickLink('Login', done);
   });
 
   <% if (isDriveAddin) { %>
@@ -66,7 +68,7 @@ describe('User visits addin', function () {
   before(function (done) {
     browser
       .selectOption('option[value="' + mocks.device.id + '"]')
-      .pressButton('#okBtn', done);
+      .clickLink('#okBtn', done);
   });
   <% } %>
 
@@ -75,7 +77,7 @@ describe('User visits addin', function () {
   });
 
   describe('Show addin content after initialized and focus is called', function () {
-    it('should display date select control', function () {
+    it('should display root div', function () {
       browser.assert.style('#<%= root %>', 'display', '');
     });
   });

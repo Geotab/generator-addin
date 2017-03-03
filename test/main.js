@@ -4,10 +4,11 @@ var assert = require('yeoman-assert');
 var helpers = require('yeoman-test');
 var fs = require('fs');
 
-describe('generator-addin:main.js', function () {
+describe('generator-addin:page main.js', function () {
   var props = {
-    name: 'my addin'
-  }, js;
+      name: 'my addin'
+    },
+    js;
 
   before(function (done) {
     helpers.run(path.join(__dirname, '../generators/app'))
@@ -22,5 +23,25 @@ describe('generator-addin:main.js', function () {
   });
   it('has correct root identifier', function () {
     assert.equal(true, js.indexOf('#myAddin') > -1);
+  });
+});
+
+describe('generator-addin:button myAddin.js', function () {
+  var props = {
+      name: 'my addin',
+      type: 'MyGeotabButton'
+    },
+    js;
+
+  before(function (done) {
+    helpers.run(path.join(__dirname, '../generators/app'))
+      .withPrompts(props)
+      .on('end', function () {
+        js = fs.readFileSync('app/scripts/myAddin.js', 'utf8');
+        done();
+      });
+  });
+  it('has correct name space', function () {
+    assert.equal(true, js.indexOf('geotab.customButtons.myAddin') > -1);
   });
 });
