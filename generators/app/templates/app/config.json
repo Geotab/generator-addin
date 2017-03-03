@@ -5,7 +5,7 @@
   "items": [{
     <% if (isButton) { %>
     "page": "<%= page %>",
-    "click": "<%= url %>",
+    "click": "scripts/<%= url %>",
     "buttonName": {
       "en": "<%= menuName %>"
     },

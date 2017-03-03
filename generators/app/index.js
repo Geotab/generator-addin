@@ -185,7 +185,8 @@ module.exports = yeoman.Base.extend({
         this.destinationPath('gulpfile.babel.js'), {
           date: new Date().toISOString().split('T')[0],
           name: this.pkg.name,
-          version: this.pkg.version
+          version: this.pkg.version,
+          isButton: this.props.isButton,
         }
       );
     },
@@ -264,8 +265,8 @@ module.exports = yeoman.Base.extend({
     scripts: function () {
       if (this.props.isButton) {
         this.fs.copyTpl(
-          this.templatePath('app/button.js'),
-          this.destinationPath('app/' + this.props.camelName + '.js'), {
+          this.templatePath('app/scripts/button.js'),
+          this.destinationPath('app/scripts/' + this.props.camelName + '.js'), {
             root: this.props.camelName
           }
         );

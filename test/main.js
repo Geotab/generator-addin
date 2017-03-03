@@ -37,7 +37,7 @@ describe('generator-addin:button myAddin.js', function () {
     helpers.run(path.join(__dirname, '../generators/app'))
       .withPrompts(props)
       .on('end', function () {
-        js = fs.readFileSync('app/myAddin.js', 'utf8');
+        js = fs.readFileSync('app/scripts/myAddin.js', 'utf8');
         done();
       });
   });

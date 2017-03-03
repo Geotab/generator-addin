@@ -50,7 +50,7 @@ describe('generator-addin:button', function () {
   it('creates files for add-in button', function () {
     assert.file(commonFiles.concat([
       '.dev/button.html',
-      'app/myAddin.js'
+      'app/scripts/myAddin.js'
     ]));
   });
 });

@@ -73,7 +73,7 @@ describe('generator-addin:button config.json', function () {
     assert.equal(config.supportEmail, props.supportEmail);
   });
   it('has correct click', function () {
-    assert.equal(config.items[0].click, 'myAddin.js');
+    assert.equal(config.items[0].click, 'scripts/myAddin.js');
   });
   it('has correct button name', function () {
     assert.equal(config.items[0].buttonName.en, props.menuName);

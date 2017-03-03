@@ -85,11 +85,15 @@ gulp.task('json', () => {
 
 gulp.task('html', ['styles', 'scripts'], () => {
   var options = JSON.parse(fs.readFileSync('./app/config.json')).dev;
+  <% if (isButton) { %>
+  return gulp.src(['.tmp/**/*'])
+  <% } else { %>
   return gulp.src('app/*.html')
     .pipe($.useref({
       searchPath: ['.tmp', 'app', '.']
     }))
-    .pipe($.if('*.js', $.uglify()))
+  <% } %>
+  .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', $.cssSandbox('#' + options.root)))
     .pipe($.if('*.css', $.cssnano()))
     // convert relative urls to absolute
@@ -153,7 +157,9 @@ let mockAddinHost = sourceDir => {
 
     if (parsed.pathname === '/' || parsed.pathname.indexOf(config.dev.root + '.html') > -1) {
       if (isButton) {
-        htmlSource = fs.readFileSync('.dev/button.html', 'utf8').replace('{icon}', `style="background-image: url(${config.items[0].icon})"` || '');
+        htmlSource = fs.readFileSync('.dev/button.html', 'utf8')
+          .replace('{click}', config.items[0].click || '')
+          .replace('{icon}', `style="background-image: url(${config.items[0].icon})"` || '');
       } else {
         htmlSource = fs.readFileSync(parsed.pathname === '/' ? `${sourceDir}/${config.dev.root}.html` : parsed.pathname, 'utf8');
       }
