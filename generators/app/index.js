@@ -99,23 +99,35 @@ module.exports = yeoman.Base.extend({
         name: 'Vehicles',
         value: 'devices'
       }, {
-        name: 'Vehicle Edit',
+        name: 'Vehicle Add/Edit',
         value: 'device'
       }, {
         name: 'Zones',
         value: 'zones'
       }, {
+        name: 'Zone Add/Edit',
+        value: 'zones'
+      }, {
         name: 'Users',
         value: 'users'
       }, {
+        name: 'User Add/Edit',
+        value: 'user'
+      }, {
         name: 'Rules',
         value: 'rules'
+      }, {
+        name: 'Rule Add/Edit',
+        value: 'rule'
       }, {
         name: 'Exceptions',
         value: 'exceptions'
       }, {
         name: 'Custom Reports',
         value: 'customReports'
+      }, {
+        name: 'Custom Report Edit',
+        value: 'customReport'
       }, {
         name: 'Engine Faults',
         value: 'engineFaults'
@@ -125,6 +137,9 @@ module.exports = yeoman.Base.extend({
       }, {
         name: 'Duty Status Logs',
         value: 'hosLogs'
+      }, {
+        name: 'HOS Log Add/Edit',
+        value: 'hosLog'
       }, {
         name: 'Groups',
         value: 'groupsTree'
