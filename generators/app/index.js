@@ -199,7 +199,8 @@ module.exports = yeoman.Base.extend({
         this.templatePath('gulpfile.babel.js'),
         this.destinationPath('gulpfile.babel.js'), {
           date: new Date().toISOString().split('T')[0],
-          name: this.pkg.name,
+          name: this.props.camelName,
+          pkgname: this.pkg.name,
           version: this.pkg.version,
           isButton: this.props.isButton,
         }
