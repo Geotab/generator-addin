@@ -69,7 +69,7 @@ var GeotabApi = function (getCredentialsCallback, newOptions, customCredentialSt
      */
     handleError = function (error, errorCallback) {
       var errorString;
-      if (error.errors.length > 0) {
+      if (error.errors && error.errors.length > 0) {
         error = error.errors[0];
       }
       if (error && error.name && error.message) {
@@ -92,7 +92,7 @@ var GeotabApi = function (getCredentialsCallback, newOptions, customCredentialSt
      */
     getCallUrl = function (method) {
       var thisServer = server.replace(/\S*:\/\//, '').replace(/\/$/, '');
-      return 'https://' + thisServer + '/apiv1' + (method ? '/' + method : '');
+      return location.protocol + '//' + thisServer + '/apiv1' + (method ? '/' + method : '');
     },
     /**
      *  Cleans up the call with the given unique ID
