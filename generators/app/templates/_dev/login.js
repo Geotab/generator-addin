@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var elDevicesOkBtn = elDeviceDialog.querySelector('#okBtn');
   var elLogoutBtn = document.querySelector('#logoutBtn');
   var elAddinButton = document.querySelector('.customButton');
+  var elNightModeToggle = document.querySelector('#nightMode');
 
   var injectStyles = function () {
     var styleSheets = ['../bower_components/dialog-polyfill/dialog-polyfill.css'];
@@ -178,6 +179,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
 
+    if (isDriveAddin) {
+      elNightModeToggle.addEventListener('click', evt => {
+        const NightMode = "nightMode";
+        let app = document.querySelector('#app');
+        let body = document.body;
+
+        if (elNightModeToggle.checked) {
+          app.classList.add(NightMode);
+          body.classList.add(NightMode);
+        } else {
+          app.classList.remove(NightMode);
+          body.classList.remove(NightMode);
+        }
+      });
+    }
       // mock state
       state = {
         getState: function () {

@@ -171,7 +171,13 @@ let mockAddinHost = sourceDir => {
 
       pos = htmlSource.indexOf(body);
       if (pos > -1) {
-        htmlSource = htmlSource.substring(0, pos + body.length) + fs.readFileSync('.dev/login.html', 'utf8') + htmlSource.substring(pos + body.length);
+        let source = htmlSource.substring(0, pos + body.length) + fs.readFileSync('.dev/login.html', 'utf8')
+        if (isDriveAddin) {
+            source += `<div id="app">${htmlSource.substring(pos + body.length)}</div>`;
+        } else {
+            source += htmlSource.substring(pos + body.length);
+        }
+        htmlSource = source;
       }
 
       res.end(htmlSource);

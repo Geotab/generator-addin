@@ -1,7 +1,7 @@
 <% if (isDriveAddin) { %>
-  <link rel="stylesheet" href="https://my.geotab.com/drive/app/css/geotabdrive.less">
+  <link rel="stylesheet" href="https://my112.geotab.com/drive/app/css/geotabdrive.less">
 <% } else { %>
-  <link rel="stylesheet" href="https://my.geotab.com/geotab/checkmate/app.less?skin=my_geotab">
+  <link rel="stylesheet" href="https://my112.geotab.com/geotab/checkmate/app.less?skin=my_geotab">
 <% } %>
 <style>
 body {
@@ -9,8 +9,16 @@ body {
       width: initial;
   }
 
+  body.nightMode {
+    background: #515964;
+  }
+
   body>div {
       margin: 1em;
+  }
+
+  #app {
+      width: initial;
   }
 
   .dev-dialog {
@@ -71,6 +79,11 @@ body {
       padding: 6px 10px 4px;
   }
 
+  .dev-toggle {
+    flex: auto;
+    padding: 12px 10px;
+  }
+
   .dev-form {
     flex-direction: column;
     flax-wrap: wrap;
@@ -99,7 +112,11 @@ body {
   }
 </style>
 <header class="dev-header">
-  <% if (!isDriveAddin) { %>
+  <% if (isDriveAddin) { %>
+    <label class="dev-toggle">Night-Mode
+        <input type="checkbox" id="nightMode" />
+    </label>
+  <% } else { %>
     <a target="_blank" href="../.dev/style/styleGuideMyGeotab.html" class="dev-button">Style Guide</a>
   <% } %>
     <a id="logoutBtn" class="dev-button">Logout</a>

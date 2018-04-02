@@ -35,11 +35,11 @@
 
   <div id="<%= root %>" <% if (!isButton) { %>class="hidden"<% } %>>
     <% if (isDriveAddin) { %>
-      <section class="panel">
+      <div class="panel">
         <h2 class="panel__title"><%= title %></h2>
         <p>Driver: <span id="<%= root %>-driver"></span></p>
         <p>Vehicle: <span id="<%= root %>-vehicle"></span></p>
-      </section>
+      </div>
     <% } else if (isButton) { %>
       <div class="checkmateFormPage">
           <div class="checkmateToolbarContainer">
