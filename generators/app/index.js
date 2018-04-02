@@ -179,7 +179,7 @@ module.exports = yeoman.Base.extend({
         case 'DrivePage':
           nextPrompts = [MyGeotabPagePrompts[1]];
           props.isDriveAddin = true;
-          props.path === 'DriveAppLink/'
+          props.path = 'DriveAppLink/'
           break;
       }
 
