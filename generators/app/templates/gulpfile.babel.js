@@ -95,7 +95,7 @@ gulp.task('html', ['styles', 'scripts'], () => {
   <% } %>
   .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', $.cssSandbox('#' + options.root)))
-    .pipe($.if('*.css', $.cssnano()))
+    .pipe($.if('*.css', $.cssnano({zindex: false})))
     // convert relative urls to absolute
     .pipe($.if('*.html', $.cdnizer({
       defaultCDNBase: options.dist.host,
