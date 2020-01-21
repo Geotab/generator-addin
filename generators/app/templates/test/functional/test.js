@@ -84,17 +84,15 @@ describe('User visits addin', () => {
         await page.click('#loginBtn');
     });
 
-    // Tests
-
     // Confirm page has loaded
     it('should be loaded', async () => {
         await page.waitFor('html', {
             visible: true
         });      
-   });
+    });
   
    // Confirm page displaying after initialized and focus is called
-   it('should display root div', async () => {
+    it('should display root div', async () => {
         await page.waitFor('#<%= root %>', {
             visible: true
         });   
@@ -113,5 +111,5 @@ describe('User visits addin', () => {
                 .click('option[value="' + mocks.device.id + '"]')
                 .click('#okBtn');
         });
-  <% } %>
+    <% } %>
 });
