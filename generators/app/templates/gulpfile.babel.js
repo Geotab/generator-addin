@@ -246,6 +246,7 @@ gulp.task('test', gulp.series('styles', 'scripts', 'fonts', (done) => {
       middleware: mockAddinHost('app')
     }
   });
+  done();
   return gulp
     .src('test/**/*.js', {
       read: false
@@ -262,7 +263,6 @@ gulp.task('test', gulp.series('styles', 'scripts', 'fonts', (done) => {
       browserSync.exit();
       process.exit();
     });
-    done();
 }));
 
 // inject bower components
