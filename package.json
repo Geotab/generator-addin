@@ -27,6 +27,7 @@
     "yosay": "^1.0.2"
   },
   "devDependencies": {
+    "gulp": "^4.0.2",
     "mocha": "^2.4.5",
     "yeoman-assert": "^2.0.0",
     "yeoman-test": "^1.0.0"
