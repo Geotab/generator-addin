@@ -12,7 +12,7 @@ Leverage modern package managers.
 ### Local Debugging
 
 - Run and debug the add-in localy without having to add to test database. MyGeotabApi mocks the API object passes to add-in to make requests to you test database.
-- Mock state - Drive add-in will try to use HTML5 features to mock Andoid/IOS device features (ex. Geoloaction)
+- Mock state - Drive add-in will try to use HTML5 features to mock Andoid/IOS device features (ex. Geolocation)
 - Automagically lint your scripts
 - Built-in preview server with BrowserSync
 - The gulpfile makes use of [ES2015 features](https://babeljs.io/docs/learn-es2015/) by using [Babel](https://babeljs.io)
@@ -27,7 +27,7 @@ Leverage modern package managers.
 ### Unit testing
 
 - Spec testing with [Mocha](https://mochajs.org/) and [Chai](http://chaijs.com/)
-- Functional testing with [Zombie.js](http://zombie.js.org/)
+- Functional testing with [Puppeteer](https://pptr.dev/)
 
 ## Getting Started
 
