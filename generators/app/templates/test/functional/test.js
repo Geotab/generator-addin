@@ -75,7 +75,15 @@ describe('User visits addin', () => {
         });
 
         // Login
-        await page.goto('http://localhost:9000/'); 
+        await page.goto('http://localhost:9000/');
+        let loggedIn = await page.evaluate( () => {
+            let dialogWindow = document.getElementById("loginDialog");
+            return (dialogWindow.style.display = "none" ? true : false);
+
+        })
+        if(loggedIn){
+            await page.click("#logoutBtn");
+        }
         await page.waitFor('#loginDialog');
         await page.type('#email', mocks.login.userName);
         await page.type('#password', mocks.login.password);
@@ -103,8 +111,8 @@ describe('User visits addin', () => {
         await browser.close();
     });
 
-    // Optional setup for Drive apps -> Selecting the device used
     <% if (isDriveAddin) { %>
+        // Optional setup for Drive apps -> Selecting the device used
         // select a device (only part of local add-in debugging)
         before(done => {
             browser
