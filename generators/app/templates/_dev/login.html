@@ -21,6 +21,20 @@ body {
       width: initial;
   }
 
+  #hiddenMenu {
+      position: absolute;
+      display: none;
+      top: 0;
+      left: 249px;
+      min-width: 200px;
+      height: auto;
+  }
+
+  .geotabIcons_chevron {
+       background-image: url("../.dev/images/Font_Awesome_5_solid_chevron-left.svg");
+       background-repeat: no-repeat;
+  }
+
   .dev-dialog {
     <% if (isDriveAddin) { %>
       font-size: 1.5rem;
@@ -86,7 +100,7 @@ body {
 
   .dev-form {
     flex-direction: column;
-    flax-wrap: wrap;
+    flex-wrap: wrap;
     justify-content: flex-end;
     display: flex;
   }
@@ -110,6 +124,10 @@ body {
       display: block;
       margin: 0.5em 0;
   }
+
+  .geotabIcons_<%= root %> {
+    background-image: url("./images/icon.svg");
+  } 
 </style>
 <header class="dev-header">
   <% if (isDriveAddin) { %>
@@ -121,6 +139,38 @@ body {
   <% } %>
     <a id="logoutBtn" class="dev-button">Logout</a>
 </header>
+
+<% if (!isDriveAddin && !isButton) { %>
+    <nav id="menuId" class="westPane shadowedRight animated" style="top: 40px;">
+            <div class="mainMenuSearchBar">
+                <div class="mainMenuSearch">
+                    <button id="menuToggle" class="mainMenuSearchButton">
+                        <svg class="svgIcon geotabIcons_chevron" style="height: 30px; width: 30px;"></svg>
+                    </button>
+                    <div class="mainMenuSearchLogo">
+                        <div class="mainMenuCompanyLogo"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="navigationContainer">
+                <div id="navigationId" class="shadowedRight scrollHost touchScrollClass hardwareAccelerationClass" tabindex="-1">
+                    <ul id="navBase" class="mainMenu" role="menu">
+                        <li class="mainMenuHeader">
+                            <a id="toggleBtn" class="dev-button">Toggle Addin Status</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="hiddenMenu" class="mainMenu mainMenuPopup">
+                <ul class="mainMenuSubMenu">
+                    <li class="mainMenuOption">
+                        <a class ="mainMenuLink" href="#"></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+<% } %>
+
 <dialog id="loginDialog" class="dev-dialog">
     <form class="dev-form">
         <div class="line">
@@ -161,4 +211,7 @@ body {
 <script src="../.dev/api.js"></script>
 <script src="../.dev/rison.js"></script>
 <script src="../bower_components/dialog-polyfill/dialog-polyfill.js"></script>
+<script src="../.dev/props.js"></script>
+<script src="../.dev/NavFactory.js"></script>
+<script src="../.dev/navigation.js"></script>
 <script src="../.dev/login.js"></script>
