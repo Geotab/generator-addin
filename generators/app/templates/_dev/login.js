@@ -311,6 +311,8 @@ document.addEventListener('DOMContentLoaded', function () {
   // Creating Navigation Handler -> Creates faux navbar for testing purposes
   let navHandler = new NavHandler(api, state);
   navHandler.generateContent();
-  navHandler.listenToHash();
+  navHandler.enableDisplayToggle();
+  // Disabled because no props to call on
+  // navHandler.listenToHash();
   <% } %>
 });

@@ -109,7 +109,7 @@ class NavHandler {
             navHTML += navFact.closeMainHeader();
             headerCount++;
         });
-        navBase.innerHTML = navHTML;
+        navBase.innerHTML = navBase.innerHTML += navHTML;
 
         // Referencing the new navbar
         let navigationBar         = document.getElementById("menuId");
@@ -153,6 +153,22 @@ class NavHandler {
                 self.clickHandler(event, this, menuHeaders, floatingMenu, navigationBarExtended);
             });
         }   
+    }
+
+    /**
+     * Toggles the development addin
+     * allows user to see any processes that take place when the addin is blurred/focused
+     */
+    enableDisplayToggle(){
+        let displayToggle = document.getElementById("toggleBtn");
+        displayToggle.addEventListener("click", () => {
+            if(this.focus){
+                geotab.addin.<%= root%>.blur();
+            } else {
+                geotab.addin.<%= root%>.focus(this.api, this.state);
+            }
+            this.focus = !this.focus;
+        });
     }
     
     /**

@@ -2,6 +2,7 @@
  * Props item - Houses all the navbar items and submenu items
  */
 const props = [
+    <% if (path == "GettingStartedLink/") { %>
     {
        name: "help", //Used in css and js reference
        labelText: "Getting Started &amp; Help", // Displayed to user
@@ -15,130 +16,136 @@ const props = [
                name: "mainMenuForum",
                labelText: "Geotab Community"
            },
-           <% if (path == "GettingStartedLink/") { %>
             {
                 name: "<%= root %>",
                 labelText: "<%= label %>"
             }
-            <% } %>
-       ]
+        ]
     },
-    {
-        name: "map",
-        labelText: "Map",
-        hasSubmenu: false,
-        submenuItems: []
-     },
-     {
-         name: "vehicle",
-         labelText: "Vehicles",
-         hasSubmenu: false,
-         submenuItems: []
-     },
+    <% } %>
+    // {
+    //     name: "map",
+    //     labelText: "Map",
+    //     hasSubmenu: false,
+    //     submenuItems: []
+    // },
+    // {
+    //     name: "vehicle",
+    //     labelText: "Vehicles",
+    //     hasSubmenu: false,
+    //     submenuItems: []
+    // },
+    <% if (path == "ActivityLink/") { %>
      {
          name: "activity",
          labelText: "Activity",
          hasSubmenu: true,
          submenuItems: [
-             {
-                 name: "mainMenuRisk",
-                 labelText: "Risk Management"
-             },
-             {
-                 name:"collision",
-                 labelText: "Collision Reconstruction"
-             },<% if (path == "ActivityLink/") { %>
-                {
-                    name: "<%= root %>",
-                    labelText: "<%= label %>"
-                }<% } %>
-         ]
-     },
-     {
-        name: "engine",
-        labelText: "Engine &amp; Maintenance",
-        hasSubmenu: true,
-        submenuItems: [
-            {
-                name: "mainMenuTrends",
-                labelText: "Fuel and EV Energy Usage"
-            },
-            <% if (path == "EngineMaintenanceLink/") { %>
+            //  {
+            //      name: "mainMenuRisk",
+            //      labelText: "Risk Management"
+            //  },
+            //  {
+            //      name:"collision",
+            //      labelText: "Collision Reconstruction"
+            //  },
                 {
                     name: "<%= root %>",
                     labelText: "<%= label %>"
                 }
-            <% } %>
-        ]
-     },
+            ]
+    },
+    <% } %>
+    <% if (path == "EngineMaintenanceLink/") { %>
+    {
+        name: "engine",
+        labelText: "Engine &amp; Maintenance",
+        hasSubmenu: true,
+        submenuItems: [
+            // {
+            //     name: "mainMenuTrends",
+            //     labelText: "Fuel and EV Energy Usage"
+            // },
+                {
+                    name: "<%= root %>",
+                    labelText: "<%= label %>"
+                }
+            ]
+        },
+        <% } %>
+    <% if (path == "ZoneAndMessagesLink/") { %>
      {
          name: "zone",
          labelText: "Zones &amp; Messages",
          hasSubmenu: true,
          submenuItems: [
-             {
-                 name: "zone",
-                 labelText: "Zones"
-             },
-             {
-                 name: "zoneImport",
-                 labelText: "Import Zones"
-             },
-             {
-                 name: "mainMenuGpsMessage",
-                 labelText: "Messages"
-             },<% if (path == "ZoneAndMessagesLink/") { %>
+            //  {
+            //      name: "zone",
+            //      labelText: "Zones"
+            //  },
+            //  {
+            //      name: "zoneImport",
+            //      labelText: "Import Zones"
+            //  },
+            //  {
+            //      name: "mainMenuGpsMessage",
+            //      labelText: "Messages"
+            //  },
                 {
                     name: "<%= root %>",
                     labelText: "<%= label %>"
-                }<% } %>
-         ]
-     },
+                }
+            ]
+        },
+    <% } %>
+    <% if (path == "RuleAndGroupsLink/") { %>
      {
         name: "rule",
         labelText: "Rules &amp; Groups",
         hasSubmenu: true,
         submenuItems: [
-            {
-                name: "rules",
-                labelText: "Rules"
-            },
-            {
-                name: "rule",
-                labelText: "Exceptions"
-            },
-            {
-                name: "mainMenuGroup",
-                labelText: "Groups"
-            },<% if (path == "RuleAndGroupsLink/") { %>
+            // {
+            //     name: "rules",
+            //     labelText: "Rules"
+            // },
+            // {
+            //     name: "rule",
+            //     labelText: "Exceptions"
+            // },
+            // {
+            //     name: "mainMenuGroup",
+            //     labelText: "Groups"
+            // },
             {
                 name: "<%= root %>",
                 labelText: "<%= label %>"
-            }<% } %>
+            }
         ]
-     },
+    },
+    <% } %>
+    <% if (path == "AdministrationLink/") { %>
      {
         name: "administration",
         labelText: "Administration",
         hasSubmenu: true,
         submenuItems: [
-            {
-                name: "users",
-                labelText: "Users"
-            },
-            <% if (path == "AdministrationLink/") { %>
+            // {
+            //     name: "users",
+            //     labelText: "Users"
+            // },
                 {
                     name: "<%= root %>",
                     labelText: "<%= label %>"
                 }
-            <% } %>
-        ]
-     },
+            ]
+        },
+    <% } %>
      <% if (path == ""){ %>
      {
         name: "<%= root %>",
         labelText: "<%= label %>",
         hasSubmenu: false,
         submenuItems: []
-     }<% } %>
+     }
+     <% } %>
 ];
