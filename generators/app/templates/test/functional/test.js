@@ -4,7 +4,9 @@ const assert = require('chai').assert;
 
 // JSON-RPC helpers
 const rpcRequest = body => {
-    return JSON.parse(body['JSON-RPC']);
+    let decodedBody = decodeURIComponent(body);
+    let json = decodedBody.replace('JSON-RPC=', '');
+    return JSON.parse(json);
 };
 
 const rpcResponse = (response, err) => {
