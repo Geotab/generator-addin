@@ -2,5 +2,3 @@ language: node_js
 node_js:
   - lts/*
   - v6
-  - v5
-  - v4
