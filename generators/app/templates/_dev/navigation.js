@@ -10,6 +10,7 @@ class NavHandler {
     constructor(api, state){
         this.api = api;
         this.state = state;
+        this.focus = true;
     }
 
     /**
@@ -163,8 +164,10 @@ class NavHandler {
         let displayToggle = document.getElementById("toggleBtn");
         displayToggle.addEventListener("click", () => {
             if(this.focus){
+                displayToggle.innerHTML = "Focus add-in";
                 geotab.addin.<%= root%>.blur();
             } else {
+                displayToggle.innerHTML = "Blur add-in";
                 geotab.addin.<%= root%>.focus(this.api, this.state);
             }
             this.focus = !this.focus;
