@@ -312,7 +312,5 @@ document.addEventListener('DOMContentLoaded', function () {
   let navHandler = new NavHandler(api, state);
   navHandler.generateContent();
   navHandler.enableDisplayToggle();
-  // Disabled because no props to call on
-  // navHandler.listenToHash();
   <% } %>
 });
