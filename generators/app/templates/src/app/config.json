@@ -1,0 +1,24 @@
+{
+  "name": "<%= title %>",
+  "supportEmail": "<%= supportEmail %>",
+  "version": "0.0.1",
+  "items": [{<% if (isButton) { %>
+    "page": "<%= page %>",
+    "click": "scripts/<%= url %>",
+    "buttonName": {
+      "en": "<%= menuName %>"
+    },<% } else { %>
+    "url": "<%= url %>",
+    "path": "<%= path %>",
+    "menuName": {
+      "en": "<%= menuName %>"
+    },<% } %>
+    "icon": "images/icon.svg"
+  }],
+  "dev": {
+    "root": "<%= root %>",
+    "dist": {
+      "host": "<%= host %>"
+    }
+  }
+}
