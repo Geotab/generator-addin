@@ -4,6 +4,7 @@
   <link rel="stylesheet" href="https://my112.geotab.com/geotab/checkmate/app.less?skin=my_geotab">
 <% } %>
 <style>
+
 body {
       height: initial;
       width: initial;
@@ -17,6 +18,9 @@ body {
       margin: 1em;
   }
 
+  button:focus, #navigationId:focus {
+      outline: none;
+  }
   #app {
       width: initial;
   }
@@ -31,8 +35,11 @@ body {
   }
 
   .geotabIcons_chevron {
-       background-image: url("../.dev/images/Font_Awesome_5_solid_chevron-left.svg");
-       background-repeat: no-repeat;
+      mask-image: url(../.dev/images/Font_Awesome_5_solid_chevron-left.svg);
+      mask-repeat: no-repeat;
+      -webkit-mask-image: url(../.dev/images/Font_Awesome_5_solid_chevron-left.svg);
+      -webkit-mask-repeat: no-repeat;
+      background-color: #25477b;
   }
 
   .dev-dialog {
