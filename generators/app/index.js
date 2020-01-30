@@ -194,10 +194,10 @@ module.exports = yeoman.Base.extend({
   },
 
   writing: {
-    gulpfile: function () {
+    webpack: function () {
       this.fs.copyTpl(
-        this.templatePath('gulpfile.babel.js'),
-        this.destinationPath('gulpfile.babel.js'), {
+        this.templatePath('webpack.config.js'),
+        this.destinationPath('webpack.config.js'), {
           date: new Date().toISOString().split('T')[0],
           name: this.props.camelName,
           pkgname: this.pkg.name,
@@ -216,13 +216,6 @@ module.exports = yeoman.Base.extend({
       );
     },
 
-    babel: function () {
-      this.fs.copy(
-        this.templatePath('babelrc'),
-        this.destinationPath('.babelrc')
-      );
-    },
-
     git: function () {
       this.fs.copy(
         this.templatePath('gitignore'),
@@ -233,22 +226,8 @@ module.exports = yeoman.Base.extend({
         this.destinationPath('.gitattributes'));
     },
 
-    bower: function () {
-      this.fs.copyTpl(
-        this.templatePath('_bower.json'),
-        this.destinationPath('bower.json'), {
-          name: this.props.camelName.toLowerCase()
-        }
-      );
-
-      this.fs.copy(
-        this.templatePath('bowerrc'),
-        this.destinationPath('.bowerrc')
-      );
-    },
-
     index: function () {
-      var indexLocation = this.props.isButton ? '.dev/button.html' : `app/${this.props.camelName}.html`;
+      var indexLocation = this.props.isButton ? 'src/dev/button.html' : `src/app/${this.props.camelName}.html`;
       this.fs.copyTpl(
         this.templatePath('app/addin.html'),
         this.destinationPath(indexLocation), {
@@ -263,8 +242,8 @@ module.exports = yeoman.Base.extend({
 
     config: function () {
       this.fs.copyTpl(
-        this.templatePath('app/config.json'),
-        this.destinationPath('app/config.json'), {
+        this.templatePath('src/app/config.json'),
+        this.destinationPath('src/app/config.json'), {
           title: this.props.name,
           supportEmail: this.props.supportEmail,
           url: this.props.camelName + (this.props.isButton ? '.js' : '.html'),
@@ -281,15 +260,15 @@ module.exports = yeoman.Base.extend({
     scripts: function () {
       if (this.props.isButton) {
         this.fs.copyTpl(
-          this.templatePath('app/scripts/button.js'),
-          this.destinationPath('app/scripts/' + this.props.camelName + '.js'), {
+          this.templatePath('src/app/scripts/button.js'),
+          this.destinationPath('src/app/scripts/' + this.props.camelName + '.js'), {
             root: this.props.camelName
           }
         );
       } else {
         this.fs.copyTpl(
-          this.templatePath('app/scripts/main.js'),
-          this.destinationPath('app/scripts/main.js'), {
+          this.templatePath('src/app/scripts/main.js'),
+          this.destinationPath('src/app/scripts/main.js'), {
             root: this.props.camelName,
             isDriveAddin: this.props.isDriveAddin
           }
@@ -300,16 +279,16 @@ module.exports = yeoman.Base.extend({
     css: function () {
       if (!this.props.isButton) {
         this.fs.copy(
-          this.templatePath('app/styles/main.css'),
-          this.destinationPath('app/styles/main.css')
+          this.templatePath('src/app/styles/main.css'),
+          this.destinationPath('src/app/styles/main.css')
         );
       }
     },
 
     icon: function () {
       this.fs.copy(
-        this.templatePath('app/images/icon.svg'),
-        this.destinationPath('app/images/icon.svg')
+        this.templatePath('src/app/images/icon.svg'),
+        this.destinationPath('src/app/images/icon.svg')
       );
     },
 
@@ -329,14 +308,34 @@ module.exports = yeoman.Base.extend({
     },
 
     dev: function () {
+      // Base
       this.fs.copy(
-        this.templatePath('_dev/api.js'),
-        this.destinationPath('.dev/api.js')
+        this.templatePath('src/dev/api.js'),
+        this.destinationPath('src/dev/api.js')
+      );
+
+      this.fs.copy(
+        this.templatePath('src/dev/rison.js'),
+        this.destinationPath('src/dev/rison.js')
       );
 
       this.fs.copyTpl(
-        this.templatePath('_dev/login.html'),
-        this.destinationPath('.dev/login.html'), {
+        this.templatePath('src/dev/index.js'),
+        this.destinationPath('src/dev/index.js'), {
+          isButton: this.props.isButton,
+          isDriveAddin: this.props.isDriveAddin
+        }
+      );
+
+      this.fs.copy(
+        this.templatePath('src/dev/state.js'),
+        this.destinationPath('src/dev/state.js')
+      );
+
+      // Login
+      this.fs.copyTpl(
+        this.templatePath('src/dev/login/loginTemplate.js'),
+        this.destinationPath('src/dev/login/loginTemplate.js'), {
           isDriveAddin: this.props.isDriveAddin,
           isButton: this.props.isButton,
           root: this.props.camelName
@@ -344,52 +343,70 @@ module.exports = yeoman.Base.extend({
       );
 
       this.fs.copyTpl(
-        this.templatePath('_dev/login.js'),
-        this.destinationPath('.dev/login.js'), {
+        this.templatePath('src/dev/login/loginLogic.js'),
+        this.destinationPath('src/dev/login/loginLogic.js'), {
           isButton: this.props.isButton,
           isDriveAddin: this.props.isDriveAddin
         }
       );
 
+      if(!this.props.isButton && !this.props.isDriveAddin){
+        // Navbar      
+        this.fs.copyTpl(
+          this.templatePath('src/dev/navbar/navbar.js'),
+          this.destinationPath('src/dev/navbar/navbar.js'), {
+            root: this.props.camelName,
+          }
+        );
+  
+        this.fs.copyTpl(
+          this.templatePath('src/dev/navbar/NavBuilder.js'),
+          this.destinationPath('src/dev/navbar/NavBuilder.js'), {
+            root: this.props.camelName,
+            isButton: this.props.isButton
+          }
+        );
+  
+        this.fs.copyTpl(
+          this.templatePath('src/dev/navbar/NavFactory.js'),
+          this.destinationPath('src/dev/navbar/NavFactory.js'), {
+            root: this.props.camelName,
+            isButton: this.props.isButton
+          }
+        );
+  
+        this.fs.copyTpl(
+          this.templatePath('src/dev/navbar/NavHandler.js'),
+          this.destinationPath('src/dev/navbar/NavHandler.js'), {
+            root: this.props.camelName,
+            isButton: this.props.isButton
+          }
+        );
+  
+        this.fs.copyTpl(
+          this.templatePath('src/dev/navbar/props.js'),
+          this.destinationPath('src/dev/navbar/props.js'), {
+            path: this.props.path,
+            root: this.props.camelName,
+            label: this.props.menuName
+          }
+        );
+      }
+
+      // Other
       this.fs.copy(
-        this.templatePath('_dev/NavFactory.js'),
-        this.destinationPath('.dev/NavFactory.js')
-      );
-      
-      this.fs.copyTpl(
-        this.templatePath('_dev/navigation.js'),
-        this.destinationPath('.dev/navigation.js'), {
-          root: this.props.camelName
-        }
+        this.templatePath('src/dev/images/Font_Awesome_5_solid_chevron-left.svg'),
+        this.destinationPath('src/dev/images/Font_Awesome_5_solid_chevron-left.svg')
       );
 
-      this.fs.copyTpl(
-        this.templatePath('_dev/props.js'),
-        this.destinationPath('.dev/props.js'), {
-          path: this.props.path,
-          root: this.props.camelName,
-          label: this.props.menuName
-        }
+      this.fs.copy(
+        this.templatePath('src/dev/styles/styleGuide.css'),
+        this.destinationPath('src/dev/styles/styleGuide.css')
       );
 
       this.fs.copy(
-        this.templatePath('_dev/rison.js'),
-        this.destinationPath('.dev/rison.js')
-      );
-
-      this.fs.copy(
-        this.templatePath('_dev/images/Font_Awesome_5_solid_chevron-left.svg'),
-        this.destinationPath('.dev/images/Font_Awesome_5_solid_chevron-left.svg')
-      );
-
-      this.fs.copy(
-        this.templatePath('_dev/style/styleGuide.css'),
-        this.destinationPath('.dev/style/styleGuide.css')
-      );
-
-      this.fs.copy(
-        this.templatePath('_dev/style/styleGuideMyGeotab.html'),
-        this.destinationPath('.dev/style/styleGuideMyGeotab.html')
+        this.templatePath('src/dev/styles/styleGuideMyGeotab.html'),
+        this.destinationPath('src/dev/styles/styleGuideMyGeotab.html')
       );
     }
   },
