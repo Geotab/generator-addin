@@ -4,7 +4,9 @@ const assert = require('chai').assert;
 
 // JSON-RPC helpers
 const rpcRequest = body => {
-    return JSON.parse(body['JSON-RPC']);
+    let decodedBody = decodeURIComponent(body);
+    let json = decodedBody.replace('JSON-RPC=', '');
+    return JSON.parse(json);
 };
 
 const rpcResponse = (response, err) => {
@@ -22,12 +24,6 @@ const opts = {
     timeout: 10000
 };
 
-// Mocks
-const mockServer = mocks.server;
-const responseHeaders = {
-    'Access-Control-Allow-Origin': '*'
-};
-
 // test
 describe('User visits addin', () => {
 
@@ -37,14 +33,13 @@ describe('User visits addin', () => {
     // Open Page
     before(async () => {
         browser = await puppeteer.launch(opts);
-        const context = browser.defaultBrowserContext();
         page = await browser.newPage();
         // Allowing puppeteer access to the request - needed for mocks
         await page.setRequestInterception(true);
 
         // Setup mocks
         await page.on('request', request => {
-            if (request.url() === `https://${mocks.server}/apiv1`) {
+            if (request.url() === `http://${mocks.server}/apiv1`) {
 
                 let rpcBody = rpcRequest(request.postData());
                 let payload = '';
