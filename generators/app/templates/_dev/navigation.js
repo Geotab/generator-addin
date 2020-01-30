@@ -132,6 +132,16 @@ class NavHandler {
                 centerPane.style.left = "50px";
                 chevronIcon.style.transform = "rotate(180deg)";
             }
+            
+            // Closing the floating menu
+            floatingMenu.style.display = "none";
+
+            // Closing any open menu headers
+            for(let i=0; i<menuHeaders.length; i++){
+                menuHeaders[i].className = menuHeaders[i].className.replace(" mainMenuHeaderExpanded", "");
+            }
+
+            // Inverting extended status
             navigationBarExtended = !navigationBarExtended
         });
         
