@@ -28,6 +28,19 @@ module.exports = env => {
                         ]
                 },
                 {
+                    enforce: 'pre',
+                    test: /\.js$/,
+                    exclude: [/node_modules/, devExclusion],
+                    use: [
+                        {
+                          loader: 'eslint-loader',
+                          options: {
+                            formatter: require('eslint/lib/cli-engine/formatters/stylish')
+                          },
+                        },
+                    ],
+                },
+                {
                     test: /\.js$/,
                     exclude: [/node_modules/, devExclusion],
                     use: {
