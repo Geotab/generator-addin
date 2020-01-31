@@ -5,5 +5,7 @@ import props from "./props";
 
 let factory = new NavFactory();
 let handler = new NavHandler(factory, props);
+<% if (!isButton) { %>
 handler.generateContent();
+<% } %>
 handler.enableDisplayToggle();

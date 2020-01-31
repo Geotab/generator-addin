@@ -141,12 +141,14 @@ let loginExample = `
         <label class="dev-toggle">Night-Mode
             <input type="checkbox" id="nightMode" />
         </label>
-    <% } else { %>
         <a id="toggleBtn" class="dev-button">Blur add-in</a>
-
-        <a target="_blank" href="./src/dev/styles/styleGuideMyGeotab.html" class="dev-button">Style Guide</a>
-    <% } %>
-        <a id="logoutBtn" class="dev-button">Logout</a>
+      <% } else { %>
+        <% if (!isButton) {%>
+            <a id="toggleBtn" class="dev-button">Blur add-in</a>
+        <% } %>
+        <a target="_blank" href="../.dev/style/styleGuideMyGeotab.html" class="dev-button">Style Guide</a>
+      <% } %>
+      <a id="logoutBtn" class="dev-button">Logout</a>
     </header>
 
     <dialog id="loginDialog" class="dev-dialog">
