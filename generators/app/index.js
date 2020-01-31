@@ -195,6 +195,7 @@ module.exports = yeoman.Base.extend({
 
   writing: {
     webpack: function () {
+      console.log("Webpack");
       this.fs.copyTpl(
         this.templatePath('webpack.config.js'),
         this.destinationPath('webpack.config.js'), {
@@ -217,6 +218,7 @@ module.exports = yeoman.Base.extend({
     },
 
     git: function () {
+      console.log("Git");
       this.fs.copy(
         this.templatePath('gitignore'),
         this.destinationPath('.gitignore'));
@@ -227,9 +229,11 @@ module.exports = yeoman.Base.extend({
     },
 
     index: function () {
+      console.log("index");
+      console.log(this.props.isDriveAddin);
       var indexLocation = this.props.isButton ? 'src/dev/button.html' : `src/app/${this.props.camelName}.html`;
       this.fs.copyTpl(
-        this.templatePath('app/addin.html'),
+        this.templatePath('src/app/index.html'),
         this.destinationPath(indexLocation), {
           title: this.props.name,
           root: this.props.camelName,
@@ -240,7 +244,16 @@ module.exports = yeoman.Base.extend({
       );
     },
 
+    app: function() {
+      console.log("App");
+      this.fs.copy(
+        this.templatePath('src/app/index.js'),
+        this.destinationPath('src/app/index.js')
+      );
+    },
+
     config: function () {
+      console.log("Config");
       this.fs.copyTpl(
         this.templatePath('src/app/config.json'),
         this.destinationPath('src/app/config.json'), {
@@ -258,6 +271,7 @@ module.exports = yeoman.Base.extend({
     },
 
     scripts: function () {
+      console.log("Scripts")
       if (this.props.isButton) {
         this.fs.copyTpl(
           this.templatePath('src/app/scripts/button.js'),
@@ -277,6 +291,7 @@ module.exports = yeoman.Base.extend({
     },
 
     css: function () {
+      console.log("Css");
       if (!this.props.isButton) {
         this.fs.copy(
           this.templatePath('src/app/styles/main.css'),
@@ -286,6 +301,7 @@ module.exports = yeoman.Base.extend({
     },
 
     icon: function () {
+      console.log("icon");
       this.fs.copy(
         this.templatePath('src/app/images/icon.svg'),
         this.destinationPath('src/app/images/icon.svg')
@@ -293,6 +309,7 @@ module.exports = yeoman.Base.extend({
     },
 
     test: function () {
+      console.log("Test");
       this.fs.copy(
         this.templatePath('test/functional/mocks/mocks.js'),
         this.destinationPath('test/functional/mocks/mocks.js')
@@ -309,6 +326,7 @@ module.exports = yeoman.Base.extend({
 
     dev: function () {
       // Base
+      console.log("Dev")
       this.fs.copy(
         this.templatePath('src/dev/api.js'),
         this.destinationPath('src/dev/api.js')
@@ -332,6 +350,7 @@ module.exports = yeoman.Base.extend({
         this.destinationPath('src/dev/state.js')
       );
 
+      console.log("Login Template");
       // Login
       this.fs.copyTpl(
         this.templatePath('src/dev/login/loginTemplate.js'),
@@ -342,6 +361,7 @@ module.exports = yeoman.Base.extend({
         }
       );
 
+      console.log("Login logic");
       this.fs.copyTpl(
         this.templatePath('src/dev/login/loginLogic.js'),
         this.destinationPath('src/dev/login/loginLogic.js'), {
@@ -351,6 +371,7 @@ module.exports = yeoman.Base.extend({
       );
 
       if(!this.props.isButton && !this.props.isDriveAddin){
+        console.log("navbar")
         // Navbar      
         this.fs.copyTpl(
           this.templatePath('src/dev/navbar/navbar.js'),
@@ -358,7 +379,8 @@ module.exports = yeoman.Base.extend({
             root: this.props.camelName,
           }
         );
-  
+          
+        console.log("NavBuilder");
         this.fs.copyTpl(
           this.templatePath('src/dev/navbar/NavBuilder.js'),
           this.destinationPath('src/dev/navbar/NavBuilder.js'), {
@@ -366,7 +388,8 @@ module.exports = yeoman.Base.extend({
             isButton: this.props.isButton
           }
         );
-  
+          
+        console.log("Nav Factory")
         this.fs.copyTpl(
           this.templatePath('src/dev/navbar/NavFactory.js'),
           this.destinationPath('src/dev/navbar/NavFactory.js'), {
@@ -375,6 +398,7 @@ module.exports = yeoman.Base.extend({
           }
         );
   
+        console.log("NavHandler")
         this.fs.copyTpl(
           this.templatePath('src/dev/navbar/NavHandler.js'),
           this.destinationPath('src/dev/navbar/NavHandler.js'), {
@@ -382,7 +406,8 @@ module.exports = yeoman.Base.extend({
             isButton: this.props.isButton
           }
         );
-  
+          
+        console.log("Props")
         this.fs.copyTpl(
           this.templatePath('src/dev/navbar/props.js'),
           this.destinationPath('src/dev/navbar/props.js'), {
@@ -392,7 +417,7 @@ module.exports = yeoman.Base.extend({
           }
         );
       }
-
+      console.log("Other")
       // Other
       this.fs.copy(
         this.templatePath('src/dev/images/Font_Awesome_5_solid_chevron-left.svg'),
@@ -412,6 +437,11 @@ module.exports = yeoman.Base.extend({
   },
 
   install: function () {
-    this.installDependencies();
+    console.log("Install")
+    this.installDependencies({
+      npm: true,
+      bower: false,
+      yarn: false
+    });
   }
 });
