@@ -1,4 +1,4 @@
-console.log("index app")
+console.log('index app')
 /**
  * This is the entry point for your app
  * Include any assets to be bundled in here

@@ -1,4 +1,4 @@
-console.log("main.js");
+console.log('main.js');
 /**
  * @returns {{initialize: Function, focus: Function, blur: Function}}
  */
@@ -6,7 +6,7 @@ geotab.addin.<%= root%> = function () {
   'use strict';
 
   // the root container
-  var elAddin = document.getElementById("<%= root%>");
+  var elAddin = document.getElementById('<%= root%>');
 
   return {
     /**
