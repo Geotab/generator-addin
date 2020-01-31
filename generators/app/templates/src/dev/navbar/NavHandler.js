@@ -174,10 +174,10 @@ class NavHandler {
         displayToggle.addEventListener("click", () => {
             if(this.focus){
                 displayToggle.innerHTML = "Focus add-in";
-                global.geotab.addin.root.blur();
+                global.geotab.addin.<%= root%>.blur();
             } else {
                 displayToggle.innerHTML = "Blur add-in";
-                global.geotab.addin.root.focus(global.api, global.state);
+                global.geotab.addin.<%= root%>.focus(global.api, global.state);
             }
             this.focus = !this.focus;
         });

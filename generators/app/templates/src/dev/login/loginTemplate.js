@@ -1,7 +1,7 @@
 let body = document.getElementsByTagName("body")[0];
 import icon from "../images/Font_Awesome_5_solid_chevron-left.svg";
 let loginExample = `
-<% if (isDriveApp) {%>
+<% if (isDriveAddin) {%>
     <link rel="stylesheet" href="https://my112.geotab.com/drive/app/css/geotabdrive.less">
 <% } else { %>
     <link rel="stylesheet" href="https://my112.geotab.com/geotab/checkmate/app.less?skin=my_geotab">

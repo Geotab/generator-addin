@@ -20,7 +20,7 @@ global.state = require("./state");
 global.geotab = {
     addin: {}, 
     customButtons: {}, 
-    isDriveAddin: <%= isDriveAddin %>
+    isDriveAddin: <%= isDriveAddin || false %>
 }
 // Importing the app rules -> Where addin will be described
 let app = require("../app/index");
