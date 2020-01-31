@@ -54,11 +54,11 @@ module.exports = env => {
         },
         output: {
             path: path.resolve(__dirname, "dist"),
-            filename: "main.js"
+            filename: "<%= name%>.js"
         },
         plugins: [
             new HtmlWebPackPlugin({
-                template: "./src/app/index.html",
+                template: "./src/app/<%= name%>.html",
                 filename: "./index.html"
             }),
             new MiniCssExtractPlugin({
