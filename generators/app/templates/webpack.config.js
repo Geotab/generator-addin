@@ -1,13 +1,17 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const fs = require('fs');
+const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const ImageminPlugin = require("imagemin-webpack");
 
 module.exports = env => {
     // Workaround for having two config trees depending on input. Uses impossible to match regex to avoid errors
     let devExclusion = (env.build==="y" ? /dev/ : /^ $/);
+    let entryPoint = (env.build==="y" ? './src/app/index.js' : './src/dev/index.js');
     let config = {
-        entry: './src/dev/index.js',
+        entry: entryPoint,
         module: {
             rules: [
                 {
@@ -65,6 +69,14 @@ module.exports = env => {
                 name: '[name].css',
                 chunkFilename: '[id].css'
             }),
+            new FixStyleOnlyEntriesPlugin(),
+            new OptimizeCSSAssetsPlugin({}),
+            new UglifyJsPlugin({
+                test: /\.js(\?.*)?$/i,
+            }),
+            new ImageminPlugin({
+                exclude: /dev/
+            })
         ],
         devServer: {
             contentBase: path.join(__dirname),
