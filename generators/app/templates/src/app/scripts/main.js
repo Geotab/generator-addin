@@ -57,7 +57,7 @@ geotab.addin.<%= root%> = function () {
         });<% } else { %>
       // getting the current user to display in the UI
       freshApi.getSession(session => {
-        elAddin.querySelector('#root-user').textContent = session.userName;
+        elAddin.querySelector('#<%= root%>-user').textContent = session.userName;
       });
 
       // show main content
