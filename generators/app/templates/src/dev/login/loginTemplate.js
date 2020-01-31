@@ -1,5 +1,6 @@
 let body = document.getElementsByTagName("body")[0];
 import icon from "../images/Font_Awesome_5_solid_chevron-left.svg";
+import addinIcon from '../../app/images/icon.svg';
 let loginExample = `
 <% if (isDriveAddin) {%>
     <link rel="stylesheet" href="https://my112.geotab.com/drive/app/css/geotabdrive.less">
@@ -132,7 +133,7 @@ let loginExample = `
     }
 
     .geotabIcons_<%= root%> {
-        background-image: url("./images/icon.svg");
+        background-image: url("${addinIcon}");
     } 
     </style>
     <header class="dev-header">
