@@ -144,9 +144,9 @@ class GeotabLogin {
             Object.keys(global.geotab.addin).forEach(function (name) {
                 global.geotab.addin[name].isInitialize = false;
             });
-            device = null;
-            global.state.device = device;
-            localStorage.setItem('_device', JSON.stringify(device));
+            self.device = null;
+            global.state.device = self.device;
+            localStorage.setItem('_device', JSON.stringify(self.device));
             if (isDriveAddin) {
                 self.initializeDevice();
             }
@@ -161,18 +161,18 @@ class GeotabLogin {
             event.preventDefault();
 
             if (id) {
-                device = {
+                self.device = {
                     id: id
                 };
-                global.state.device = device;
-                localStorage.setItem('_device', JSON.stringify(device));
+                global.state.device = self.device;
+                localStorage.setItem('_device', JSON.stringify(self.device));
             }
         });
 
         this.elDevicesOkBtn.addEventListener('click', function (event) {
             event.preventDefault();
 
-            if (device) {
+            if (self.device) {
                 this.initalizeAddin();
 
                 // in this order becasue zombiejs errors out on close
@@ -181,12 +181,12 @@ class GeotabLogin {
         });
 
         if (isDriveAddin) {
-            elNightModeToggle.addEventListener('click', evt => {
+            this.elNightModeToggle.addEventListener('click', evt => {
                 const NightMode = "nightMode";
                 let app = document.querySelector('#app');
                 let body = document.body;
 
-                if (elNightModeToggle.checked) {
+                if (self.elNightModeToggle.checked) {
                     app.classList.add(NightMode);
                     body.classList.add(NightMode);
                 } else {
@@ -243,14 +243,14 @@ class GeotabLogin {
         global.api.user = JSON.parse(localStorage.getItem('_user'));
 
         // Drive properties
-        global.state.device = device;
+        global.state.device = this.device;
         global.state.driving = true;
         global.state.charging = true;
         global.state.background = false;
         global.state.online = true;
         global.state.deviceCommunicating = true;
 
-        if (!device) {
+        if (!this.device) {
             this.initializeDevice();
         } else {
             this.initalizeAddin();
