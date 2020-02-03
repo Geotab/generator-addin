@@ -8,14 +8,6 @@ const props = [
        labelText: "Getting Started &amp; Help", // Displayed to user
        hasSubmenu: true, // Used to build the nav tree
        submenuItems: [
-           {
-               name: "guide",
-               labelText: "Product Guide"
-           },
-           {
-               name: "mainMenuForum",
-               labelText: "Geotab Community"
-           },
             {
                 name: "<%= root %>",
                 labelText: "<%= label %>"

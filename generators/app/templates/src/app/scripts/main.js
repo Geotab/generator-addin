@@ -53,7 +53,7 @@ geotab.addin.<%= root%> = function () {
             elAddin.querySelector('#<%= root %>-vehicle').textContent = device.name;
   
             // show main content
-            elAddin.className = elAddin.className.replace("hidden", "").trim();
+            elAddin.className = elAddin.className.replace('hidden', '').trim();
           }, err => {
             console.error(err);
           });
@@ -63,7 +63,7 @@ geotab.addin.<%= root%> = function () {
             elAddin.querySelector('#<%= root%>-user').textContent = session.userName;
           });
           
-          elAddin.className = "";
+          elAddin.className = '';
       // show main content
       <% } %>
     },
