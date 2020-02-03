@@ -1,4 +1,3 @@
-console.log("index dev");
 /**
  * Entry point for serving the app on localhost
  * Allows several UI features to be displayed to improve
@@ -32,3 +31,9 @@ import GeotabLogin from "./login/loginLogic";
 import GeotabApi from  './api';
 const loginLogic = new GeotabLogin(global.geotab.isDriveAddin, GeotabApi);
 import "./navbar/navBuilder";
+
+<% if (isButton) { %>
+    let config = require('../app/config.json');
+    let icon = document.querySelector(".icon");
+    icon.style["background-image"] = `url(src/app/${config.items[0].icon})`;
+<% } %>

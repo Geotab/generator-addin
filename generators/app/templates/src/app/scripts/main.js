@@ -1,4 +1,3 @@
-console.log('main.js');
 /**
  * @returns {{initialize: Function, focus: Function, blur: Function}}
  */

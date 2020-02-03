@@ -10,4 +10,6 @@ let handler = new NavHandler(factory, props);
 <% if (!isButton && !isDriveAddin) { %>
 handler.generateContent();
 <% } %>
-handler.enableDisplayToggle();
+<% if (!isButton) { %>
+    handler.enableDisplayToggle();
+<% } %>

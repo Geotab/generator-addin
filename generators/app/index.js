@@ -241,9 +241,12 @@ module.exports = yeoman.Base.extend({
     },
 
     app: function() {
-      this.fs.copy(
+      this.fs.copyTpl(
         this.templatePath('src/app/index.js'),
-        this.destinationPath('src/app/index.js')
+        this.destinationPath('src/app/index.js'), {
+          name: this.props.camelName,
+          isButton: this.props.isButton
+        }
       );
     },
 
