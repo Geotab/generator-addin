@@ -12,6 +12,7 @@ module.exports = env => {
     let entryPoint = (env.build==="y" ? './src/app/index.js' : './src/dev/index.js');
     let config = {
         entry: entryPoint,
+        devtool: "source-map",
         module: {
             rules: [
                 {
@@ -75,7 +76,11 @@ module.exports = env => {
         },
         plugins: [
             new HtmlWebPackPlugin({
-                template: "./src/app/<%= name%>.html",
+                <% if (isButton) { %>
+                    template: "./src/dev/<%= name%>.html",
+                <% } else { %>
+                    template: "./src/app/<%= name%>.html",
+                <% } %>
                 filename: "./index.html"
             }),
             new MiniCssExtractPlugin({
@@ -86,6 +91,7 @@ module.exports = env => {
             new OptimizeCSSAssetsPlugin({}),
             new UglifyJsPlugin({
                 test: /\.js(\?.*)?$/i,
+                sourceMap: true
             }),
             new ImageminPlugin({
                 exclude: /dev/

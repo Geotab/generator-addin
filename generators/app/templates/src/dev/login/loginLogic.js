@@ -1,4 +1,3 @@
-console.log("loginLogic");
 'use strict';
 
 /**
