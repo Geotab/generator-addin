@@ -31,6 +31,4 @@ import "./login/loginTemplate.js";
 import GeotabLogin from "./login/loginLogic";
 import GeotabApi from  './api';
 const loginLogic = new GeotabLogin(global.geotab.isDriveAddin, GeotabApi);
-<% if (!isDriveAddin) { %>
 import "./navbar/navBuilder";
-<% } %>
