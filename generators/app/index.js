@@ -285,9 +285,11 @@ module.exports = yeoman.Base.extend({
 
     css: function () {
       if (!this.props.isButton) {
-        this.fs.copy(
+        this.fs.copyTpl(
           this.templatePath('src/app/styles/main.css'),
-          this.destinationPath('src/app/styles/main.css')
+          this.destinationPath('src/app/styles/main.css'), {
+            isDriveAddin: this.props.isDriveAddin
+          }
         );
       }
     },
@@ -357,48 +359,47 @@ module.exports = yeoman.Base.extend({
         }
       );
 
-      if(!this.props.isButton && !this.props.isDriveAddin){
-        // Navbar      
-        this.fs.copyTpl(
-          this.templatePath('src/dev/navbar/navbar.js'),
-          this.destinationPath('src/dev/navbar/navbar.js'), {
-            root: this.props.camelName,
-          }
-        );
-          
-        this.fs.copyTpl(
-          this.templatePath('src/dev/navbar/NavBuilder.js'),
-          this.destinationPath('src/dev/navbar/NavBuilder.js'), {
-            root: this.props.camelName,
-            isButton: this.props.isButton
-          }
-        );
-          
-        this.fs.copyTpl(
-          this.templatePath('src/dev/navbar/NavFactory.js'),
-          this.destinationPath('src/dev/navbar/NavFactory.js'), {
-            root: this.props.camelName,
-            isButton: this.props.isButton
-          }
-        );
-  
-        this.fs.copyTpl(
-          this.templatePath('src/dev/navbar/NavHandler.js'),
-          this.destinationPath('src/dev/navbar/NavHandler.js'), {
-            root: this.props.camelName,
-            isButton: this.props.isButton
-          }
-        );
-          
-        this.fs.copyTpl(
-          this.templatePath('src/dev/navbar/props.js'),
-          this.destinationPath('src/dev/navbar/props.js'), {
-            path: this.props.path,
-            root: this.props.camelName,
-            label: this.props.menuName
-          }
-        );
-      }
+      // Navbar      
+      this.fs.copyTpl(
+        this.templatePath('src/dev/navbar/navbar.js'),
+        this.destinationPath('src/dev/navbar/navbar.js'), {
+          root: this.props.camelName,
+        }
+      );
+        
+      this.fs.copyTpl(
+        this.templatePath('src/dev/navbar/NavBuilder.js'),
+        this.destinationPath('src/dev/navbar/NavBuilder.js'), {
+          root: this.props.camelName,
+          isButton: this.props.isButton,
+          isDriveAddin: this.props.isDriveAddin
+        }
+      );
+        
+      this.fs.copyTpl(
+        this.templatePath('src/dev/navbar/NavFactory.js'),
+        this.destinationPath('src/dev/navbar/NavFactory.js'), {
+          root: this.props.camelName,
+          isButton: this.props.isButton
+        }
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('src/dev/navbar/NavHandler.js'),
+        this.destinationPath('src/dev/navbar/NavHandler.js'), {
+          root: this.props.camelName,
+          isButton: this.props.isButton
+        }
+      );
+        
+      this.fs.copyTpl(
+        this.templatePath('src/dev/navbar/props.js'),
+        this.destinationPath('src/dev/navbar/props.js'), {
+          path: this.props.path,
+          root: this.props.camelName,
+          label: this.props.menuName
+        }
+      );
       // Other
       this.fs.copy(
         this.templatePath('src/dev/images/Font_Awesome_5_solid_chevron-left.svg'),
