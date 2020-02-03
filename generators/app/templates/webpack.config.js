@@ -30,7 +30,7 @@ module.exports = env => {
                 {
                     enforce: 'pre',
                     test: /\.js$/,
-                    exclude: [/node_modules/, devExclusion],
+                    exclude: [/node_modules/, /dev/],
                     use: [
                         {
                           loader: 'eslint-loader',
