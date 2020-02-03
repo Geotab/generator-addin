@@ -5,9 +5,13 @@ console.log('main.js');
 geotab.addin.<%= root%> = function () {
   'use strict';
 
-  // the root container
-  var elAddin = document.getElementById('<%= root%>');
-
+  <% if (isDriveAddin) { %>
+    // the root container
+    var elAddin = document.getElementById('app');
+  <% } else { %>  
+    // the root container
+    var elAddin = document.getElementById('<%= root%>');
+  <% } %>
   return {
     /**
      * initialize() is called only once when the Add-In is first loaded. Use this function to initialize the
@@ -50,18 +54,18 @@ geotab.addin.<%= root%> = function () {
             elAddin.querySelector('#<%= root %>-vehicle').textContent = device.name;
   
             // show main content
-            elAddin.className = '';
+            elAddin.className = elAddin.className.replace("hidden", "").trim();
           }, err => {
             console.error(err);
           });
         });<% } else { %>
-      // getting the current user to display in the UI
-      freshApi.getSession(session => {
-        elAddin.querySelector('#<%= root%>-user').textContent = session.userName;
-      });
-
+          // getting the current user to display in the UI
+          freshApi.getSession(session => {
+            elAddin.querySelector('#<%= root%>-user').textContent = session.userName;
+          });
+          
+          elAddin.className = "";
       // show main content
-      elAddin.className = '';
       <% } %>
     },
 
@@ -75,7 +79,7 @@ geotab.addin.<%= root%> = function () {
      */
     blur: function () {
       // hide main content
-      elAddin.className = 'hidden';
+      elAddin.className += ' hidden';
     }
   };
 };
