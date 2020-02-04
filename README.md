@@ -7,15 +7,14 @@
 Leverage modern package managers.
 
 - [NPM](https://www.npmjs.com/)
-- [Bower](http://bower.io)
 
 ### Local Debugging
 
 - Run and debug the add-in localy without having to add to test database. MyGeotabApi mocks the API object passes to add-in to make requests to you test database.
 - Mock state - Drive add-in will try to use HTML5 features to mock Andoid/IOS device features (ex. Geolocation)
 - Automagically lint your scripts
-- Built-in preview server with BrowserSync
-- The gulpfile makes use of [ES2015 features](https://babeljs.io/docs/learn-es2015/) by using [Babel](https://babeljs.io)
+- Built-in preview server with Webpack's development server
+- Webpack makes use of [ES2015 features](https://babeljs.io/docs/learn-es2015/) by using [Babel](https://babeljs.io) loaders
 
 ### Release Build Process
 
@@ -31,15 +30,16 @@ Leverage modern package managers.
 
 ## Getting Started
 
-- Install dependencies: `npm install -g yo gulp-cli bower`
+- Install dependencies: `npm install -g yo`
 - Install the generator: `npm install -g generator-addin`
 - Create a directory for your project `mkdir <projdir>`
 - Change to your project `cd <projdir>`
 - Run `yo addin` to scaffold your addin
-- Run `gulp serve` to preview and watch for changes
-- Run `bower install --save <package>` to install frontend dependencies
-- Run `gulp test` to run the tests
-- Run `gulp build` to build your addin for production
+- Run `npm run serve` to preview and watch for changes
+- Run `npm install <package>` to install frontend dependencies
+- Use `src/app/index.js` as the entrypoint to the application
+- Run `npm run test` to run the tests
+- Run `npm run build` to build your addin for production
 
 ## Documentation
 

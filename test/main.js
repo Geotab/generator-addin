@@ -14,7 +14,7 @@ describe('generator-addin:page main.js', function () {
     helpers.run(path.join(__dirname, '../generators/app'))
       .withPrompts(props)
       .on('end', function () {
-        js = fs.readFileSync('app/scripts/main.js', 'utf8');
+        js = fs.readFileSync('src/app/scripts/main.js', 'utf8');
         done();
       });
   });
@@ -37,7 +37,7 @@ describe('generator-addin:button myAddin.js', function () {
     helpers.run(path.join(__dirname, '../generators/app'))
       .withPrompts(props)
       .on('end', function () {
-        js = fs.readFileSync('app/scripts/myAddin.js', 'utf8');
+        js = fs.readFileSync('src/app/scripts/myAddin.js', 'utf8');
         done();
       });
   });
