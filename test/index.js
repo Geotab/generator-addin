@@ -19,7 +19,7 @@ describe('generator-addin:index.html', function () {
   });
 
   it('has correct file name', function () {
-    js = fs.readFileSync('app/myAddin.html', 'utf8');
+    js = fs.readFileSync('src/app/myAddin.html', 'utf8');
     assert.equal(true, !!js);
   });
   it('has correct title', function () {
@@ -45,7 +45,7 @@ describe('generator-addin:index.html MyGeotab', function () {
   });
 
   it('has correct ontent for MyGeotab Add-in', function () {
-    js = fs.readFileSync('app/myAddin.html', 'utf8');
+    js = fs.readFileSync('src/app/myAddin.html', 'utf8');
     assert.equal(true, js.indexOf('<header class="geotabPageHeader">') > -1);
   });
 
@@ -66,7 +66,7 @@ describe('generator-addin:index.html Drive', function () {
   });
 
   it('has correct ontent for Drive Add-in', function () {
-    js = fs.readFileSync('app/myAddin.html', 'utf8');
+    js = fs.readFileSync('src/app/myAddin.html', 'utf8');
     assert.equal(true, js.indexOf('<h2 class="panel__title">') > -1);
   });
 
