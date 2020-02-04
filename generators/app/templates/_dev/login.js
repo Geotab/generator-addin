@@ -307,4 +307,12 @@ document.addEventListener('DOMContentLoaded', function () {
   })();
 
   new GeotabLogin().initialize(window.geotab.isDriveAddin);
+  <% if (!isButton) { %>
+  // Creating Navigation Handler -> Creates faux navbar for testing purposes
+  let navHandler = new NavHandler(api, state);
+    <% if (!isDriveAddin) {%>
+    navHandler.generateContent();
+    <% } %>
+  navHandler.enableDisplayToggle();
+  <% } %>
 });
