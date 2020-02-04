@@ -33,7 +33,7 @@
 
 <body>
 
-  <div id="<%= root %>" <% if (!isButton) { %>class="hidden"<% } %>>
+  <div id="<%= root %>" <% if (isDriveAddin) { %>class="hidden"<% } %>>
     <% if (isDriveAddin) { %>
       <div class="panel">
         <h2 class="panel__title"><%= title %></h2>
@@ -48,12 +48,16 @@
           </div>
       </div>
     <% } else { %>
-        <header class="geotabPageHeader">
-          <h1 class="geotabPageName"><%= title %> <span class="subdued">sub title</span></h1>
-          <div class="pageNameSecondary">
-            <h3 class="geotabSecondaryTitle">by: <span id="<%= root %>-user"></span></h3>
-          </div>
-        </header>
+      <div id="checkmateContent" class="centerPane" style="top: 40px; left: 250px;">
+        <div id="navTest">
+          <header class="geotabPageHeader">
+            <h1 class="geotabPageName"><%= title %> <span class="subdued">sub title</span></h1>
+            <div class="pageNameSecondary">
+              <h3 class="geotabSecondaryTitle">by: <span id="<%= root %>-user"></span></h3>
+            </div>
+          </header>
+        </div>
+      </div>
     <% } %>
   </div>
 

@@ -55,9 +55,6 @@ geotab.addin.<%= root %> = function () {
           console.error(err);
         });
       });<% } else { %> // example of setting url state
-      freshState.setState({
-        hello: 'world'
-      });
 
       // getting the current user to display in the UI
       freshApi.getSession(session => {

@@ -337,18 +337,49 @@ module.exports = yeoman.Base.extend({
       this.fs.copyTpl(
         this.templatePath('_dev/login.html'),
         this.destinationPath('.dev/login.html'), {
+          isDriveAddin: this.props.isDriveAddin,
+          isButton: this.props.isButton,
+          root: this.props.camelName
+        }
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('_dev/login.js'),
+        this.destinationPath('.dev/login.js'), {
+          isButton: this.props.isButton,
           isDriveAddin: this.props.isDriveAddin
         }
       );
 
       this.fs.copy(
-        this.templatePath('_dev/login.js'),
-        this.destinationPath('.dev/login.js')
+        this.templatePath('_dev/NavFactory.js'),
+        this.destinationPath('.dev/NavFactory.js')
+      );
+      
+      this.fs.copyTpl(
+        this.templatePath('_dev/navigation.js'),
+        this.destinationPath('.dev/navigation.js'), {
+          root: this.props.camelName
+        }
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('_dev/props.js'),
+        this.destinationPath('.dev/props.js'), {
+          path: this.props.path,
+          root: this.props.camelName,
+          label: this.props.menuName
+        }
       );
 
       this.fs.copy(
         this.templatePath('_dev/rison.js'),
         this.destinationPath('.dev/rison.js')
+      );
+
+      this.fs.copy(
+        this.templatePath('_dev/images/Font_Awesome_5_solid_chevron-left.svg'),
+        this.destinationPath('.dev/images/Font_Awesome_5_solid_chevron-left.svg')
       );
 
       this.fs.copy(
