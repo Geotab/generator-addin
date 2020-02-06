@@ -146,7 +146,7 @@ let loginExample = `
         <% if (!isButton) {%>
             <a id="toggleBtn" class="dev-button">Blur add-in</a>
         <% } %>
-        <a target="_blank" href="../.dev/style/styleGuideMyGeotab.html" class="dev-button">Style Guide</a>
+        <a target="_blank" href="src/dev/styles/styleGuideMyGeotab.html" class="dev-button">Style Guide</a>
       <% } %>
       <a id="logoutBtn" class="dev-button">Logout</a>
     </header>
