@@ -7,12 +7,6 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= title %></title>
-
-  <!-- <% if (!isButton) { %>
-
-  <% } else { %>
-  <script src="{click}"></script>
-  <% } %> -->
 </head>
 
 <body>
@@ -32,15 +26,13 @@
           </div>
       </div>
     <% } else { %>
-      <div id="checkmateContent" class="centerPane" style="top: 40px; left: 250px;">
-        <div id="<%= root%>">
-          <header class="geotabPageHeader">
-            <h1 class="geotabPageName"><%= root %> <span class="subdued">sub title</span></h1>
-            <div class="pageNameSecondary">
-              <h3 class="geotabSecondaryTitle">by: <span id="<%= root %>-user"></span></h3>
-            </div>
-          </header>
-        </div>
+      <div id="<%= root%>">
+        <header class="geotabPageHeader">
+          <h1 class="geotabPageName"><%= root %> <span class="subdued">sub title</span></h1>
+          <div class="pageNameSecondary">
+            <h3 class="geotabSecondaryTitle">by: <span id="<%= root %>-user"></span></h3>
+          </div>
+        </header>
       </div>
     <% } %>
   </div>

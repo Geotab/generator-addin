@@ -37,3 +37,12 @@ import "./navbar/navBuilder";
     let icon = document.querySelector(".icon");
     icon.style["background-image"] = `url(src/app/${config.items[0].icon})`;
 <% } %>
+
+<% if (!isButton && !isDriveAddin) { %>
+// Setting up mock display panel
+let mainPanel = document.querySelector("#app");
+mainPanel.id = "checkmateContent";
+mainPanel.className = "centerPane";
+mainPanel.style.top = "40px";
+mainPanel.style.left = "250px";
+<% } %>
