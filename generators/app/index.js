@@ -313,6 +313,7 @@ module.exports = yeoman.Base.extend({
       this.fs.copyTpl(
         this.templatePath('test/functional/test.js'),
         this.destinationPath('test/functional/test.js'), {
+          isButton: this.props.isButton,
           isDriveAddin: this.props.isDriveAddin,
           root: this.props.camelName
         }
