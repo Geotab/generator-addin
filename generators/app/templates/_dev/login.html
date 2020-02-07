@@ -4,6 +4,7 @@
   <link rel="stylesheet" href="https://my112.geotab.com/geotab/checkmate/app.less?skin=my_geotab">
 <% } %>
 <style>
+
 body {
       height: initial;
       width: initial;
@@ -17,6 +18,9 @@ body {
       margin: 1em;
   }
 
+  button:focus, #navigationId:focus {
+      outline: none;
+  }
   #app {
       width: initial;
   }
@@ -31,8 +35,11 @@ body {
   }
 
   .geotabIcons_chevron {
-       background-image: url("../.dev/images/Font_Awesome_5_solid_chevron-left.svg");
-       background-repeat: no-repeat;
+      mask-image: url(../.dev/images/Font_Awesome_5_solid_chevron-left.svg);
+      mask-repeat: no-repeat;
+      -webkit-mask-image: url(../.dev/images/Font_Awesome_5_solid_chevron-left.svg);
+      -webkit-mask-repeat: no-repeat;
+      background-color: #25477b;
   }
 
   .dev-dialog {
@@ -130,14 +137,20 @@ body {
   } 
 </style>
 <header class="dev-header">
-  <% if (isDriveAddin) { %>
+  
+    <% if (isDriveAddin) { %>
     <label class="dev-toggle">Night-Mode
         <input type="checkbox" id="nightMode" />
     </label>
+    <a id="toggleBtn" class="dev-button">Blur add-in</a>
   <% } else { %>
+    <% if (!isButton) {%>
+        <a id="toggleBtn" class="dev-button">Blur add-in</a>
+    <% } %>
     <a target="_blank" href="../.dev/style/styleGuideMyGeotab.html" class="dev-button">Style Guide</a>
   <% } %>
-    <a id="logoutBtn" class="dev-button">Logout</a>
+
+  <a id="logoutBtn" class="dev-button">Logout</a>
 </header>
 
 <% if (!isDriveAddin && !isButton) { %>
@@ -155,9 +168,6 @@ body {
             <div id="navigationContainer">
                 <div id="navigationId" class="shadowedRight scrollHost touchScrollClass hardwareAccelerationClass" tabindex="-1">
                     <ul id="navBase" class="mainMenu" role="menu">
-                        <li class="mainMenuHeader">
-                            <a id="toggleBtn" class="dev-button">Toggle Addin Status</a>
-                        </li>
                     </ul>
                 </div>
             </div>
