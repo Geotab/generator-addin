@@ -1,12 +1,16 @@
 /**
  * @returns {{initialize: Function, focus: Function, blur: Function}}
  */
-geotab.addin.<%= root %> = function () {
+geotab.addin.<%= root%> = function () {
   'use strict';
 
-  // the root container
-  var elAddin;
-
+  <% if (isDriveAddin) { %>
+    // the root container
+    var elAddin = document.getElementById('app');
+  <% } else { %>  
+    // the root container
+    var elAddin = document.getElementById('<%= root%>');
+  <% } %>
   return {
     /**
      * initialize() is called only once when the Add-In is first loaded. Use this function to initialize the
@@ -19,8 +23,7 @@ geotab.addin.<%= root %> = function () {
      *        for display to the user.
      */
     initialize: function (freshApi, freshState, initializeCallback) {
-      elAddin = document.querySelector('#<%= root %>');
-      // MUST call initializeCallback when done any setup
+    // MUST call initializeCallback when done any setup
       initializeCallback();
     },
 
@@ -37,35 +40,32 @@ geotab.addin.<%= root %> = function () {
      */
     focus: function (freshApi, freshState) {
       <% if (isDriveAddin) { %> // getting the current user to display in the UI
-      freshApi.getSession(session => {
-        freshApi.call('Get', {
-          typeName: 'Device',
-          search: {
-            id: freshState.device.id
-          }
-        }, result => {
-          let device = result[0];
-
-          elAddin.querySelector('#<%= root %>-driver').textContent = session.userName;
-          elAddin.querySelector('#<%= root %>-vehicle').textContent = device.name;
-
-          // show main content
+        freshApi.getSession(session => {
+          freshApi.call('Get', {
+            typeName: 'Device',
+            search: {
+              id: freshState.device.id
+            }
+          }, result => {
+            let device = result[0];
+  
+            elAddin.querySelector('#<%= root %>-driver').textContent = session.userName;
+            elAddin.querySelector('#<%= root %>-vehicle').textContent = device.name;
+  
+            // show main content
+            elAddin.className = elAddin.className.replace('hidden', '').trim();
+          }, err => {
+            console.error(err);
+          });
+        });<% } else { %>
+          // getting the current user to display in the UI
+          freshApi.getSession(session => {
+            elAddin.querySelector('#<%= root%>-user').textContent = session.userName;
+          });
+          
           elAddin.className = '';
-        }, err => {
-          console.error(err);
-        });
-      });<% } else { %> // example of setting url state
-      // freshState.setState({
-      //   hello: 'world'
-      // });
-
-      // getting the current user to display in the UI
-      freshApi.getSession(session => {
-        elAddin.querySelector('#<%= root %>-user').textContent = session.userName;
-      });
-
       // show main content
-      elAddin.className = '';<% } %>
+      <% } %>
     },
 
     /**
@@ -78,7 +78,7 @@ geotab.addin.<%= root %> = function () {
      */
     blur: function () {
       // hide main content
-      elAddin.className = 'hidden';
+      elAddin.className += ' hidden';
     }
   };
 };
