@@ -18,10 +18,10 @@ if (typeof rison == 'undefined')
  *
  */
 rison.uri_ok = {  // ok in url paths and in form query args
-            '~': true,  '!': true,  '*': true,  '(': true,  ')': true,
-            '-': true,  '_': true,  '.': true,  ',': true,
-            ':': true,  '@': true,  '$': true,
-            "'": true,  '/': true
+    '~': true, '!': true, '*': true, '(': true, ')': true,
+    '-': true, '_': true, '.': true, ',': true,
+    ':': true, '@': true, '$': true,
+    "'": true, '/': true
 };
 
 /*
@@ -42,8 +42,8 @@ rison.uri_ok = {  // ok in url paths and in form query args
     var l = [];
     for (var hi = 0; hi < 16; hi++) {
         for (var lo = 0; lo < 16; lo++) {
-            if (hi+lo == 0) continue;
-            var c = String.fromCharCode(hi*16 + lo);
+            if (hi + lo == 0) continue;
+            var c = String.fromCharCode(hi * 16 + lo);
             if (! /\w|[-_.\/~]/.test(c))
                 l.push('\\u00' + hi.toString(16) + lo.toString(16));
         }
@@ -58,7 +58,7 @@ rison.uri_ok = {  // ok in url paths and in form query args
     //console.log('NOT', (idcrx.test(' ')) );
 })();
 //rison.not_idchar  = " \t\r\n\"<>[]{}'!=:(),*@$;&";
-rison.not_idchar  = " '!:(),*@$";
+rison.not_idchar = " '!:(),*@$";
 
 
 /**
@@ -69,8 +69,8 @@ rison.not_idstart = "-0123456789";
 
 
 (function () {
-    var idrx = '[^' + rison.not_idstart + rison.not_idchar + 
-               '][^' + rison.not_idchar + ']*';
+    var idrx = '[^' + rison.not_idstart + rison.not_idchar +
+        '][^' + rison.not_idchar + ']*';
 
     rison.id_ok = new RegExp('^' + idrx + '$');
 
@@ -88,7 +88,7 @@ rison.not_idstart = "-0123456789";
  * rison.quote also passes   ,:@$/
  *   and quotes " " as "+" instead of "%20"
  */
-rison.quote = function(x) {
+rison.quote = function (x) {
     if (/^[-A-Za-z0-9~!*()_.',:@$\/]*$/.test(x))
         return x;
 
@@ -111,9 +111,9 @@ rison.quote = function(x) {
 
 (function () {
     var sq = { // url-ok but quoted in strings
-               "'": true,  '!': true
+        "'": true, '!': true
     },
-    s = {
+        s = {
             array: function (x) {
                 var a = ['!('], b, f, i, l = x.length, v;
                 for (i = 0; i < l; i += 1) {
@@ -145,7 +145,7 @@ rison.quote = function(x) {
                 if (!isFinite(x))
                     return '!n';
                 // strip '+' out of exponent, '-' is ok though
-                return String(x).replace(/\+/,'');
+                return String(x).replace(/\+/, '');
             },
             object: function (x) {
                 if (x) {
@@ -156,7 +156,7 @@ rison.quote = function(x) {
                     if (typeof x.__prototype__ === 'object' && typeof x.__prototype__.encode_rison !== 'undefined')
                         return x.encode_rison();
 
-                    var a = ['('], b, f, i, v, ki, ks=[];
+                    var a = ['('], b, f, i, v, ki, ks = [];
                     for (i in x)
                         ks[ks.length] = i;
                     ks.sort();
@@ -187,8 +187,8 @@ rison.quote = function(x) {
                 if (rison.id_ok.test(x))
                     return x;
 
-                x = x.replace(/(['!])/g, function(a, b) {
-                    if (sq[b]) return '!'+b;
+                x = x.replace(/(['!])/g, function (a, b) {
+                    if (sq[b]) return '!' + b;
                     return b;
                 });
                 return "'" + x + "'";
@@ -218,7 +218,7 @@ rison.quote = function(x) {
         if (typeof v != 'object' || v === null || v instanceof Array)
             throw new Error("rison.encode_object expects an object argument");
         var r = s[typeof v](v);
-        return r.substring(1, r.length-1);
+        return r.substring(1, r.length - 1);
     };
 
     /**
@@ -229,7 +229,7 @@ rison.quote = function(x) {
         if (!(v instanceof Array))
             throw new Error("rison.encode_array expects an array argument");
         var r = s[typeof v](v);
-        return r.substring(2, r.length-1);
+        return r.substring(2, r.length - 1);
     };
 
     /**
@@ -263,8 +263,8 @@ rison.quote = function(x) {
  *  based on Oliver Steele's OpenLaszlo-JSON
  *     http://osteele.com/sources/openlaszlo/json
  */
-rison.decode = function(r) {
-    var errcb = function(e) { throw Error('rison decoder error: ' + e); };
+rison.decode = function (r) {
+    var errcb = function (e) { throw Error('rison decoder error: ' + e); };
     var p = new rison.parser(errcb);
     return p.parse(r);
 };
@@ -274,8 +274,8 @@ rison.decode = function(r) {
  *
  * this simply adds parentheses around the string before parsing.
  */
-rison.decode_object = function(r) {
-    return rison.decode('('+r+')');
+rison.decode_object = function (r) {
+    return rison.decode('(' + r + ')');
 };
 
 /**
@@ -283,8 +283,8 @@ rison.decode_object = function(r) {
  *
  * this simply adds array markup around the string before parsing.
  */
-rison.decode_array = function(r) {
-    return rison.decode('!('+r+')');
+rison.decode_array = function (r) {
+    return rison.decode('!(' + r + ')');
 };
 
 
@@ -329,12 +329,12 @@ rison.parser.prototype.parse = function (str) {
 };
 
 rison.parser.prototype.error = function (message) {
-    if (typeof(console) != 'undefined')
+    if (typeof (console) != 'undefined')
         console.log('rison parser error: ', message);
     this.message = message;
     return undefined;
 }
-    
+
 rison.parser.prototype.readValue = function () {
     var c = this.next();
     var fn = c && this.table[c];
@@ -345,7 +345,7 @@ rison.parser.prototype.readValue = function () {
     // fell through table, parse as an id
 
     var s = this.string;
-    var i = this.index-1;
+    var i = this.index - 1;
 
     // Regexp.lastIndex may not work right in IE before 5.5?
     // g flag on the regexp is also necessary
@@ -356,7 +356,7 @@ rison.parser.prototype.readValue = function () {
 
     if (m.length > 0) {
         var id = m[0];
-        this.index = i+id.length;
+        this.index = i + id.length;
         return id;  // a string
     }
 
@@ -396,9 +396,9 @@ rison.parser.prototype.table = {
         var c = s.charAt(this.index++);
         if (!c) return this.error('"!" at end of input');
         var x = rison.parser.bangs[c];
-        if (typeof(x) == 'function') {
+        if (typeof (x) == 'function') {
             return x.call(null, this);
-        } else if (typeof(x) == 'undefined') {
+        } else if (typeof (x) == 'undefined') {
             return this.error('unknown literal: "!' + c + '"');
         }
         return x;
@@ -435,19 +435,19 @@ rison.parser.prototype.table = {
             //if (i == s.length) return this.error('unmatched "\'"');
             if (!c) return this.error('unmatched "\'"');
             if (c == '!') {
-                if (start < i-1)
-                    segments.push(s.slice(start, i-1));
+                if (start < i - 1)
+                    segments.push(s.slice(start, i - 1));
                 c = s.charAt(i++);
                 if ("!'".indexOf(c) >= 0) {
                     segments.push(c);
                 } else {
-                    return this.error('invalid string escape: "!'+c+'"');
+                    return this.error('invalid string escape: "!' + c + '"');
                 }
                 start = i;
             }
         }
-        if (start < i-1)
-            segments.push(s.slice(start, i-1));
+        if (start < i - 1)
+            segments.push(s.slice(start, i - 1));
         this.index = i;
         return segments.length == 1 ? segments[0] : segments.join('');
     },
@@ -456,7 +456,7 @@ rison.parser.prototype.table = {
     '-': function () {
         var s = this.string;
         var i = this.index;
-        var start = i-1;
+        var start = i - 1;
         var state = 'int';
         var permittedSigns = '-';
         var transitions = {
@@ -472,7 +472,7 @@ rison.parser.prototype.table = {
                 permittedSigns = '';
                 continue;
             }
-            state = transitions[state+'+'+c.toLowerCase()];
+            state = transitions[state + '+' + c.toLowerCase()];
             if (state == 'exp') permittedSigns = '-';
         } while (state);
         this.index = --i;
@@ -498,3 +498,5 @@ rison.parser.prototype.next = function () {
     this.index = i;
     return c;
 };
+
+module.exports = rison;

@@ -101,6 +101,94 @@ describe('User visits addin', () => {
         });   
     });
 
+    <% if (!isDriveAddin) { %>
+        <% if (!isButton) { %>
+    // Navbar tests
+    it('should have a navbar', async () => {
+        let navbar = await page.$("#menuId") !== null;
+        assert.isTrue(navbar, "Navbar does not exist");
+    });
+
+    it('nav bar should collapse', async () => {
+        await page.click("#menuToggle");
+        let collapsed = await page.evaluate( () => {
+            let nav = document.querySelector("#menuId");
+            return nav.className.includes("menuCollapsed");
+        });
+        assert.isTrue(collapsed, "Navbar does not collapse");
+    });
+
+    it('nav bar should extend from collapsed state', async () => {
+        await page.click("#menuToggle");
+
+        let extended = await page.evaluate( () => {
+            let nav = document.querySelector("#menuId");
+            return !nav.className.includes("menuCollapsed");
+        });
+        assert.isTrue(extended, "Navbar did not re-extend");
+    });
+        <% } %>
+    it('blur button should blur addin', async () => {
+        await page.click("#toggleBtn");
+        let hidden = await page.evaluate( () => {
+            let toggled = false;
+            let addin = document.getElementById("<%= root%>");
+            if(addin.className.includes("hidden")){
+                toggled = true;
+            }
+            return toggled;
+        });
+        assert.isTrue(hidden, "add-in is hidden");
+    });
+
+    it('focus button should focus addin', async () => {
+        await page.click("#toggleBtn");
+
+        let hidden = await page.evaluate( () => {
+            let toggled = false;
+            let addin = document.getElementById("<%= root%>");
+            if(addin.className.includes("hidden")){
+                toggled = true;
+            }
+            return toggled;
+        });
+        assert.isFalse(hidden, "add-in is hidden");
+    });
+    <% } %>
+    // Mock function tests
+    it('should authenticate api', async () => {
+        let success = await page.evaluate( () => {
+            let authenticated = false;
+            api.getSession( (credentials, server) => {
+                if(server !== "undefined" && credentials !== "undefined"){
+                    authenticated = true;
+                }
+            });
+            return authenticated;
+        });
+        assert.isTrue(success, "api is not authenticating properly");
+    })
+
+    it('add-in should exist in geotab object', async () => {
+        let keyLength = await page.evaluate( () => {
+            <% if (isButton) { %>
+            let len = Object.keys(geotab.customButtons).length
+            <% } else { %>
+            let len = Object.keys(geotab.addin).length
+            <% } %>
+            return len;
+        });
+        assert.isTrue(keyLength > 0, `Add-in is not present in mock backend`);
+    });  
+
+    it('should load the state object', async () => {
+        let state = await page.evaluate( () => {
+            let stateExists = typeof state == "object";
+            return stateExists;
+        });
+        assert.isTrue(state, "State is not defined");
+    });
+
     // Tests Finished
     after(async () => {
         await browser.close();

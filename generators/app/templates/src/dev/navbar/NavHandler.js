@@ -7,9 +7,10 @@ class NavHandler {
     * @param {object} api - GeotabAPI object
     * @param {object} state - mock addin state - Contains addin controls (blur, etc.)
     */
-    constructor(api, state){
-        this.api = api;
-        this.state = state;
+    constructor(navFact, props){
+        this.navFact = navFact;
+        this.props = props;
+        this.focus = true;
     }
 
     /**
@@ -87,26 +88,25 @@ class NavHandler {
         // Self defined for referencing clickHandler
         let self = this;
         // Generating Navbar
-        let navFact = new NavFactory();
         let navHTML = ``;
         let navBase = document.getElementById("navBase");
         let headerCount = 0;
 
         // Reading the JSON props file and building out the navbar
-        props.forEach(prop => {
+        this.props.forEach(prop => {
             prop.id = headerCount;
             // Main header
-            navHTML += navFact.openMainHeader(prop);
+            navHTML += this.navFact.openMainHeader(prop);
             if(prop.hasSubmenu){
                 // Sub Menu
-                navHTML += navFact.openSubMenu(prop);
+                navHTML += this.navFact.openSubMenu(prop);
                 prop.submenuItems.forEach( item => {
                     // Sub header
-                    navHTML += navFact.subHeader(item);
+                    navHTML += this.navFact.subHeader(item);
                 })
-                navHTML += navFact.closeSubMenu();
+                navHTML += this.navFact.closeSubMenu();
             }
-            navHTML += navFact.closeMainHeader();
+            navHTML += this.navFact.closeMainHeader();
             headerCount++;
         });
         navBase.innerHTML = navBase.innerHTML += navHTML;
@@ -114,7 +114,7 @@ class NavHandler {
         // Referencing the new navbar
         let navigationBar         = document.getElementById("menuId");
         let toggleButton          = document.getElementById("menuToggle");
-        let centerPane            = document.getElementsByClassName("centerPane")[0];
+        let centerPane            = document.getElementById("app");
         let chevronIcon           = toggleButton.children.item(0);
         let menuHeaders           = document.getElementsByClassName("mainMenuHeader");
         let floatingMenu          = document.getElementById("hiddenMenu");
@@ -131,6 +131,15 @@ class NavHandler {
                 centerPane.style.left = "50px";
                 chevronIcon.style.transform = "rotate(180deg)";
             }
+             // Closing the floating menu
+             floatingMenu.style.display = "none";
+
+             // Closing any open menu headers
+             for(let i=0; i<menuHeaders.length; i++){
+                 menuHeaders[i].className = menuHeaders[i].className.replace(" mainMenuHeaderExpanded", "");
+             }
+ 
+             // Inverting extended status
             navigationBarExtended = !navigationBarExtended
         });
         
@@ -163,9 +172,11 @@ class NavHandler {
         let displayToggle = document.getElementById("toggleBtn");
         displayToggle.addEventListener("click", () => {
             if(this.focus){
-                geotab.addin.<%= root%>.blur();
+                displayToggle.innerHTML = "Focus add-in";
+                global.geotab.addin.<%= root%>.blur();
             } else {
-                geotab.addin.<%= root%>.focus(this.api, this.state);
+                displayToggle.innerHTML = "Blur add-in";
+                global.geotab.addin.<%= root%>.focus(global.api, global.state);
             }
             this.focus = !this.focus;
         });
@@ -187,10 +198,12 @@ class NavHandler {
                 if(this.storedHash !== "#" + "<%= root %>"){
                     geotab.addin.<%= root %>.blur();
                 } else {
-                    geotab.addin.<%= root %>.focus(this.api, this.state);
+                    geotab.addin.<%= root %>.focus(global.api, global.state);
                 }
             }
         }, 100);
     }
 
 } 
+
+module.exports = NavHandler;
