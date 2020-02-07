@@ -7,15 +7,14 @@
 Leverage modern package managers.
 
 - [NPM](https://www.npmjs.com/)
-- [Bower](http://bower.io)
 
 ### Local Debugging
 
 - Run and debug the add-in localy without having to add to test database. MyGeotabApi mocks the API object passes to add-in to make requests to you test database.
 - Mock state - Drive add-in will try to use HTML5 features to mock Andoid/IOS device features (ex. Geolocation)
 - Automagically lint your scripts
-- Built-in preview server with BrowserSync
-- The gulpfile makes use of [ES2015 features](https://babeljs.io/docs/learn-es2015/) by using [Babel](https://babeljs.io)
+- Built-in preview server with Webpack's development server
+- Webpack makes use of [ES2015 features](https://babeljs.io/docs/learn-es2015/) by using [Babel](https://babeljs.io) loaders
 
 ### Release Build Process
 
