@@ -4,13 +4,24 @@ var chalk = require('chalk');
 var yosay = require('yosay');
 var camelCase = require('camelcase');
 
-module.exports = yeoman.Base.extend({
+/**
+ * As per release 2.0.0 (https://github.com/yeoman/generator/releases/tag/v2.0.0) .extends was depreciated in favor of es6 classes
+ * 
+ * This rebuild was necessary due to other breaking changes in yeoman-test updates (https://github.com/yeoman/yeoman-test/issues/43)
+ * 
+ * More info on the class system for yeoman: https://yeoman.io/authoring/#extending-generator
+ */
+module.exports = class extends yeoman {
 
-  initializing: function () {
+  constructor(args, opts){
+    super(args, opts);
+  }
+
+  initializing() {
     this.pkg = require('../../package.json');
-  },
+  }
 
-  prompting: function () {
+  async prompting() {
     var done = this.async();
 
     // Have Yeoman greet the user.
@@ -160,273 +171,267 @@ module.exports = yeoman.Base.extend({
       default: this.appname
     }];
 
-    this.prompt(prompts, function (props) {
-      var nextPrompts;
+    // Getting the props values that yeoman stored before
+    this.props = await this.prompt(prompts);
+    this.props.camelName = camelCase(this.props.name);
 
-      props.camelName = camelCase(props.name);
-      if (props.host && props.host.indexOf('/', props.host.length - 1) === -1) {
-        props.host += '/';
+    if (this.props.host && this.props.host.indexOf('/', this.props.host.length - 1) === -1) {
+      this.props.host += '/';
+    }
+
+    let nextPrompts;
+    switch (this.props.type) {
+      case 'MyGeotabPage':
+        nextPrompts = MyGeotabPagePrompts;
+        break;
+      case 'MyGeotabButton':
+        nextPrompts = MyGeotabButtonPrompts;
+        this.props.isButton = true;
+        break;
+      case 'DrivePage':
+        nextPrompts = [MyGeotabPagePrompts[1]];
+        this.props.isDriveAddin = true;
+        this.props.path = 'DriveAppLink/'
+        break;
+    }
+
+    let secondaryAnswers = await this.prompt(nextPrompts);
+    Object.assign(this.props, secondaryAnswers);
+    done();
+  }
+
+  webpack(){
+    this.fs.copyTpl(
+      this.templatePath('webpack.config.js'),
+      this.destinationPath('webpack.config.js'), {
+        date: new Date().toISOString().split('T')[0],
+        name: this.props.camelName,
+        pkgname: this.pkg.name,
+        version: this.pkg.version,
+        isButton: this.props.isButton,
       }
+    );
+  }
 
-      switch (props.type) {
-        case 'MyGeotabPage':
-          nextPrompts = MyGeotabPagePrompts;
-          break;
-        case 'MyGeotabButton':
-          nextPrompts = MyGeotabButtonPrompts;
-          props.isButton = true;
-          break;
-        case 'DrivePage':
-          nextPrompts = [MyGeotabPagePrompts[1]];
-          props.isDriveAddin = true;
-          props.path = 'DriveAppLink/'
-          break;
+  packageJSON() {
+    this.fs.copyTpl(
+      this.templatePath('_package.json'),
+      this.destinationPath('package.json'), {
+        name: this.props.camelName
       }
+    );
+  }
 
-      this.prompt(nextPrompts, function (props2) {
-        Object.assign(props, props2);
-        this.props = props;
+  git() {
+    this.fs.copy(
+      this.templatePath('gitignore'),
+      this.destinationPath('.gitignore'));
 
-        done();
-      }.bind(this));
+    this.fs.copy(
+      this.templatePath('gitattributes'),
+      this.destinationPath('.gitattributes'));
+  }
 
-    }.bind(this));
-  },
-
-  writing: {
-    webpack: function () {
-      this.fs.copyTpl(
-        this.templatePath('webpack.config.js'),
-        this.destinationPath('webpack.config.js'), {
-          date: new Date().toISOString().split('T')[0],
-          name: this.props.camelName,
-          pkgname: this.pkg.name,
-          version: this.pkg.version,
-          isButton: this.props.isButton,
-        }
-      );
-    },
-
-    packageJSON: function () {
-      this.fs.copyTpl(
-        this.templatePath('_package.json'),
-        this.destinationPath('package.json'), {
-          name: this.props.camelName
-        }
-      );
-    },
-
-    git: function () {
-      this.fs.copy(
-        this.templatePath('gitignore'),
-        this.destinationPath('.gitignore'));
-
-      this.fs.copy(
-        this.templatePath('gitattributes'),
-        this.destinationPath('.gitattributes'));
-    },
-
-    index: function () {
-      var indexLocation = this.props.isButton ? 'src/dev/button.html' : `src/app/${this.props.camelName}.html`;
-      this.fs.copyTpl(
-        this.templatePath('src/app/index.html'),
-        this.destinationPath(indexLocation), {
-          title: this.props.name,
-          root: this.props.camelName,
-          isDriveAddin: this.props.isDriveAddin,
-          isButton: this.props.isButton,
-          click: this.props.camelName + (this.props.isButton ? '.js' : '.html')
-        }
-      );
-    },
-
-    app: function() {
-      this.fs.copyTpl(
-        this.templatePath('src/app/index.js'),
-        this.destinationPath('src/app/index.js'), {
-          name: this.props.camelName,
-          isButton: this.props.isButton
-        }
-      );
-    },
-
-    config: function () {
-      this.fs.copyTpl(
-        this.templatePath('src/app/config.json'),
-        this.destinationPath('src/app/config.json'), {
-          title: this.props.name,
-          supportEmail: this.props.supportEmail,
-          url: this.props.camelName + (this.props.isButton ? '.js' : '.html'),
-          path: this.props.path,
-          page: this.props.page,
-          menuName: this.props.menuName,
-          root: this.props.camelName,
-          host: this.props.host,
-          isButton: this.props.isButton
-        }
-      );
-    },
-
-    scripts: function () {
-      if (this.props.isButton) {
-        this.fs.copyTpl(
-          this.templatePath('src/app/scripts/button.js'),
-          this.destinationPath('src/app/scripts/' + this.props.camelName + '.js'), {
-            root: this.props.camelName
-          }
-        );
-      } else {
-        this.fs.copyTpl(
-          this.templatePath('src/app/scripts/main.js'),
-          this.destinationPath('src/app/scripts/main.js'), {
-            root: this.props.camelName,
-            isDriveAddin: this.props.isDriveAddin
-          }
-        );
+  index() {
+    var indexLocation = this.props.isButton ? 'src/dev/button.html' : `src/app/${this.props.camelName}.html`;
+    this.fs.copyTpl(
+      this.templatePath('src/app/index.html'),
+      this.destinationPath(indexLocation), {
+        title: this.props.name,
+        root: this.props.camelName,
+        isDriveAddin: this.props.isDriveAddin,
+        isButton: this.props.isButton,
+        click: this.props.camelName + (this.props.isButton ? '.js' : '.html')
       }
-    },
+    );
+  }
 
-    css: function () {
-      if (!this.props.isButton) {
-        this.fs.copyTpl(
-          this.templatePath('src/app/styles/main.css'),
-          this.destinationPath('src/app/styles/main.css'), {
-            isDriveAddin: this.props.isDriveAddin
-          }
-        );
+  app() {
+    this.fs.copyTpl(
+      this.templatePath('src/app/index.js'),
+      this.destinationPath('src/app/index.js'), {
+        name: this.props.camelName,
+        isButton: this.props.isButton
       }
-    },
+    );
+  }
 
-    icon: function () {
-      this.fs.copy(
-        this.templatePath('src/app/images/icon.svg'),
-        this.destinationPath('src/app/images/icon.svg')
-      );
-    },
+  config() {
+    this.fs.copyTpl(
+      this.templatePath('src/app/config.json'),
+      this.destinationPath('src/app/config.json'), {
+        title: this.props.name,
+        supportEmail: this.props.supportEmail,
+        url: this.props.camelName + (this.props.isButton ? '.js' : '.html'),
+        path: this.props.path,
+        page: this.props.page,
+        menuName: this.props.menuName,
+        root: this.props.camelName,
+        host: this.props.host,
+        isButton: this.props.isButton
+      }
+    );
+  }
 
-    test: function () {
-      this.fs.copy(
-        this.templatePath('test/functional/mocks/mocks.js'),
-        this.destinationPath('test/functional/mocks/mocks.js')
-      );
-
+  scripts() {
+    if (this.props.isButton) {
       this.fs.copyTpl(
-        this.templatePath('test/functional/test.js'),
-        this.destinationPath('test/functional/test.js'), {
-          isButton: this.props.isButton,
-          isDriveAddin: this.props.isDriveAddin,
+        this.templatePath('src/app/scripts/button.js'),
+        this.destinationPath('src/app/scripts/' + this.props.camelName + '.js'), {
           root: this.props.camelName
         }
       );
-    },
-
-    dev: function () {
-      // Base
-      this.fs.copy(
-        this.templatePath('src/dev/api.js'),
-        this.destinationPath('src/dev/api.js')
-      );
-
-      this.fs.copy(
-        this.templatePath('src/dev/rison.js'),
-        this.destinationPath('src/dev/rison.js')
-      );
-
+    } else {
       this.fs.copyTpl(
-        this.templatePath('src/dev/index.js'),
-        this.destinationPath('src/dev/index.js'), {
-          isButton: this.props.isButton,
+        this.templatePath('src/app/scripts/main.js'),
+        this.destinationPath('src/app/scripts/main.js'), {
+          root: this.props.camelName,
           isDriveAddin: this.props.isDriveAddin
         }
-      );
-
-      this.fs.copy(
-        this.templatePath('src/dev/state.js'),
-        this.destinationPath('src/dev/state.js')
-      );
-
-      // Login
-      this.fs.copyTpl(
-        this.templatePath('src/dev/login/loginTemplate.js'),
-        this.destinationPath('src/dev/login/loginTemplate.js'), {
-          isDriveAddin: this.props.isDriveAddin,
-          isButton: this.props.isButton,
-          root: this.props.camelName
-        }
-      );
-
-      this.fs.copyTpl(
-        this.templatePath('src/dev/login/loginLogic.js'),
-        this.destinationPath('src/dev/login/loginLogic.js'), {
-          isButton: this.props.isButton,
-          isDriveAddin: this.props.isDriveAddin
-        }
-      );
-
-      // Navbar      
-      this.fs.copyTpl(
-        this.templatePath('src/dev/navbar/navbar.js'),
-        this.destinationPath('src/dev/navbar/navbar.js'), {
-          root: this.props.camelName,
-        }
-      );
-        
-      this.fs.copyTpl(
-        this.templatePath('src/dev/navbar/NavBuilder.js'),
-        this.destinationPath('src/dev/navbar/NavBuilder.js'), {
-          root: this.props.camelName,
-          isButton: this.props.isButton,
-          isDriveAddin: this.props.isDriveAddin
-        }
-      );
-        
-      this.fs.copyTpl(
-        this.templatePath('src/dev/navbar/NavFactory.js'),
-        this.destinationPath('src/dev/navbar/NavFactory.js'), {
-          root: this.props.camelName,
-          isButton: this.props.isButton
-        }
-      );
-
-      this.fs.copyTpl(
-        this.templatePath('src/dev/navbar/NavHandler.js'),
-        this.destinationPath('src/dev/navbar/NavHandler.js'), {
-          root: this.props.camelName,
-          isButton: this.props.isButton
-        }
-      );
-        
-      this.fs.copyTpl(
-        this.templatePath('src/dev/navbar/props.js'),
-        this.destinationPath('src/dev/navbar/props.js'), {
-          path: this.props.path,
-          root: this.props.camelName,
-          label: this.props.menuName
-        }
-      );
-      // Other
-      this.fs.copy(
-        this.templatePath('src/dev/images/Font_Awesome_5_solid_chevron-left.svg'),
-        this.destinationPath('src/dev/images/Font_Awesome_5_solid_chevron-left.svg')
-      );
-
-      this.fs.copy(
-        this.templatePath('src/dev/styles/styleGuide.css'),
-        this.destinationPath('src/dev/styles/styleGuide.css')
-      );
-
-      this.fs.copy(
-        this.templatePath('src/dev/styles/styleGuideMyGeotab.html'),
-        this.destinationPath('src/dev/styles/styleGuideMyGeotab.html')
       );
     }
-  },
+  }
 
-  install: function () {
+  css() {
+    if (!this.props.isButton) {
+      this.fs.copyTpl(
+        this.templatePath('src/app/styles/main.css'),
+        this.destinationPath('src/app/styles/main.css'), {
+          isDriveAddin: this.props.isDriveAddin
+        }
+      );
+    }
+  }
+
+  icon() {
+    this.fs.copy(
+      this.templatePath('src/app/images/icon.svg'),
+      this.destinationPath('src/app/images/icon.svg')
+    );
+  }
+
+  test() {
+    this.fs.copy(
+      this.templatePath('test/functional/mocks/mocks.js'),
+      this.destinationPath('test/functional/mocks/mocks.js')
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('test/functional/test.js'),
+      this.destinationPath('test/functional/test.js'), {
+        isButton: this.props.isButton,
+        isDriveAddin: this.props.isDriveAddin,
+        root: this.props.camelName
+      }
+    );
+  }
+
+  dev() {
+    // Base
+    this.fs.copy(
+      this.templatePath('src/dev/api.js'),
+      this.destinationPath('src/dev/api.js')
+    );
+
+    this.fs.copy(
+      this.templatePath('src/dev/rison.js'),
+      this.destinationPath('src/dev/rison.js')
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('src/dev/index.js'),
+      this.destinationPath('src/dev/index.js'), {
+        isButton: this.props.isButton,
+        isDriveAddin: this.props.isDriveAddin
+      }
+    );
+
+    this.fs.copy(
+      this.templatePath('src/dev/state.js'),
+      this.destinationPath('src/dev/state.js')
+    );
+
+    // Login
+    this.fs.copyTpl(
+      this.templatePath('src/dev/login/loginTemplate.js'),
+      this.destinationPath('src/dev/login/loginTemplate.js'), {
+        isDriveAddin: this.props.isDriveAddin,
+        isButton: this.props.isButton,
+        root: this.props.camelName
+      }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('src/dev/login/loginLogic.js'),
+      this.destinationPath('src/dev/login/loginLogic.js'), {
+        isButton: this.props.isButton,
+        isDriveAddin: this.props.isDriveAddin
+      }
+    );
+
+    // Navbar      
+    this.fs.copyTpl(
+      this.templatePath('src/dev/navbar/navbar.js'),
+      this.destinationPath('src/dev/navbar/navbar.js'), {
+        root: this.props.camelName,
+      }
+    );
+      
+    this.fs.copyTpl(
+      this.templatePath('src/dev/navbar/NavBuilder.js'),
+      this.destinationPath('src/dev/navbar/NavBuilder.js'), {
+        root: this.props.camelName,
+        isButton: this.props.isButton,
+        isDriveAddin: this.props.isDriveAddin
+      }
+    );
+      
+    this.fs.copyTpl(
+      this.templatePath('src/dev/navbar/NavFactory.js'),
+      this.destinationPath('src/dev/navbar/NavFactory.js'), {
+        root: this.props.camelName,
+        isButton: this.props.isButton
+      }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('src/dev/navbar/NavHandler.js'),
+      this.destinationPath('src/dev/navbar/NavHandler.js'), {
+        root: this.props.camelName,
+        isButton: this.props.isButton
+      }
+    );
+      
+    this.fs.copyTpl(
+      this.templatePath('src/dev/navbar/props.js'),
+      this.destinationPath('src/dev/navbar/props.js'), {
+        path: this.props.path,
+        root: this.props.camelName,
+        label: this.props.menuName
+      }
+    );
+    // Other
+    this.fs.copy(
+      this.templatePath('src/dev/images/Font_Awesome_5_solid_chevron-left.svg'),
+      this.destinationPath('src/dev/images/Font_Awesome_5_solid_chevron-left.svg')
+    );
+
+    this.fs.copy(
+      this.templatePath('src/dev/styles/styleGuide.css'),
+      this.destinationPath('src/dev/styles/styleGuide.css')
+    );
+
+    this.fs.copy(
+      this.templatePath('src/dev/styles/styleGuideMyGeotab.html'),
+      this.destinationPath('src/dev/styles/styleGuideMyGeotab.html')
+    );
+  }
+
+  install() {
     this.installDependencies({
       npm: true,
       bower: false,
       yarn: false
     });
   }
-});
+};
