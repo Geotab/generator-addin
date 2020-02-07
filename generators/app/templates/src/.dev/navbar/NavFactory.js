@@ -93,3 +93,5 @@ class SubHeader {
         return this.html;
     }
 }
+
+module.exports = NavFactory;
