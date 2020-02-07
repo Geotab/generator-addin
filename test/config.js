@@ -18,7 +18,7 @@ describe('generator-addin:page config.json', function () {
     helpers.run(path.join(__dirname, '../generators/app'))
       .withPrompts(props)
       .on('end', function () {
-        config = JSON.parse(fs.readFileSync('app/config.json', 'utf8'));
+        config = JSON.parse(fs.readFileSync('src/app/config.json', 'utf8'));
         done();
       });
   });
@@ -61,7 +61,7 @@ describe('generator-addin:button config.json', function () {
     helpers.run(path.join(__dirname, '../generators/app'))
       .withPrompts(props)
       .on('end', function () {
-        config = JSON.parse(fs.readFileSync('app/config.json', 'utf8'));
+        config = JSON.parse(fs.readFileSync('src/app/config.json', 'utf8'));
         done();
       });
   });
@@ -103,7 +103,7 @@ describe('generator-addin:drive config.json', function () {
       helpers.run(path.join(__dirname, '../generators/app'))
         .withPrompts(props)
         .on('end', function () {
-          config = JSON.parse(fs.readFileSync('app/config.json', 'utf8'));
+          config = JSON.parse(fs.readFileSync('src/app/config.json', 'utf8'));
           done();
         });
     });
