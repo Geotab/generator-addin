@@ -190,19 +190,19 @@ class NavHandler {
      * 
      * onHashChange does not appear to be supported as an event in this browser
      */
-    // listenToHash(){
-    //     this.storedHash = window.location.hash;
-    //     setInterval(()=>{
-    //         if(window.location.hash !== this.storedHash){
-    //             this.storedHash = window.location.hash;
-    //             if(this.storedHash !== "#" + "<%= root %>"){
-    //                 geotab.addin.<%= root %>.blur();
-    //             } else {
-    //                 geotab.addin.<%= root %>.focus(global.api, global.state);
-    //             }
-    //         }
-    //     }, 100);
-    // }
+    listenToHash(){
+        this.storedHash = window.location.hash;
+        setInterval(()=>{
+            if(window.location.hash !== this.storedHash){
+                this.storedHash = window.location.hash;
+                if(this.storedHash !== "#" + "<%= root %>"){
+                    geotab.addin.<%= root %>.blur();
+                } else {
+                    geotab.addin.<%= root %>.focus(global.api, global.state);
+                }
+            }
+        }, 100);
+    }
 
 } 
 
