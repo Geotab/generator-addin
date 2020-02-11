@@ -12,6 +12,20 @@ const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+/**
+ * Removes "dev" element of the config tree on production build
+ * 
+ * @param {Buffer} content content of file
+ * @param {string} path path to file
+ */
+const transform = function (content, path) {
+    let config = JSON.parse(content);
+    delete config["dev"];
+    let response = JSON.stringify(config, null, 2);
+    // Returned string is written to file
+    return response;
+}
+
 module.exports = merge(common, {
     devtool: '',
     entry: './src/app/index.js',
@@ -90,7 +104,10 @@ module.exports = merge(common, {
         }),
         new CopyWebpackPlugin([
             { from: './src/app/images/icon.svg', to: 'images/'},
-            { from: './src/app/config.json'}
+            { 
+                from: './src/app/config.json',
+                transform: transform
+            }
         ])
     ]
 });
