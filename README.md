@@ -30,15 +30,15 @@ Leverage modern package managers.
 
 ## Getting Started
 
-- Install dependencies: `npm install -g yo gulp-cli bower`
+- Install dependencies: `npm install -g yo`
 - Install the generator: `npm install -g generator-addin`
 - Create a directory for your project `mkdir <projdir>`
 - Change to your project `cd <projdir>`
 - Run `yo addin` to scaffold your addin
-- Run `gulp serve` to preview and watch for changes
-- Run `bower install --save <package>` to install frontend dependencies
-- Run `gulp test` to run the tests
-- Run `gulp build` to build your addin for production
+- Run `npm run serve` to preview and watch for changes
+- Run `npm install <package>` to install frontend dependencies
+- Run `npm run test:serve` to run the tests
+- Run `npm run build` to build your addin for production
 
 ## Documentation
 
