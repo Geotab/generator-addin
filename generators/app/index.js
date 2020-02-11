@@ -202,8 +202,30 @@ module.exports = class extends yeoman {
 
   webpack(){
     this.fs.copyTpl(
-      this.templatePath('webpack.config.js'),
-      this.destinationPath('webpack.config.js'), {
+      this.templatePath('webpack.common.js'),
+      this.destinationPath('webpack.common.js'), {
+        date: new Date().toISOString().split('T')[0],
+        name: this.props.camelName,
+        pkgname: this.pkg.name,
+        version: this.pkg.version,
+        isButton: this.props.isButton,
+      }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('webpack.development.js'),
+      this.destinationPath('webpack.development.js'), {
+        date: new Date().toISOString().split('T')[0],
+        name: this.props.camelName,
+        pkgname: this.pkg.name,
+        version: this.pkg.version,
+        isButton: this.props.isButton,
+      }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('webpack.production.js'),
+      this.destinationPath('webpack.production.js'), {
         date: new Date().toISOString().split('T')[0],
         name: this.props.camelName,
         pkgname: this.pkg.name,
@@ -410,6 +432,13 @@ module.exports = class extends yeoman {
         label: this.props.menuName
       }
     );
+
+    // Loaders
+      this.fs.copy(
+        this.templatePath('src/.dev/loaders/css-sandbox/css-sandbox.js'),
+        this.destinationPath('src/.dev/loaders/css-sandbox/css-sandbox.js')
+      );
+
     // Other
     this.fs.copy(
       this.templatePath('src/.dev/images/Font_Awesome_5_solid_chevron-left.svg'),

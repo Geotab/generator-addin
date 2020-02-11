@@ -3,7 +3,9 @@ var path = require('path');
 var assert = require('yeoman-assert');
 var helpers = require('yeoman-test');
 var commonFiles = [
-  'webpack.config.js',
+  'webpack.common.js',
+  'webpack.production.js',
+  'webpack.development.js',
   'package.json',
   'test/functional/test.js',
   'test/functional/mocks/mocks.js',
@@ -11,6 +13,7 @@ var commonFiles = [
   'src/app/config.json',
   'src/app/images/icon.svg',
   'src/.dev/api.js',
+  'src/.dev/loaders/css-sandbox/css-sandbox.js',
   'src/.dev/login/loginTemplate.js',
   'src/.dev/login/loginLogic.js',
   'src/.dev/navbar/navbar.js',
