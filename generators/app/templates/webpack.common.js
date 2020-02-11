@@ -5,10 +5,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
     plugins: [
         new HtmlWebPackPlugin({
-            
-            template: './src/app/webpackv2.html',
-            
-            filename: './webpackv2.html'
+            <% if (isButton) { %>
+            template: './src/.dev/<%= name%>.html',
+            <% } else { %>
+            template: './src/app/<%= name%>.html',
+            <% } %>            
+            filename: './<%= name%>.html'
         }),
         new MiniCssExtractPlugin({
             name: '[name].css',
@@ -17,6 +19,6 @@ module.exports = {
     ],
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'webpackv2.js'
+        filename: '<%= name%>.js'
     }
 }

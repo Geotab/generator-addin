@@ -41,7 +41,11 @@ module.exports = merge(common, {
                             publicPath: path.resolve(__dirname, 'dist')
                         }
                     },
-                    'css-loader'
+                    'css-loader',
+                    {
+                        loader: './src/.dev/loaders/css-sandbox/css-sandbox.js',
+                        options: { prefix: "#<%= name%>" }
+                    }
                 ]
             },
             {

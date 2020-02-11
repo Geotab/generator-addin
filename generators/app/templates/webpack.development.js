@@ -70,6 +70,6 @@ module.exports = merge(common, {
         contentBase: path.join(__dirname),
         compress: true,
         port: 9000,
-        index: 'webpackv2.html'
+        index: '<%= name%>.html'
     }
 });
