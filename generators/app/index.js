@@ -233,7 +233,7 @@ module.exports = class extends yeoman {
   }
 
   index() {
-    var indexLocation = this.props.isButton ? 'src/dev/button.html' : `src/app/${this.props.camelName}.html`;
+    var indexLocation = this.props.isButton ? 'src/.dev/button.html' : `src/app/${this.props.camelName}.html`;
     this.fs.copyTpl(
       this.templatePath('src/app/index.html'),
       this.destinationPath(indexLocation), {
@@ -329,32 +329,32 @@ module.exports = class extends yeoman {
   dev() {
     // Base
     this.fs.copy(
-      this.templatePath('src/dev/api.js'),
-      this.destinationPath('src/dev/api.js')
+      this.templatePath('src/.dev/api.js'),
+      this.destinationPath('src/.dev/api.js')
     );
 
     this.fs.copy(
-      this.templatePath('src/dev/rison.js'),
-      this.destinationPath('src/dev/rison.js')
+      this.templatePath('src/.dev/rison.js'),
+      this.destinationPath('src/.dev/rison.js')
     );
 
     this.fs.copyTpl(
-      this.templatePath('src/dev/index.js'),
-      this.destinationPath('src/dev/index.js'), {
+      this.templatePath('src/.dev/index.js'),
+      this.destinationPath('src/.dev/index.js'), {
         isButton: this.props.isButton,
         isDriveAddin: this.props.isDriveAddin
       }
     );
 
     this.fs.copy(
-      this.templatePath('src/dev/state.js'),
-      this.destinationPath('src/dev/state.js')
+      this.templatePath('src/.dev/state.js'),
+      this.destinationPath('src/.dev/state.js')
     );
 
     // Login
     this.fs.copyTpl(
-      this.templatePath('src/dev/login/loginTemplate.js'),
-      this.destinationPath('src/dev/login/loginTemplate.js'), {
+      this.templatePath('src/.dev/login/loginTemplate.js'),
+      this.destinationPath('src/.dev/login/loginTemplate.js'), {
         isDriveAddin: this.props.isDriveAddin,
         isButton: this.props.isButton,
         root: this.props.camelName
@@ -362,8 +362,8 @@ module.exports = class extends yeoman {
     );
 
     this.fs.copyTpl(
-      this.templatePath('src/dev/login/loginLogic.js'),
-      this.destinationPath('src/dev/login/loginLogic.js'), {
+      this.templatePath('src/.dev/login/loginLogic.js'),
+      this.destinationPath('src/.dev/login/loginLogic.js'), {
         isButton: this.props.isButton,
         isDriveAddin: this.props.isDriveAddin
       }
@@ -371,15 +371,15 @@ module.exports = class extends yeoman {
 
     // Navbar      
     this.fs.copyTpl(
-      this.templatePath('src/dev/navbar/navbar.js'),
-      this.destinationPath('src/dev/navbar/navbar.js'), {
+      this.templatePath('src/.dev/navbar/navbar.js'),
+      this.destinationPath('src/.dev/navbar/navbar.js'), {
         root: this.props.camelName,
       }
     );
       
     this.fs.copyTpl(
-      this.templatePath('src/dev/navbar/NavBuilder.js'),
-      this.destinationPath('src/dev/navbar/NavBuilder.js'), {
+      this.templatePath('src/.dev/navbar/NavBuilder.js'),
+      this.destinationPath('src/.dev/navbar/NavBuilder.js'), {
         root: this.props.camelName,
         isButton: this.props.isButton,
         isDriveAddin: this.props.isDriveAddin
@@ -387,24 +387,24 @@ module.exports = class extends yeoman {
     );
       
     this.fs.copyTpl(
-      this.templatePath('src/dev/navbar/NavFactory.js'),
-      this.destinationPath('src/dev/navbar/NavFactory.js'), {
+      this.templatePath('src/.dev/navbar/NavFactory.js'),
+      this.destinationPath('src/.dev/navbar/NavFactory.js'), {
         root: this.props.camelName,
         isButton: this.props.isButton
       }
     );
 
     this.fs.copyTpl(
-      this.templatePath('src/dev/navbar/NavHandler.js'),
-      this.destinationPath('src/dev/navbar/NavHandler.js'), {
+      this.templatePath('src/.dev/navbar/NavHandler.js'),
+      this.destinationPath('src/.dev/navbar/NavHandler.js'), {
         root: this.props.camelName,
         isButton: this.props.isButton
       }
     );
       
     this.fs.copyTpl(
-      this.templatePath('src/dev/navbar/props.js'),
-      this.destinationPath('src/dev/navbar/props.js'), {
+      this.templatePath('src/.dev/navbar/props.js'),
+      this.destinationPath('src/.dev/navbar/props.js'), {
         path: this.props.path,
         root: this.props.camelName,
         label: this.props.menuName
@@ -412,18 +412,18 @@ module.exports = class extends yeoman {
     );
     // Other
     this.fs.copy(
-      this.templatePath('src/dev/images/Font_Awesome_5_solid_chevron-left.svg'),
-      this.destinationPath('src/dev/images/Font_Awesome_5_solid_chevron-left.svg')
+      this.templatePath('src/.dev/images/Font_Awesome_5_solid_chevron-left.svg'),
+      this.destinationPath('src/.dev/images/Font_Awesome_5_solid_chevron-left.svg')
     );
 
     this.fs.copy(
-      this.templatePath('src/dev/styles/styleGuide.css'),
-      this.destinationPath('src/dev/styles/styleGuide.css')
+      this.templatePath('src/.dev/styles/styleGuide.css'),
+      this.destinationPath('src/.dev/styles/styleGuide.css')
     );
 
     this.fs.copy(
-      this.templatePath('src/dev/styles/styleGuideMyGeotab.html'),
-      this.destinationPath('src/dev/styles/styleGuideMyGeotab.html')
+      this.templatePath('src/.dev/styles/styleGuideMyGeotab.html'),
+      this.destinationPath('src/.dev/styles/styleGuideMyGeotab.html')
     );
   }
 
