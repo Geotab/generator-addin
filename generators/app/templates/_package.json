@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --env.build=y --mode=none --config webpack.config.js",
-    "serve": "webpack-dev-server --env.build=n --mode=none --config webpack.config.js",
+    "build": "webpack --mode=production --config webpack.production.js",
+    "serve": "webpack-dev-server --mode=development --config webpack.development.js",
     "test": "start-server-and-test serve http://localhost:9000 mocha",
     "mocha": "mocha test/**/*.js"
   },
@@ -41,7 +41,8 @@
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1",
-    "webpack-fix-style-only-entries": "^0.4.0"
+    "webpack-fix-style-only-entries": "^0.4.0",
+    "webpack-merge": "^4.2.2"
   },
   "eslintConfig": {
     "env": {
