@@ -14,7 +14,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = env => {
     // Workaround for having two config trees depending on input. Uses impossible to match regex to avoid errors
     let devExclusion = env.build === 'y' ? /\.dev/ : /^ $/;
-    let entryPoint = env.build === 'y' ? './src/app/index.js' : './src/dev/index.js';
+    let entryPoint = env.build === 'y' ? './src/app/index.js' : './src/.dev/index.js';
     let sourceMap = env.build === 'y' ? false : true;
     let config = {
         entry: entryPoint,
