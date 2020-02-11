@@ -2,88 +2,88 @@
  * Props item - Houses all the navbar items and submenu items
  */
 const props = [
-    <% if (path == "GettingStartedLink/") { %>
+    <% if (path == 'GettingStartedLink/') { %>
     {
-       name: "help", //Used in css and js reference
-       labelText: "Getting Started &amp; Help", // Displayed to user
+       name: 'help', //Used in css and js reference
+       labelText: 'Getting Started &amp; Help', // Displayed to user
        hasSubmenu: true, // Used to build the nav tree
        submenuItems: [
             {
-                name: "<%= root %>",
-                labelText: "<%= label %>"
+                name: '<%= root %>',
+                labelText: '<%= label %>'
             }
         ]
     },
     <% } %>
-    <% if (path == "ActivityLink/") { %>
+    <% if (path == 'ActivityLink/') { %>
      {
-         name: "activity",
-         labelText: "Activity",
+         name: 'activity',
+         labelText: 'Activity',
          hasSubmenu: true,
          submenuItems: [
                 {
-                    name: "<%= root %>",
-                    labelText: "<%= label %>"
+                    name: '<%= root %>',
+                    labelText: '<%= label %>'
                 }
             ]
     },
     <% } %>
-    <% if (path == "EngineMaintenanceLink/") { %>
+    <% if (path == 'EngineMaintenanceLink/') { %>
     {
-        name: "engine",
-        labelText: "Engine &amp; Maintenance",
+        name: 'engine',
+        labelText: 'Engine &amp; Maintenance',
         hasSubmenu: true,
         submenuItems: [
                 {
-                    name: "<%= root %>",
-                    labelText: "<%= label %>"
+                    name: '<%= root %>',
+                    labelText: '<%= label %>'
                 }
             ]
         },
         <% } %>
-    <% if (path == "ZoneAndMessagesLink/") { %>
+    <% if (path == 'ZoneAndMessagesLink/') { %>
      {
-         name: "zone",
-         labelText: "Zones &amp; Messages",
+         name: 'zone',
+         labelText: 'Zones &amp; Messages',
          hasSubmenu: true,
          submenuItems: [
                 {
-                    name: "<%= root %>",
-                    labelText: "<%= label %>"
+                    name: '<%= root %>',
+                    labelText: '<%= label %>'
                 }
             ]
         },
     <% } %>
-    <% if (path == "RuleAndGroupsLink/") { %>
+    <% if (path == 'RuleAndGroupsLink/') { %>
      {
-        name: "rule",
-        labelText: "Rules &amp; Groups",
+        name: 'rule',
+        labelText: 'Rules &amp; Groups',
         hasSubmenu: true,
         submenuItems: [
             {
-                name: "<%= root %>",
-                labelText: "<%= label %>"
+                name: '<%= root %>',
+                labelText: '<%= label %>'
             }
         ]
     },
     <% } %>
-    <% if (path == "AdministrationLink/") { %>
+    <% if (path == 'AdministrationLink/') { %>
      {
-        name: "administration",
-        labelText: "Administration",
+        name: 'administration',
+        labelText: 'Administration',
         hasSubmenu: true,
         submenuItems: [
                 {
-                    name: "<%= root %>",
-                    labelText: "<%= label %>"
+                    name: '<%= root %>',
+                    labelText: '<%= label %>'
                 }
             ]
         },
     <% } %>
-     <% if (path == ""){ %>
+     <% if (path == ''){ %>
      {
-        name: "<%= root %>",
-        labelText: "<%= label %>",
+        name: '<%= root %>',
+        labelText: '<%= label %>',
         hasSubmenu: false,
         submenuItems: []
      }
