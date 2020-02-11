@@ -1,10 +1,10 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const ImageminPlugin = require("imagemin-webpack");
+const ImageminPlugin = require('imagemin-webpack');
 const ImageminMozjpeg = require('imagemin-mozjpeg');
 const ImageminPngquant = require('imagemin-pngquant');
 const ImageminGiflossy = require('imagemin-giflossy');
@@ -13,12 +13,12 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = env => {
     // Workaround for having two config trees depending on input. Uses impossible to match regex to avoid errors
-    let devExclusion = env.build === "y" ? /dev/ : /^ $/;
-    let entryPoint = env.build === "y" ? './src/app/index.js' : './src/dev/index.js';
-    let sourceMap = env.build === "y" ? false : true;
+    let devExclusion = env.build === 'y' ? /\.dev/ : /^ $/;
+    let entryPoint = env.build === 'y' ? './src/app/index.js' : './src/dev/index.js';
+    let sourceMap = env.build === 'y' ? false : true;
     let config = {
         entry: entryPoint,
-        devtool: sourceMap ? "source-map" : "",
+        devtool: sourceMap ? 'source-map' : '',
         module: {
             rules: [
                 {
@@ -28,7 +28,7 @@ module.exports = env => {
                         {
                             loader: MiniCssExtractPlugin.loader,
                             options: {
-                                publicPath: path.resolve(__dirname, "dist")
+                                publicPath: path.resolve(__dirname, 'dist')
                             }
                         },
                         'css-loader'
@@ -51,9 +51,9 @@ module.exports = env => {
                     test: /\.js$/,
                     exclude: [/node_modules/, devExclusion],
                     use: {
-                        loader: "babel-loader",
+                        loader: 'babel-loader',
                         options: {
-                            presets: ["@babel/preset-env"]
+                            presets: ['@babel/preset-env']
                         }
                     },
                 },
@@ -62,7 +62,7 @@ module.exports = env => {
                     exclude: devExclusion,
                     use: [
                         {
-                            loader: "html-loader",
+                            loader: 'html-loader',
                             options: { minimize: true }
                         }
                     ]
@@ -71,23 +71,23 @@ module.exports = env => {
                     test: /\.(png|svg|jpg|gif)$/,
                     exclude: devExclusion,
                     use: [
-                        "file-loader"
+                        'file-loader'
                     ]
                 }
             ]
         },
         output: {
-            path: path.resolve(__dirname, "dist"),
-            filename: "<%= name%>.js"
+            path: path.resolve(__dirname, 'dist'),
+            filename: '<%= name%>.js'
         },
         plugins: [
             new HtmlWebPackPlugin({
                 <% if (isButton) { %>
-                template: "./src/dev/<%= name%>.html",
+                template: './src/dev/<%= name%>.html',
                 <% } else { %>
-                template: "./src/app/<%= name%>.html",
+                template: './src/app/<%= name%>.html',
                 <% } %>
-                filename: "./<%= name%>.html"
+                filename: './<%= name%>.html'
             }),
             new MiniCssExtractPlugin({
                 name: '[name].css',
@@ -118,7 +118,7 @@ module.exports = env => {
             contentBase: path.join(__dirname),
             compress: true,
             port: 9000,
-            index: "<%= name%>.html"
+            index: '<%= name%>.html'
         }
     }
     return config;
