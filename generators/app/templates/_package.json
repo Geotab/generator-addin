@@ -6,8 +6,8 @@
   "scripts": {
     "build": "webpack --env.build=y --mode=none --config webpack.config.js",
     "serve": "webpack-dev-server --env.build=n --mode=none --config webpack.config.js",
-    "test:serve": "concurrently \"npm run serve\" \"mocha --reporter spec test/**/*.js\"",
-    "test": "mocha test/**/*.js"
+    "test": "start-server-and-test serve http://localhost:9000 mocha",
+    "mocha": "mocha test/**/*.js"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +18,6 @@
     "babel-loader": "^8.0.6",
     "before-build-webpack": "^0.2.9",
     "chai": "^4.2.0",
-    "concurrently": "^5.1.0",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.2",
     "eslint": "^6.8.0",
