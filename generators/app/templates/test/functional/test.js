@@ -96,9 +96,15 @@ describe('User visits addin', () => {
   
    // Confirm page displaying after initialized and focus is called
     it('should display root div', async () => {
+        <% if (!isDriveAddin) { %>
         await page.waitFor('#<%= root %>', {
             visible: true
-        });   
+        });
+        <% } else { %>
+        await page.waitFor('#app', {
+            visible: true
+        });
+        <% } %>
     });
 
     <% if (!isDriveAddin) { %>
@@ -127,7 +133,7 @@ describe('User visits addin', () => {
         });
         assert.isTrue(extended, "Navbar did not re-extend");
     });
-        <% } %>
+        
     it('blur button should blur addin', async () => {
         await page.click("#toggleBtn");
         let hidden = await page.evaluate( () => {
@@ -154,6 +160,7 @@ describe('User visits addin', () => {
         });
         assert.isFalse(hidden, "add-in is hidden");
     });
+        <% } %>
     <% } %>
     // Mock function tests
     it('should authenticate api', async () => {
@@ -197,10 +204,9 @@ describe('User visits addin', () => {
     <% if (isDriveAddin) { %>
         // Optional setup for Drive apps -> Selecting the device used
         // select a device (only part of local add-in debugging)
-        before(done => {
-            browser
-                .click('option[value="' + mocks.device.id + '"]')
-                .click('#okBtn');
+        before(async () => {
+            await page.select('select#devices',  mocks.device.id);
+            await page.click('#okBtn');
         });
     <% } %>
 });
