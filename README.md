@@ -37,7 +37,8 @@ Leverage modern package managers.
 - Run `yo addin` to scaffold your addin
 - Run `npm run serve` to preview and watch for changes
 - Run `npm install <package>` to install frontend dependencies
-- Run `npm run test:serve` to run the tests
+- Use `src/app/index.js` as the entrypoint to the application
+- Run `npm run test` to run the tests
 - Run `npm run build` to build your addin for production
 
 ## Documentation
