@@ -255,7 +255,7 @@ module.exports = class extends yeoman {
   }
 
   index() {
-    var indexLocation = this.props.isButton ? 'src/.dev/button.html' : `src/app/${this.props.camelName}.html`;
+    var indexLocation = this.props.isButton ? `src/.dev/${this.props.camelName}.html` : `src/app/${this.props.camelName}.html`;
     this.fs.copyTpl(
       this.templatePath('src/app/index.html'),
       this.destinationPath(indexLocation), {
