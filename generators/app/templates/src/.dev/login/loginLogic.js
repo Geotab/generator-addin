@@ -74,6 +74,7 @@ class GeotabLogin {
     }
 
     initializeDevice() {
+        let self = this;
         // Mock device for drive addin
         global.api.call('Get', {
             typeName: 'Device',
@@ -95,8 +96,8 @@ class GeotabLogin {
             }).map(function (d) {
                 return '<option value="' + d.id + '">' + d.name + '</option>';
             });
-            this.elDevices.innerHTML = '<option>Select Device</option>' + options.join('');
-            this.elDeviceDialog.showModal();
+            self.elDevices.innerHTML = '<option>Select Device</option>' + options.join('');
+            self.elDeviceDialog.showModal();
         }, function (e) {
             console.error(`Could not get vehicles: ${e.message}`);
         });
