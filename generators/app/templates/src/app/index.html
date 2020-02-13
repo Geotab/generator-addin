@@ -19,11 +19,13 @@
         <p>Vehicle: <span id="<%= root %>-vehicle"></span></p>
       </div>
     <% } else if (isButton) { %>
-      <div class="checkmateFormPage">
-          <div class="checkmateToolbarContainer">
-          <span class="checkmateToolbar">
-              <button class="geotabButton customButton noTranslate"><span class="icon" {icon}></span><%= root %></button>
-          </div>
+      <div id="<%= root%>">
+        <div class="checkmateFormPage">
+            <div class="checkmateToolbarContainer">
+            <span class="checkmateToolbar">
+                <button class="geotabButton customButton noTranslate"><span class="icon" {icon}></span><%= root %></button>
+            </div>
+        </div>
       </div>
     <% } else { %>
       <div id="<%= root%>">
