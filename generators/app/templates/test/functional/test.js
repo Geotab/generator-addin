@@ -102,7 +102,7 @@ describe('User visits addin', () => {
         });
         <% } else { %>
         await page.waitFor('#app', {
-            visible: true
+            visible: false
         });
         <% } %>
     });
