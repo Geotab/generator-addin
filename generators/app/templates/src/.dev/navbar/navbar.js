@@ -1,4 +1,4 @@
-let body = document.getElementsByTagName("body")[0];
+let body = document.getElementsByTagName('body')[0];
 let navbar = `
 <nav id="menuId" class="westPane shadowedRight animated" style="top: 40px;">
     <div class="mainMenuSearchBar">
