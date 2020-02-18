@@ -113,5 +113,8 @@ module.exports = merge(common, {
                 transform: transform
             }
         ])
-    ]
+    ],
+    output: {
+        publicPath: config.dev.dist.host
+    }
 });
