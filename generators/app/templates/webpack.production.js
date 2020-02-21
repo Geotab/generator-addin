@@ -21,6 +21,7 @@ const config = require('./src/app/config.json');
  */
 const transform = function (content, path) {
     let config = JSON.parse(content);
+<<<<<<< HEAD
     let host = config.dev.dist.host;
     let len = config.items.length;
     // Appending the host to all item's url and icon
@@ -29,6 +30,8 @@ const transform = function (content, path) {
         config.items[i].icon = host + config.items[i].icon; 
     }
 
+=======
+>>>>>>> 2ae3e0d... Linting
     delete config['dev'];
     let response = JSON.stringify(config, null, 2);
     // Returned string is written to file
@@ -53,7 +56,7 @@ module.exports = merge(common, {
                     'css-loader',
                     {
                         loader: './src/.dev/loaders/css-sandbox/css-sandbox.js',
-                        options: { prefix: "#<%= name%>" }
+                        options: { prefix: '#<%= name%>' }
                     }
                 ]
             },

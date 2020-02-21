@@ -28,7 +28,22 @@ let app = require('../app/index');
 import './rison';
 import './login/loginTemplate.js';
 import GeotabLogin from './login/loginLogic';
+<<<<<<< HEAD
 import GeotabApi from  './api';
+=======
+import GeotabApi from './api';
+
+// Building navbar
+// Exposing handler to let the translate function have access to it
+import './navbar/navBuilder';
+<% if (!isButton && !isDriveAddin) {%>
+/* Translations */
+import DOMTree from './lang/DOMTree';
+let language = localStorage.language ? localStorage.language : 'en';
+global.tree = new DOMTree('#app', language);
+<% } %>
+/* Logic */
+>>>>>>> 58ba628... Linting
 const loginLogic = new GeotabLogin(global.geotab.isDriveAddin, GeotabApi);
 import './navbar/navBuilder';
 
