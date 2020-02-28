@@ -3,19 +3,28 @@ var path = require('path');
 var assert = require('yeoman-assert');
 var helpers = require('yeoman-test');
 var commonFiles = [
-  'bower.json',
-  'gulpfile.babel.js',
+  'webpack.common.js',
+  'webpack.production.js',
+  'webpack.development.js',
   'package.json',
-  'app/config.json',
-  'app/images/icon.svg',
   'test/functional/test.js',
   'test/functional/mocks/mocks.js',
-  '.dev/api.js',
-  '.dev/login.js',
-  '.dev/login.html',
-  '.dev/rison.js',
-  '.dev/style/styleGuide.css',
-  '.dev/style/styleGuideMyGeotab.html'
+  'src/app/index.js',
+  'src/app/config.json',
+  'src/app/images/icon.svg',
+  'src/.dev/api.js',
+  'src/.dev/loaders/css-sandbox/css-sandbox.js',
+  'src/.dev/login/loginTemplate.js',
+  'src/.dev/login/loginLogic.js',
+  'src/.dev/navbar/navbar.js',
+  'src/.dev/navbar/navBuilder.js',
+  'src/.dev/navbar/NavFactory.js',
+  'src/.dev/navbar/NavHandler.js',
+  'src/.dev/navbar/props.js',
+  'src/.dev/rison.js',
+  'src/.dev/index.js',
+  'src/.dev/styles/styleGuide.css',
+  'src/.dev/styles/styleGuideMyGeotab.html'
 ];
 
 describe('generator-addin:page', function () {
@@ -30,9 +39,9 @@ describe('generator-addin:page', function () {
 
   it('creates files for add-in page', function () {
     assert.file(commonFiles.concat([
-      'app/myAddin.html',
-      'app/scripts/main.js',
-      'app/styles/main.css'
+      'src/app/myAddin.html',
+      'src/app/scripts/main.js',
+      'src/app/styles/main.css'
     ]));
   });
 });
@@ -49,8 +58,8 @@ describe('generator-addin:button', function () {
 
   it('creates files for add-in button', function () {
     assert.file(commonFiles.concat([
-      '.dev/button.html',
-      'app/scripts/myAddin.js'
+      'src/.dev/myAddin.html',
+      'src/app/scripts/myAddin.js'
     ]));
   });
 });

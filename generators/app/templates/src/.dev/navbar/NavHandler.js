@@ -7,9 +7,9 @@ class NavHandler {
     * @param {object} api - GeotabAPI object
     * @param {object} state - mock addin state - Contains addin controls (blur, etc.)
     */
-    constructor(api, state){
-        this.api = api;
-        this.state = state;
+    constructor(navFact, props){
+        this.navFact = navFact;
+        this.props = props;
         this.focus = true;
     }
 
@@ -25,39 +25,39 @@ class NavHandler {
     */
     clickHandler(event, self, menuHeaders, floatingMenu, navigationBarExtended, submenu=false){
         // Add active state to clicked nav button if not already selected
-        if(!self.className.includes("activeStateButton")){
-            self.className = self.className += " activeStateButton";
+        if(!self.className.includes('activeStateButton')){
+            self.className = self.className += ' activeStateButton';
         }
     
         let parent = self.parentElement;
         // Handling submenu expansion
         if(navigationBarExtended){ 
-            if(parent.className.includes(" mainMenuHeaderExpanded")){
-                parent.className = parent.className.replace(" mainMenuHeaderExpanded", "");
+            if(parent.className.includes(' mainMenuHeaderExpanded')){
+                parent.className = parent.className.replace(' mainMenuHeaderExpanded', '');
             } else {
-                parent.className = parent.className += " mainMenuHeaderExpanded";
+                parent.className = parent.className += ' mainMenuHeaderExpanded';
             }
         } else {// Showing the floating bar if it is not visible
             // Ensuring the header has a submenu -> parent.children[1] is an associated submenu
             if(parent.children[1] !== undefined){
                 // Making the floating menu a duplicate of the submenu associated with the header
                 floatingMenu.innerHTML = parent.children[1].innerHTML;
-                if(floatingMenu.style.display == "block"){
-                    floatingMenu.style.display = "none";
+                if(floatingMenu.style.display == 'block'){
+                    floatingMenu.style.display = 'none';
                 } else {
-                    floatingMenu.style.display = "block";
+                    floatingMenu.style.display = 'block';
                     floatingMenu.style.top = `${event.y - 50}px`; // Rough approximation
                 }
     
                 // Adding listeners to each floating menu item to close the floating menu when selected
                 let floatingListElements = floatingMenu.children[0].children;
                 for (let j = 0; j < floatingListElements.length; j++) {
-                    floatingListElements[j].children[0].addEventListener("click", function(){
-                        floatingMenu.style.display = "none";
+                    floatingListElements[j].children[0].addEventListener('click', function(){
+                        floatingMenu.style.display = 'none';
                     });
                 }
             } else {
-                floatingMenu.style.display = "none";
+                floatingMenu.style.display = 'none';
             }
         }
 
@@ -66,13 +66,13 @@ class NavHandler {
             let sibling = menuHeaders[i].children[0];
             // Will remove the highlighting of main menu provided the selection isn't in a submenu
             if(sibling !== self && !submenu){
-                sibling.className = sibling.className.replace(" activeStateButton", "");
+                sibling.className = sibling.className.replace(' activeStateButton', '');
             }
 
             // Closing other open submenus
             if(menuHeaders[i] !== parent && !submenu){
-                if(menuHeaders[i].className.includes("mainMenuHeaderExpanded")){
-                    menuHeaders[i].className = menuHeaders[i].className.replace("mainMenuHeaderExpanded", "");
+                if(menuHeaders[i].className.includes('mainMenuHeaderExpanded')){
+                    menuHeaders[i].className = menuHeaders[i].className.replace('mainMenuHeaderExpanded', '');
                 }
             }
         }
@@ -88,60 +88,58 @@ class NavHandler {
         // Self defined for referencing clickHandler
         let self = this;
         // Generating Navbar
-        let navFact = new NavFactory();
         let navHTML = ``;
-        let navBase = document.getElementById("navBase");
+        let navBase = document.getElementById('navBase');
         let headerCount = 0;
 
         // Reading the JSON props file and building out the navbar
-        props.forEach(prop => {
+        this.props.forEach(prop => {
             prop.id = headerCount;
             // Main header
-            navHTML += navFact.openMainHeader(prop);
+            navHTML += this.navFact.openMainHeader(prop);
             if(prop.hasSubmenu){
                 // Sub Menu
-                navHTML += navFact.openSubMenu(prop);
+                navHTML += this.navFact.openSubMenu(prop);
                 prop.submenuItems.forEach( item => {
                     // Sub header
-                    navHTML += navFact.subHeader(item);
+                    navHTML += this.navFact.subHeader(item);
                 })
-                navHTML += navFact.closeSubMenu();
+                navHTML += this.navFact.closeSubMenu();
             }
-            navHTML += navFact.closeMainHeader();
+            navHTML += this.navFact.closeMainHeader();
             headerCount++;
         });
         navBase.innerHTML = navBase.innerHTML += navHTML;
 
         // Referencing the new navbar
-        let navigationBar         = document.getElementById("menuId");
-        let toggleButton          = document.getElementById("menuToggle");
-        let centerPane            = document.getElementsByClassName("centerPane")[0];
+        let navigationBar         = document.getElementById('menuId');
+        let toggleButton          = document.getElementById('menuToggle');
+        let centerPane            = document.getElementById('app');
         let chevronIcon           = toggleButton.children.item(0);
-        let menuHeaders           = document.getElementsByClassName("mainMenuHeader");
-        let floatingMenu          = document.getElementById("hiddenMenu");
+        let menuHeaders           = document.getElementsByClassName('mainMenuHeader');
+        let floatingMenu          = document.getElementById('hiddenMenu');
         let navigationBarExtended = true;
 
         // Handling Navbar pop in/out
-        toggleButton.addEventListener("click", ()=>{
+        toggleButton.addEventListener('click', ()=>{
             if(!navigationBarExtended){
-                navigationBar.className = navigationBar.className.replace("menuCollapsed", "");
-                centerPane.style.left = "250px";
-                chevronIcon.style.transform = "rotate(0deg)";
+                navigationBar.className = navigationBar.className.replace('menuCollapsed', '');
+                centerPane.style.left = '250px';
+                chevronIcon.style.transform = 'rotate(0deg)';
             } else {
-                navigationBar.className += " menuCollapsed";
-                centerPane.style.left = "50px";
-                chevronIcon.style.transform = "rotate(180deg)";
+                navigationBar.className += ' menuCollapsed';
+                centerPane.style.left = '50px';
+                chevronIcon.style.transform = 'rotate(180deg)';
             }
-            
-            // Closing the floating menu
-            floatingMenu.style.display = "none";
+             // Closing the floating menu
+             floatingMenu.style.display = 'none';
 
-            // Closing any open menu headers
-            for(let i=0; i<menuHeaders.length; i++){
-                menuHeaders[i].className = menuHeaders[i].className.replace(" mainMenuHeaderExpanded", "");
-            }
-
-            // Inverting extended status
+             // Closing any open menu headers
+             for(let i=0; i<menuHeaders.length; i++){
+                 menuHeaders[i].className = menuHeaders[i].className.replace(' mainMenuHeaderExpanded', '');
+             }
+ 
+             // Inverting extended status
             navigationBarExtended = !navigationBarExtended
         });
         
@@ -153,14 +151,14 @@ class NavHandler {
                 // Adding in the selection and menu handlers for submenu items
                 if(navigationBarExtended){
                     for (let j = 0; j < menuItems.length; j++) {
-                        menuItems[j].children[0].addEventListener("click", function(event){
+                        menuItems[j].children[0].addEventListener('click', function(event){
                             self.clickHandler(event, this, menuHeaders, floatingMenu, navigationBarExtended, true);
                         });
                     }
                 } 
             } 
             // All menu headers require the functionality
-            menuHeaders[i].children[0].addEventListener("click", function(event){
+            menuHeaders[i].children[0].addEventListener('click', function(event){
                 self.clickHandler(event, this, menuHeaders, floatingMenu, navigationBarExtended);
             });
         }   
@@ -171,14 +169,14 @@ class NavHandler {
      * allows user to see any processes that take place when the addin is blurred/focused
      */
     enableDisplayToggle(){
-        let displayToggle = document.getElementById("toggleBtn");
-        displayToggle.addEventListener("click", () => {
+        let displayToggle = document.getElementById('toggleBtn');
+        displayToggle.addEventListener('click', () => {
             if(this.focus){
-                displayToggle.innerHTML = "Focus add-in";
-                geotab.addin.<%= root%>.blur();
+                displayToggle.innerHTML = 'Focus add-in';
+                global.geotab.addin.<%= root%>.blur();
             } else {
-                displayToggle.innerHTML = "Blur add-in";
-                geotab.addin.<%= root%>.focus(this.api, this.state);
+                displayToggle.innerHTML = 'Blur add-in';
+                global.geotab.addin.<%= root%>.focus(global.api, global.state);
             }
             this.focus = !this.focus;
         });
@@ -197,13 +195,15 @@ class NavHandler {
         setInterval(()=>{
             if(window.location.hash !== this.storedHash){
                 this.storedHash = window.location.hash;
-                if(this.storedHash !== "#" + "<%= root %>"){
+                if(this.storedHash !== '#' + '<%= root %>'){
                     geotab.addin.<%= root %>.blur();
                 } else {
-                    geotab.addin.<%= root %>.focus(this.api, this.state);
+                    geotab.addin.<%= root %>.focus(global.api, global.state);
                 }
             }
         }, 100);
     }
 
 } 
+
+module.exports = NavHandler;
