@@ -478,6 +478,14 @@ module.exports = class extends yeoman {
       this.templatePath('src/.dev/styles/styleGuideMyGeotab.html'),
       this.destinationPath('src/.dev/styles/styleGuideMyGeotab.html')
     );
+
+    this.fs.copyTpl(
+      this.templatePath('src/.dev/ToggleHandler.js'),
+      this.destinationPath('src/.dev/ToggleHandler.js'),
+      {
+        root: this.props.camelName
+      }
+    )
   }
 
   install() {
