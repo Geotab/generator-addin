@@ -348,6 +348,15 @@ module.exports = class extends yeoman {
     );
   }
 
+  utils() {
+    if(!this.props.isButton && !this.props.isDriveAddin){
+      this.fs.copy(
+        this.templatePath('utils/templateBuilder.js'),
+        this.destinationPath('utils/templateBuilder.js')
+      );
+    }
+  }
+
   dev() {
     // Base
     this.fs.copy(
@@ -395,6 +404,14 @@ module.exports = class extends yeoman {
         this.templatePath('src/.dev/lang/TranslationHelper.js'),
         this.destinationPath('src/.dev/lang/TranslationHelper.js'),
       );
+
+      this.fs.copyTpl(
+        this.templatePath('src/app/translations/template.json'),
+        this.destinationPath('src/app/translations/template.json'),
+        {
+          root: this.props.camelName
+        }
+      )
     }
 
     // Login
