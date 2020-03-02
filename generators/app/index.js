@@ -373,6 +373,30 @@ module.exports = class extends yeoman {
       this.destinationPath('src/.dev/state.js')
     );
 
+    // Languages
+    if(!this.props.isButton && !this.props.isDriveAddin){
+
+      this.fs.copy(
+        this.templatePath('src/.dev/lang/DOMTree.js'),
+        this.destinationPath('src/.dev/lang/DOMTree.js'),
+      );
+
+      this.fs.copy(
+        this.templatePath('src/.dev/lang/languages.js'),
+        this.destinationPath('src/.dev/lang/languages.js'),
+      );
+
+      this.fs.copy(
+        this.templatePath('src/.dev/lang/ListMaker.js'),
+        this.destinationPath('src/.dev/lang/ListMaker.js'),
+      );
+
+      this.fs.copy(
+        this.templatePath('src/.dev/lang/TranslationHelper.js'),
+        this.destinationPath('src/.dev/lang/TranslationHelper.js'),
+      );
+    }
+
     // Login
     this.fs.copyTpl(
       this.templatePath('src/.dev/login/loginTemplate.js'),
