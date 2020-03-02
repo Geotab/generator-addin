@@ -87,29 +87,7 @@ class NavHandler {
     generateContent(){
         // Self defined for referencing clickHandler
         let self = this;
-        // Generating Navbar
-        let navHTML = ``;
-        let navBase = document.getElementById('navBase');
-        let headerCount = 0;
-
-        // Reading the JSON props file and building out the navbar
-        this.props.forEach(prop => {
-            prop.id = headerCount;
-            // Main header
-            navHTML += this.navFact.openMainHeader(prop);
-            if(prop.hasSubmenu){
-                // Sub Menu
-                navHTML += this.navFact.openSubMenu(prop);
-                prop.submenuItems.forEach( item => {
-                    // Sub header
-                    navHTML += this.navFact.subHeader(item);
-                })
-                navHTML += this.navFact.closeSubMenu();
-            }
-            navHTML += this.navFact.closeMainHeader();
-            headerCount++;
-        });
-        navBase.innerHTML = navBase.innerHTML += navHTML;
+        this.createNavBar();
 
         // Referencing the new navbar
         let navigationBar         = document.getElementById('menuId');
@@ -162,6 +140,36 @@ class NavHandler {
                 self.clickHandler(event, this, menuHeaders, floatingMenu, navigationBarExtended);
             });
         }   
+    }
+
+    createNavBar(){
+        // Generating Navbar
+        let navHTML = ``;
+        let navBase = document.getElementById('navBase');
+        let headerCount = 0;
+
+        // Reading the JSON props file and building out the navbar
+        this.props.forEach(prop => {
+            prop.id = headerCount;
+            // Main header
+            navHTML += this.navFact.openMainHeader(prop);
+            if(prop.hasSubmenu){
+                // Sub Menu
+                navHTML += this.navFact.openSubMenu(prop);
+                prop.submenuItems.forEach( item => {
+                    // Sub header
+                    navHTML += this.navFact.subHeader(item);
+                })
+                navHTML += this.navFact.closeSubMenu();
+            }
+            navHTML += this.navFact.closeMainHeader();
+            headerCount++;
+        });
+        navBase.innerHTML = navHTML;
+    }
+
+    updateMenuItem(){
+        this.createNavBar();
     }
 
     /**

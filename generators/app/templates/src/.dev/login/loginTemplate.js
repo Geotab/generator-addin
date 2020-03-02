@@ -1,5 +1,5 @@
-let body = document.getElementsByTagName("body")[0];
-import icon from "../images/Font_Awesome_5_solid_chevron-left.svg";
+let body = document.getElementsByTagName('body')[0];
+import icon from '../images/Font_Awesome_5_solid_chevron-left.svg';
 import addinIcon from '../../app/images/icon.svg';
 let loginExample = `
 <% if (isDriveAddin) {%>
@@ -143,6 +143,7 @@ let loginExample = `
         </label>
         <a id="toggleBtn" class="dev-button">Blur add-in</a>
       <% } else { %>
+        <div id="languages-target"></div>
         <% if (!isButton) {%>
             <a id="toggleBtn" class="dev-button">Blur add-in</a>
         <% } %>

@@ -5,12 +5,16 @@
  */
 class NavFactory {
    
+    constructor(language){
+        this.language = language;
+    }
+
     /**
      * Assembles the beginning of a header tag that can contain a sub menu
      * @param {object} props item in the props list 
      */
     openMainHeader(props){
-        let mainHead = new OpenMainHeader(props);
+        let mainHead = new OpenMainHeader(props, this.language);
         return mainHead.returnHTML();
     }
 
@@ -42,19 +46,20 @@ class NavFactory {
 }
 
 class OpenMainHeader {
-    constructor(props){
+    constructor(props, language){
+        let title = props.labelText[language] ? props.labelText[language] : props.labelText["en"];
         // Buttons don't change the title ref -> What is used to base the blur() functions on
         this.html = `
         <li class="mainMenuHeader">
             ${props.hasSubmenu ? 
             `<button id="btn-${props.name}" class="mainMenuHeaderLink mainMenuLink ellipsis popupWindowTrigger">
                 <span class="icon geotabIcons_${props.name}"></span>
-                <span class="itemText">${props.labelText}</span>
+                <span class="itemText">${title}</span>
             </button>`
                 :
             `<a href="#${props.name}" id="btn-${props.name}" class="mainMenuHeaderLink mainMenuLink ellipsis popupWindowTrigger">
                 <span class="icon geotabIcons_${props.name}"></span>
-                <span class="itemText">${props.labelText}</span>
+                <span class="itemText">${title}</span>
             </a>`
             }
         `.trim();

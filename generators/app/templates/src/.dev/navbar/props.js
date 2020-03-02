@@ -1,3 +1,4 @@
+const config = require('../../app/config.json');
 /**
  * Props item - Houses all the navbar items and submenu items
  */
@@ -10,7 +11,7 @@ const props = [
        submenuItems: [
             {
                 name: '<%= root %>',
-                labelText: '<%= label %>'
+                labelText: config.items[0].menuName,
             }
         ]
     },
@@ -23,7 +24,7 @@ const props = [
          submenuItems: [
                 {
                     name: '<%= root %>',
-                    labelText: '<%= label %>'
+                    labelText: config.items[0].menuName,
                 }
             ]
     },
@@ -36,7 +37,7 @@ const props = [
         submenuItems: [
                 {
                     name: '<%= root %>',
-                    labelText: '<%= label %>'
+                    labelText:config.items[0].menuName,
                 }
             ]
         },
@@ -49,7 +50,7 @@ const props = [
          submenuItems: [
                 {
                     name: '<%= root %>',
-                    labelText: '<%= label %>'
+                    labelText: config.items[0].menuName,
                 }
             ]
         },
@@ -62,7 +63,7 @@ const props = [
         submenuItems: [
             {
                 name: '<%= root %>',
-                labelText: '<%= label %>'
+                labelText: config.items[0].menuName,
             }
         ]
     },
@@ -75,7 +76,7 @@ const props = [
         submenuItems: [
                 {
                     name: '<%= root %>',
-                    labelText: '<%= label %>'
+                    labelText: config.items[0].menuName,
                 }
             ]
         },
@@ -83,7 +84,7 @@ const props = [
      <% if (path == ''){ %>
      {
         name: '<%= root %>',
-        labelText: '<%= label %>',
+        labelText: config.items[0].menuName,
         hasSubmenu: false,
         submenuItems: []
      }
