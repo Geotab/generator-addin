@@ -274,7 +274,7 @@ module.exports = class extends yeoman {
     this.fs.copyTpl(
       this.templatePath('src/app/index.js'),
       this.destinationPath('src/app/index.js'), {
-        name: this.props.camelName,
+        root: this.props.camelName,
         isButton: this.props.isButton
       }
     );
@@ -374,6 +374,7 @@ module.exports = class extends yeoman {
     this.fs.copyTpl(
       this.templatePath('src/.dev/index.js'),
       this.destinationPath('src/.dev/index.js'), {
+        root: this.props.camelName,
         isButton: this.props.isButton,
         isDriveAddin: this.props.isDriveAddin
       }

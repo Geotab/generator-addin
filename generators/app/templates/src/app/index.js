@@ -6,9 +6,9 @@
 
 if(!geotab.addin.<%= root%>){
     <% if(isButton) {%>
-require('./scripts/<%= root%>');
+    require('./scripts/<%= root%>');
     <% } else { %>
-require('./scripts/main');
+    require('./scripts/main');
     <% } %>
 }
 <% if (!isButton) { %>
