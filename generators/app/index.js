@@ -239,7 +239,9 @@ module.exports = class extends yeoman {
     this.fs.copyTpl(
       this.templatePath('_package.json'),
       this.destinationPath('package.json'), {
-        name: this.props.camelName
+        name: this.props.camelName,
+        isButton: this.props.isButton,
+        isDriveAddin: this.props.isDriveAddin
       }
     );
   }
