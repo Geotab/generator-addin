@@ -17,7 +17,7 @@ var commonFiles = [
   'src/.dev/login/loginTemplate.js',
   'src/.dev/login/loginLogic.js',
   'src/.dev/navbar/navbar.js',
-  'src/.dev/navbar/NavBuilder.js',
+  'src/.dev/navbar/navBuilder.js',
   'src/.dev/navbar/NavFactory.js',
   'src/.dev/navbar/NavHandler.js',
   'src/.dev/navbar/props.js',
