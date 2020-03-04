@@ -72,12 +72,12 @@ describe('User visits addin', () => {
         // Login
         await page.goto('http://localhost:9000/');
         let loggedIn = await page.evaluate( () => {
-            let dialogWindow = document.getElementById("loginDialog");
-            return (dialogWindow.style.display = "none" ? true : false);
+            let dialogWindow = document.getElementById('loginDialog');
+            return (dialogWindow.style.display = 'none' ? true : false);
 
         })
         if(loggedIn){
-            await page.click("#logoutBtn");
+            await page.click('#logoutBtn');
         }
         await page.waitFor('#loginDialog');
         await page.type('#email', mocks.login.userName);
@@ -111,54 +111,54 @@ describe('User visits addin', () => {
         <% if (!isButton) { %>
     // Navbar tests
     it('should have a navbar', async () => {
-        let navbar = await page.$("#menuId") !== null;
-        assert.isTrue(navbar, "Navbar does not exist");
+        let navbar = await page.$('#menuId') !== null;
+        assert.isTrue(navbar, 'Navbar does not exist');
     });
 
     it('nav bar should collapse', async () => {
-        await page.click("#menuToggle");
+        await page.click('#menuToggle');
         let collapsed = await page.evaluate( () => {
-            let nav = document.querySelector("#menuId");
-            return nav.className.includes("menuCollapsed");
+            let nav = document.querySelector('#menuId');
+            return nav.className.includes('menuCollapsed');
         });
-        assert.isTrue(collapsed, "Navbar does not collapse");
+        assert.isTrue(collapsed, 'Navbar does not collapse');
     });
 
     it('nav bar should extend from collapsed state', async () => {
-        await page.click("#menuToggle");
+        await page.click('#menuToggle');
 
         let extended = await page.evaluate( () => {
-            let nav = document.querySelector("#menuId");
-            return !nav.className.includes("menuCollapsed");
+            let nav = document.querySelector('#menuId');
+            return !nav.className.includes('menuCollapsed');
         });
-        assert.isTrue(extended, "Navbar did not re-extend");
+        assert.isTrue(extended, 'Navbar did not re-extend');
     });
         
     it('blur button should blur addin', async () => {
-        await page.click("#toggleBtn");
+        await page.click('#toggleBtn');
         let hidden = await page.evaluate( () => {
             let toggled = false;
-            let addin = document.getElementById("<%= root%>");
-            if(addin.className.includes("hidden")){
+            let addin = document.getElementById('<%= root%>');
+            if(addin.className.includes('hidden')){
                 toggled = true;
             }
             return toggled;
         });
-        assert.isTrue(hidden, "add-in is hidden");
+        assert.isTrue(hidden, 'add-in is hidden');
     });
 
     it('focus button should focus addin', async () => {
-        await page.click("#toggleBtn");
+        await page.click('#toggleBtn');
 
         let hidden = await page.evaluate( () => {
             let toggled = false;
-            let addin = document.getElementById("<%= root%>");
-            if(addin.className.includes("hidden")){
+            let addin = document.getElementById('<%= root%>');
+            if(addin.className.includes('hidden')){
                 toggled = true;
             }
             return toggled;
         });
-        assert.isFalse(hidden, "add-in is hidden");
+        assert.isFalse(hidden, 'add-in is hidden');
     });
         <% } %>
     <% } %>
@@ -167,13 +167,13 @@ describe('User visits addin', () => {
         let success = await page.evaluate( () => {
             let authenticated = false;
             api.getSession( (credentials, server) => {
-                if(server !== "undefined" && credentials !== "undefined"){
+                if(server !== 'undefined' && credentials !== 'undefined'){
                     authenticated = true;
                 }
             });
             return authenticated;
         });
-        assert.isTrue(success, "api is not authenticating properly");
+        assert.isTrue(success, 'api is not authenticating properly');
     })
 
     it('add-in should exist in geotab object', async () => {
@@ -190,10 +190,10 @@ describe('User visits addin', () => {
 
     it('should load the state object', async () => {
         let state = await page.evaluate( () => {
-            let stateExists = typeof state == "object";
+            let stateExists = typeof state == 'object';
             return stateExists;
         });
-        assert.isTrue(state, "State is not defined");
+        assert.isTrue(state, 'State is not defined');
     });
 
     // Tests Finished

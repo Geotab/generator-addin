@@ -16,6 +16,6 @@ geotab.customButtons.<%= root %> = (event, api, state) => {
 
   // getting the current user to display in the UI
   api.getSession(session => {
-    alert(`Hello ${session.userName}`);
+    console.log(`Hello ${session.userName}`);
   });
 };

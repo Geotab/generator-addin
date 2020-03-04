@@ -3,11 +3,14 @@
  * Include any assets to be bundled in here
  * (css/images/js/etc)
  */
-// Exposing app to the backend
-<% if (isButton) { %>
-    let app = require('./scripts/<%= name%>');
-<% } else { %>
-    require('./styles/main.css');
-    let app = require('./scripts/main');
+
+if(!geotab.addin.<%= root%>){
+    <% if(isButton) {%>
+    require('./scripts/<%= root%>');
+    <% } else { %>
+    require('./scripts/main');
+    <% } %>
+}
+<% if (!isButton) { %>
+require('./styles/main.css');
 <% } %>
-module.exports = app;

@@ -239,7 +239,9 @@ module.exports = class extends yeoman {
     this.fs.copyTpl(
       this.templatePath('_package.json'),
       this.destinationPath('package.json'), {
-        name: this.props.camelName
+        name: this.props.camelName,
+        isButton: this.props.isButton,
+        isDriveAddin: this.props.isDriveAddin
       }
     );
   }
@@ -272,7 +274,7 @@ module.exports = class extends yeoman {
     this.fs.copyTpl(
       this.templatePath('src/app/index.js'),
       this.destinationPath('src/app/index.js'), {
-        name: this.props.camelName,
+        root: this.props.camelName,
         isButton: this.props.isButton
       }
     );
@@ -348,6 +350,15 @@ module.exports = class extends yeoman {
     );
   }
 
+  utils() {
+    if(!this.props.isButton && !this.props.isDriveAddin){
+      this.fs.copy(
+        this.templatePath('utils/templateBuilder.js'),
+        this.destinationPath('utils/templateBuilder.js')
+      );
+    }
+  }
+
   dev() {
     // Base
     this.fs.copy(
@@ -363,6 +374,7 @@ module.exports = class extends yeoman {
     this.fs.copyTpl(
       this.templatePath('src/.dev/index.js'),
       this.destinationPath('src/.dev/index.js'), {
+        root: this.props.camelName,
         isButton: this.props.isButton,
         isDriveAddin: this.props.isDriveAddin
       }
@@ -372,6 +384,38 @@ module.exports = class extends yeoman {
       this.templatePath('src/.dev/state.js'),
       this.destinationPath('src/.dev/state.js')
     );
+
+    // Languages
+    if(!this.props.isButton && !this.props.isDriveAddin){
+
+      this.fs.copy(
+        this.templatePath('src/.dev/lang/DOMTree.js'),
+        this.destinationPath('src/.dev/lang/DOMTree.js'),
+      );
+
+      this.fs.copy(
+        this.templatePath('src/.dev/lang/languages.js'),
+        this.destinationPath('src/.dev/lang/languages.js'),
+      );
+
+      this.fs.copy(
+        this.templatePath('src/.dev/lang/ListMaker.js'),
+        this.destinationPath('src/.dev/lang/ListMaker.js'),
+      );
+
+      this.fs.copy(
+        this.templatePath('src/.dev/lang/TranslationHelper.js'),
+        this.destinationPath('src/.dev/lang/TranslationHelper.js'),
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('src/app/translations/template.json'),
+        this.destinationPath('src/app/translations/template.json'),
+        {
+          root: this.props.camelName
+        }
+      )
+    }
 
     // Login
     this.fs.copyTpl(
@@ -454,6 +498,14 @@ module.exports = class extends yeoman {
       this.templatePath('src/.dev/styles/styleGuideMyGeotab.html'),
       this.destinationPath('src/.dev/styles/styleGuideMyGeotab.html')
     );
+
+    this.fs.copyTpl(
+      this.templatePath('src/.dev/ToggleHandler.js'),
+      this.destinationPath('src/.dev/ToggleHandler.js'),
+      {
+        root: this.props.camelName
+      }
+    )
   }
 
   install() {

@@ -182,7 +182,7 @@ class GeotabLogin {
 
         if (isDriveAddin) {
             this.elNightModeToggle.addEventListener('click', evt => {
-                const NightMode = "nightMode";
+                const NightMode = 'nightMode';
                 let app = document.querySelector('#app');
                 let body = document.body;
 

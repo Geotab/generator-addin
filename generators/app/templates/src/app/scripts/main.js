@@ -23,6 +23,10 @@ geotab.addin.<%= root%> = function () {
      *        for display to the user.
      */
     initialize: function (freshApi, freshState, initializeCallback) {
+    // Loading translations if available
+    if (freshState.translate) {
+      freshState.translate(elAddin || '');
+    }
     // MUST call initializeCallback when done any setup
       initializeCallback();
     },
@@ -62,6 +66,7 @@ geotab.addin.<%= root%> = function () {
           freshApi.getSession(session => {
             elAddin.querySelector('#<%= root%>-user').textContent = session.userName;
           });
+          
           
           elAddin.className = '';
       // show main content
