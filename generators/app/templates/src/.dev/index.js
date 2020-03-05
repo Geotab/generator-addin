@@ -35,7 +35,7 @@ import GeotabApi from './api';
 
 // Building navbar
 // Exposing handler to let the translate function have access to it
-import './navbar/navBuilder';
+import './navbar/NavBuilder';
 <% if (!isButton && !isDriveAddin) {%>
 /* Translations */
 import DOMTree from './lang/DOMTree';
