@@ -6,7 +6,9 @@ const props = [
     <% if (path == 'GettingStartedLink/') { %>
     {
        name: 'help', //Used in css and js reference
-       labelText: 'Getting Started &amp; Help', // Displayed to user
+       labelText: {
+           en: 'Getting Started &amp; Help'
+        }, // Displayed to user
        hasSubmenu: true, // Used to build the nav tree
        submenuItems: [
             {
@@ -19,7 +21,9 @@ const props = [
     <% if (path == 'ActivityLink/') { %>
      {
          name: 'activity',
-         labelText: 'Activity',
+         labelText: {
+             en: 'Activity'
+            },
          hasSubmenu: true,
          submenuItems: [
                 {
@@ -32,7 +36,9 @@ const props = [
     <% if (path == 'EngineMaintenanceLink/') { %>
     {
         name: 'engine',
-        labelText: 'Engine &amp; Maintenance',
+        labelText: {
+            en:'Engine &amp; Maintenance'
+        },
         hasSubmenu: true,
         submenuItems: [
                 {
@@ -45,7 +51,9 @@ const props = [
     <% if (path == 'ZoneAndMessagesLink/') { %>
      {
          name: 'zone',
-         labelText: 'Zones &amp; Messages',
+         labelText: {
+             en: 'Zones &amp; Messages'
+            },
          hasSubmenu: true,
          submenuItems: [
                 {
@@ -58,7 +66,9 @@ const props = [
     <% if (path == 'RuleAndGroupsLink/') { %>
      {
         name: 'rule',
-        labelText: 'Rules &amp; Groups',
+        labelText: {
+            en: 'Rules &amp; Groups'
+        },
         hasSubmenu: true,
         submenuItems: [
             {
@@ -71,7 +81,9 @@ const props = [
     <% if (path == 'AdministrationLink/') { %>
      {
         name: 'administration',
-        labelText: 'Administration',
+        labelText: {
+            en: 'Administration'
+        },
         hasSubmenu: true,
         submenuItems: [
                 {
