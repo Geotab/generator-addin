@@ -40,7 +40,7 @@ class NavFactory {
      * @param {object} props subheader object in the props list 
      */
     subHeader(props){
-        let subHead = new SubHeader(props);
+        let subHead = new SubHeader(props, this.language);
         return subHead.returnHTML();
     }
 }
@@ -84,12 +84,13 @@ class OpenSubMenu {
 }
 
 class SubHeader {
-    constructor(props){
+    constructor(props, language){
+        let title = props.labelText[language] ? props.labelText[language] : props.labelText["en"];
         this.html = `
         <li class="mainMenuOption">
             <a class="mainMenuLink" title="The Product Guide provides an introduction to the application and its features." href="#${props.name}">
                 <span class="icon geotabIcons_${props.name}"></span>
-                <div class="ellipsis">${props.labelText}</div>
+                <div class="ellipsis">${title}</div>
             </a>
         </li>`.trim();
     }
