@@ -2,7 +2,7 @@ class TranslationHelper {
 
     constructor(){
         this.json;
-        this.excludes = ['html', 'head', 'style', 'title', 'link', 'meta', 'script'];
+        this.excludes = ['html', 'head', 'style', 'title', 'link', 'meta', 'script', 'svg'];
         this.attributesForTranslation = ['placeholder', 'title', 'aria-label']
         this.excludeLookInside = ['iframe'];
         this.whitespace = /^\s*$/;
@@ -12,7 +12,10 @@ class TranslationHelper {
 
     shouldTranslate(node){
         let excluded = this._isExcluded(node);
-        let noTranslate = this._markedAsIgnore(node);
+        let noTranslate;
+        if(!excluded){
+            noTranslate = this._markedAsIgnore(node);
+        }
         return !excluded && !noTranslate;
     }
 
@@ -24,7 +27,7 @@ class TranslationHelper {
      * Determines if the tag is excluded in our predefined tag lists
      */
     _isExcluded(node){
-        return (this.excludes.includes(node.tagName) && this.excludeLookInside.includes(node.tagName));
+        return (this.excludes.includes(node.tagName) || this.excludeLookInside.includes(node.tagName));
     }
 
     /**
