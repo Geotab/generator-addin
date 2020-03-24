@@ -4,9 +4,8 @@
 
 ## Features
 
-Leverage modern package managers.
-
-- [NPM](https://www.npmjs.com/)
+### Package Management
+Leverage [NPM](https://www.npmjs.com/)
 
 ### Local Debugging
 
@@ -30,20 +29,72 @@ Leverage modern package managers.
 
 ## Getting Started
 
+### Installation
 - Install dependencies: `npm install -g yo`
 - Install the generator: `npm install -g generator-addin`
 - Create a directory for your project `mkdir <projdir>`
 - Change to your project `cd <projdir>`
 - Run `yo addin` to scaffold your addin
+
+### Using
 - Run `npm run serve` to preview and watch for changes
 - Run `npm install <package>` to install frontend dependencies
-- Use `src/app/index.js` as the entrypoint to the application
 - Run `npm run test` to run the tests
 - Run `npm run build` to build your addin for production
-
+- Run `npm run template` to create a translation template
 ## Documentation
 
+### MyGeotab
+
 For information on MyGeotab and Geotab Drive addins or the MyGeotab API head over to the [MyGeotab SDK](https://my.geotab.com/sdk/default.html)
+
+### Addin Generator
+
+The addin generator runs using Webpack, and makes heavy use of webpack's ability to build out [Dependency Graphs](https://webpack.js.org/concepts/dependency-graph/). When a build is run, Webpack takes the Dependency Graph and generates a single optimized JS, CSS, and HTML file.
+
+For more comprehensive information about Webpack, head over to the [Webpack Documentation](https://webpack.js.org/concepts/)
+
+#### Dependencies
+
+Webpack treats seperate JavaScript files as [Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), which requires code intended to be used in `main.js` to be exported first. [Webpack's Module Support](https://webpack.js.org/guides/getting-started/#modules) will handle browser compatibility for you.
+
+Using webpack allows us to leverage npm and it's associated libraries. For example, running `npm install jquery` and placing `import $ from 'jquery';` in `main.js` will give you access to the jQuery library in your addin.
+
+The [entry point](https://webpack.js.org/concepts/#entry) for the generator is `.dev/index.js` for development builds and `app/index.js` for production. Any files included in `.dev/index.js` will not be bundled into the end product. **The recommended approach** is including dependencies in `app/scripts/main.js`, as this will allow the files to be included in both production and development environments of Webpack.
+
+
+#### Use with Older Addins
+
+Many old addins run directly out of main.js, and have several references to external scripts in the main html page. To make old addins run with webpack, you will need to move any reference to static assets from the `*.html` file into `main.js`:
+
+```javascript
+// in app/scripts/main.js
+require('../styles/main.css');
+require('../styles/other.css');
+
+// Importing a library downloaded with npm
+import Vue from 'vue/dist/vue';
+
+// Importing functions from another file
+import { helper1, helper2, helper3 } from './helper.js';
+
+```
+
+Any files that are being imported need to be converted to [es2015 modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules).
+
+## FAQ
+
+**_Do I have to make a reference to the build in my html file?_**
+No. Webpack handles this automatically
+
+**_What version of node do I need?_**
+We support node 8.x and above.
+
+**_I keep getting an error telling me regeneratorRuntime is not defined. What does this mean?_**
+Webpack compiles with compatibility in mind, and will attempt to transpile async functions for compatibility with older IE browsers. There is currently a bug with Webpack causing transpilations to fail unless the `regeneratorRuntime` is manually defined. Run `npm i -D regenerator-runtime` and place `const regeneratorRuntime = require('regenerator-runtime');` in the effected files
+
+**_I keep getting an error message in the console telling me that my file was not found, but I can see it in my directory. Why?_**
+This likely means that you have a reference to the file in your main HTML file. Remove this reference and instead import the file in `main.js`.
 
 ## License
 
