@@ -9,8 +9,8 @@ Leverage [NPM](https://www.npmjs.com/)
 
 ### Local Debugging
 
-- Run and debug the add-in localy without having to add to test database. MyGeotabApi mocks the API object passes to add-in to make requests to you test database.
-- Mock state - Drive add-in will try to use HTML5 features to mock Andoid/IOS device features (ex. Geolocation)
+- Run and debug the add-in locally without having to add to test database. MyGeotabApi mocks the API object passes to add-in to make requests to you test database.
+- Mock state - Drive add-in will try to use HTML5 features to mock Android/IOS device features (ex. Geolocation)
 - Automagically lint your scripts
 - Built-in preview server with Webpack's development server
 - Webpack makes use of [ES2015 features](https://babeljs.io/docs/learn-es2015/) by using [Babel](https://babeljs.io) loaders
@@ -50,22 +50,22 @@ For information on MyGeotab and Geotab Drive addins or the MyGeotab API head ove
 
 ### Addin Generator
 
-The addin generator runs using Webpack, and makes heavy use of webpack's ability to build out [Dependency Graphs](https://webpack.js.org/concepts/dependency-graph/). When a build is run, Webpack takes the Dependency Graph and generates a single optimized JS, CSS, and HTML file.
+The addin generator runs using Webpack, and makes heavy use of Webpack's ability to build out [Dependency Graphs](https://webpack.js.org/concepts/dependency-graph/). When a build is run, Webpack takes the Dependency Graph and generates a single optimized JS, CSS, and HTML file.
 
 For more comprehensive information about Webpack, head over to the [Webpack Documentation](https://webpack.js.org/concepts/)
 
 #### Dependencies
 
-Webpack treats seperate JavaScript files as [Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), which requires code intended to be used in `main.js` to be exported first. [Webpack's Module Support](https://webpack.js.org/guides/getting-started/#modules) will handle browser compatibility for you.
+Webpack treats separate JavaScript files as [Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), which requires code intended to be used in `main.js` to be exported first. [Webpack's Module Support](https://webpack.js.org/guides/getting-started/#modules) will handle browser compatibility for you.
 
-Using webpack allows us to leverage npm and it's associated libraries. For example, running `npm install jquery` and placing `import $ from 'jquery';` in `main.js` will give you access to the jQuery library in your addin.
+Using Webpack allows us to leverage npm and it's associated libraries. For example, running `npm install jquery` and placing `import $ from 'jquery';` in `main.js` will give you access to the jQuery library in your addin.
 
 The [entry point](https://webpack.js.org/concepts/#entry) for the generator is `.dev/index.js` for development builds and `app/index.js` for production. Any files included in `.dev/index.js` will not be bundled into the end product. **The recommended approach** is including dependencies in `app/scripts/main.js`, as this will allow the files to be included in both production and development environments of Webpack.
 
 
-#### Use with Older Addins
+#### Using with Older Addins
 
-Many old addins run directly out of main.js, and have several references to external scripts in the main html page. To make old addins run with webpack, you will need to move any reference to static assets from the `*.html` file into `main.js`:
+Many old addins run directly out of main.js, and have several references to external scripts in the main HTML page. To make old addins run with webpack, you will need to move any reference to static assets from the `*.html` file into `main.js`:
 
 ```javascript
 // in app/scripts/main.js
