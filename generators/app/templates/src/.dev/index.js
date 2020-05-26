@@ -41,18 +41,31 @@ import GeotabApi from './api';
 import './navbar/NavBuilder';
 <% if (!isButton && !isDriveAddin) {%>
 /* Translations */
-import DOMTree from './lang/DOMTree';
+import Translator from './lang/Translator';
 let language = localStorage.language ? localStorage.language : 'en';
-global.tree = new DOMTree('#app', language);
+global.translator = new Translator('#app', language);
 <% } %>
+// Global Translate function
+global.state.translate = function(target, language) {
+    
+    // First translation from initialize doesn't pass a language in. Will cause problems is language is undefined
+    if (typeof language !== 'undefined'){
+        localStorage.language = language;
+        location.reload();
+    }
+
+    // Primary behaviour passes HTMLElement, but function needs to support string translation as well
+    if (typeof target === 'string'){
+        // Do translation
+        let translation = global.translator.translateSentence(target);
+        // return translated string
+        return translation;
+    }
+}
+
 /* Logic */
 const loginLogic = new GeotabLogin(global.geotab.isDriveAddin, GeotabApi);
 
-// Global Translate function
-global.state.translate = function(addin, language) {
-    localStorage.language = language;
-    location.reload();
-}
 <% if (!isButton && !isDriveAddin) {%>
 // Building translation hierarchy
 require('./lang/languages');
