@@ -71,6 +71,9 @@ class TranslationHelper {
         let response
         if(this.json){
             response = (this.json[sentence] ? this.json[sentence] : sentence);
+        } else {
+            // Calling translate function when language is english means json dict wont exist
+            response = sentence;
         }
         return response;
     }
