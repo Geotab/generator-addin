@@ -14,7 +14,7 @@ browser.then( async (brows) => {
     await page.then( async (p) => {
         await p.goto('http://localhost:9000/');
         let tree = await p.evaluate( () => {
-            return tree.getAll();
+            return translator.getDomTree();
         });
         let templateText = '{\n';
         let templatePath = path.join(__dirname, '../src/app/translations/template.json');
