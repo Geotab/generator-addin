@@ -84,14 +84,14 @@ Any files that are being imported need to be converted to [es2015 modules](https
 
 #### Using with Translations
 
-To translate the entire addin on loadtime, `state.translate(...)` must be called in `initialize()`, and handed the addin's HTML root:
+To translate the addin on load, `state.translate(...)` must be called in `initialize()` and handed the addin's HTML root:
 ```javascript
     initialize: function (freshApi, freshState, initializeCallback) {
-    // Loading translations if available
-    if (freshState.translate) {
-      freshState.translate(elAddin || '');
-    }
-    // MUST call initializeCallback when done any setup
+      // Loading translations if available
+      if (freshState.translate) {
+        freshState.translate(elAddin || '');
+      }
+      // MUST call initializeCallback when done any setup
       initializeCallback();
     }
 ```
