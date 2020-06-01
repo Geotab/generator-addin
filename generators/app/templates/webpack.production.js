@@ -120,7 +120,8 @@ module.exports = merge(common, {
             { 
                 from: './src/app/config.json',
                 transform: transform
-            }
+            },
+            { from: './src/app/translations/', to: 'translations/' }
         ])
     ],
     output: {
