@@ -389,8 +389,8 @@ module.exports = class extends yeoman {
     if(!this.props.isButton && !this.props.isDriveAddin){
 
       this.fs.copy(
-        this.templatePath('src/.dev/lang/DOMTree.js'),
-        this.destinationPath('src/.dev/lang/DOMTree.js'),
+        this.templatePath('src/.dev/lang/Translator.js'),
+        this.destinationPath('src/.dev/lang/Translator.js'),
       );
 
       this.fs.copy(

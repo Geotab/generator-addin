@@ -1,7 +1,7 @@
 const TranslationHelper = require('./TranslationHelper');
 const helper = new TranslationHelper('en');
 
-class DOMTree {
+class Translator {
 
     constructor(root, language){
         try{
@@ -9,11 +9,16 @@ class DOMTree {
         } catch(err){
             console.log(err.message);
         }
-        this.root = new TreeNode(document.querySelector(root));
+        this.domTree = new TreeNode(document.querySelector(root));
     }
 
-    getAll(){
-        return this.root.showChildren();
+    translateSentence(sentence){
+        let response = helper.getTranslationText(sentence);
+        return response;
+    }
+
+    getDomTree(){
+        return this.domTree.showChildren();
     }
 }
 
@@ -97,4 +102,4 @@ class TreeNode {
     }
 }
 
-module.exports = DOMTree;
+module.exports = Translator;

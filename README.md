@@ -82,6 +82,44 @@ import { helper1, helper2, helper3 } from './helper.js';
 
 Any files that are being imported need to be converted to [es2015 modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules).
 
+#### Using with Translations
+
+To translate the addin on load, `state.translate(...)` must be called in `initialize()` and handed the addin's HTML root:
+```javascript
+    initialize: function (freshApi, freshState, initializeCallback) {
+      // Loading translations if available
+      if (freshState.translate) {
+        freshState.translate(elAddin || '');
+      }
+      // MUST call initializeCallback when done any setup
+      initializeCallback();
+    }
+```
+
+You can also translate sentences by directly passing them in using `state.translate(...)`. This is useful for translating dynamically created content (IE. JavaScript): 
+```javascript
+    focus: function(api, state){
+        document.querySelector('#app').textContent = state.translate('Translate this sentence');
+    }
+```
+
+Any text that requires translation needs to be added into a `{language}.json` file, where `{language}` is a supported abbreviation. An example file can be generated based on the HTML present in the addin's HTML file by running `npm run template`. 
+
+Currently supported languages are:
+
+| Language | Abbreviation |
+| ---------|--------------|
+| English | `en` |
+| German | `de` |
+| Spanish | `es` |
+| French | `fr` |
+| Italian | `it` |
+| Dutch | `nl` |
+| Polish | `pl` |
+| Portuguese (Brazil) | `pt-BR` |
+| Japanese | `ja` |
+| Simplified Chinese | `zh-hans` |
+
 ## FAQ
 
 **_Do I have to make a reference to the build in my html file?_**
