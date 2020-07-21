@@ -69,6 +69,12 @@ const loginLogic = new GeotabLogin(global.geotab.isDriveAddin, GeotabApi);
 <% if (!isButton && !isDriveAddin) {%>
 // Building translation hierarchy
 require('./lang/languages');
+
+/* Group Filter Module */
+import GroupListeners from './groups/GroupListeners.js';
+let groupListener = new GroupListeners(global.api, global.state, 'group-dropdown');
+groupListener.assignEventListeners();
+
 <% } %>
 // Handling the blur toggle
 require('./ToggleHandler');
