@@ -50,6 +50,9 @@ describe('User visits addin', () => {
                         break;
                     case 'Get':
                         switch (rpcBody.params.typeName) {
+                            case 'Group':
+                                payload = mocks.groups;
+                                break;
                             case 'Device':
                                 payload = [mocks.device];
                                 break;
@@ -159,6 +162,117 @@ describe('User visits addin', () => {
             return toggled;
         });
         assert.isFalse(hidden, 'add-in is hidden');
+    });
+
+    // Group Search logic
+    it('should open the group display box', async () => {
+        await page.click('#group-toggle-button');
+        await page.waitFor('#group-dropdown', {
+            visible: true
+        });
+
+        // Cleanup.
+        await page.click('#group-toggle-button');
+    });
+
+    it('should close the group display box', async () => {
+        await page.click('#group-toggle-button');
+        await page.click('#group-toggle-button');
+        await page.waitFor('#group-dropdown', {
+            visible: false
+        });
+    });
+
+    it('should populate the group dropdown', async () => {
+        await page.click('#group-toggle-button');
+        await page.waitFor('#group-dropdown', {
+            visible: true
+        });
+
+        let children = await page.$eval('#group-dropdown-ul', el => el.children);
+        
+        assert.isTrue(Object.keys(children).length === 2, 'Group dropdown is not populated.');
+        
+        // Cleanup.
+        await page.click('#group-toggle-button');
+    });
+
+    it('should filter the group dropdown', async () => {
+        let enterKey = 'Enter';
+        let ctrlKey = 'Control';
+        let aKey = 'KeyA';
+        let deleteKey = 'Backspace';
+
+        await page.click('#group-toggle-button');
+        await page.type('#group-input', 'child');
+        await page.keyboard.press(enterKey);
+        
+        let children = await page.$eval('#group-dropdown-ul', el => el.children);
+        
+        // Check to make sure the entire dictionary is searched, not just the root node.
+        assert.isTrue(Object.keys(children).length === 3, 'Search did not return all related groups');
+
+        // Cleanup. Unfortunately can't have this in a method without redeclaring browser and page.
+        await page.click('#group-input');
+        await page.keyboard.down(ctrlKey);
+        await page.keyboard.press(aKey);
+        await page.keyboard.up(ctrlKey);
+        await page.keyboard.press(deleteKey);
+    });
+
+    // Should notify when not working?
+    it('should store active groups in the state', async () => {
+        let enterKey = 'Enter';
+        let ctrlKey = 'Control';
+        let aKey = 'KeyA';
+        let deleteKey = 'Backspace';
+
+        await page.click('#group-toggle-button');
+        await page.type('#group-input', 'child');
+        await page.keyboard.press(enterKey);
+        await page.waitFor('#group-dropdown-ul', {
+            visible: true
+        });
+        await page.click('#group-item-b4');
+
+        let activeGroups = await page.evaluate( async () => {
+            return state.getGroupFilter();
+        });
+
+        assert.isTrue(activeGroups.length === 2);
+        assert.isTrue(activeGroups[0].id === 'GroupCompanyId');
+        assert.isTrue(activeGroups[1].id === 'b4');
+
+        // Cleanup.
+        await page.click('#group-input');
+        await page.keyboard.down(ctrlKey);
+        await page.keyboard.press(aKey);
+        await page.keyboard.up(ctrlKey);
+        await page.keyboard.press(deleteKey);
+        await page.click('#group-toggle-button');
+    });
+
+    // app should refocus when selection occurs
+    it('should refocus after group filter is selected', async () => {
+        let originalFocus = await page.evaluate( () => geotab.addin.<%= root%>.focus);
+
+        await page.click('#group-toggle-button');
+        await page.evaluate( () => {
+            geotab.addin.<%= root%>.count = 0;
+            geotab.addin.<%= root%>.focus = () => { geotab.addin.<%= root%>.count++; };
+        });
+        await page.click('#group-item-b4');
+
+        let invocations = await page.evaluate( () => {
+            return geotab.addin.<%= root%>.count;
+        });
+
+        assert.isTrue(invocations === 1, 'Incorrect number of invocations on focus().');
+
+        // Undoing state modifications for future tests.
+        await page.evaluate( (addinFocus) => {
+            geotab.addin.<%= root%>.focus = addinFocus;
+        }, originalFocus);
     });
         <% } %>
     <% } %>
