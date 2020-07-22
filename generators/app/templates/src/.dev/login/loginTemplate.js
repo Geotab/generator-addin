@@ -74,7 +74,7 @@ let loginExample = `
 
     #group-wrapper {
         position: absolute;
-        left: 250px;
+        left: 50px;
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
