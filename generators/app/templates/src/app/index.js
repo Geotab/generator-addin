@@ -4,6 +4,9 @@
  * (css/images/js/etc)
  */
 
+// Allowing babel to work with older versions of IE
+const regeneratorRuntime = require('regenerator-runtime');
+
 if(!geotab.addin.<%= root%>){
     <% if(isButton) {%>
     require('./scripts/<%= root%>');

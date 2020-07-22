@@ -13,8 +13,6 @@
  * **********************************************
  */
 
-// Allowing babel to work with older versions of IE
-const regeneratorRuntime = require('regenerator-runtime');
 
 // Global object is used to simulate the api, state, and geotab objects
 global.api
