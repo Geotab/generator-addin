@@ -252,7 +252,6 @@ describe('User visits addin', () => {
         await page.click('#group-toggle-button');
     });
 
-    // app should refocus when selection occurs
     it('should refocus after group filter is selected', async () => {
         let originalFocus = await page.evaluate( () => geotab.addin.<%= root%>.focus);
 
