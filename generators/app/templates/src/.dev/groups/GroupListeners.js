@@ -1,6 +1,7 @@
 const Groups = require('./Groups.js');
 let xIconSvg = require('../images/close-round.svg').default;
 let chevron = require('../images/Font_Awesome_5_solid_chevron-left.svg').default;
+const regeneratorRuntime = require('regenerator-runtime');
 
 class GroupListeners {
 
