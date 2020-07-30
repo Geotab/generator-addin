@@ -19,6 +19,7 @@ class Groups {
         this.deleteAllBtn = document.getElementById('group-remove-all');
         this.previousGroupStack = [];
         this.activeGroups = [];
+        this.previousSearchTerm;
     }
 
     /**
@@ -35,12 +36,19 @@ class Groups {
      * the registered groups from there.
      * 
      * @param {int} resultsLimit how many results to limit the response to.
+     * @returns {Promise} Once the call completes, the call resolves.
      */
     getAllGroupsInDatabase(resultsLimit = 2000){
-        this.api.call('Get', {
-            'typeName': 'Group',
-            'resultsLimit': resultsLimit
-        }, this._groupSuccessCallback, this._groupErrorCallback);
+        let callPromise = new Promise( (resolve, reject) => {
+            this.api.call('Get', {
+                'typeName': 'Group',
+                'resultsLimit': resultsLimit
+            }, 
+            (result) => this._groupSuccessCallback(result, resolve), 
+            (error) => this._groupErrorCallback(error, reject));
+        });
+
+        return callPromise;
     }
 
     /**
@@ -156,14 +164,15 @@ class Groups {
      * 
      * @param {object} result Response from the server - should contain a list of all the groups on the DB.
      */
-    _groupSuccessCallback(result){
+    _groupSuccessCallback(result, resolve){
         let groupInput = document.getElementById('group-input');
-        this.groupsFilter.groupsDictionary = _GroupHelper.convertGroupsListToDictionary(result);
-        let html = _GroupHelper.generateNodeHtml(this.groupsFilter.groupsDictionary, 'GroupCompanyId');
-        this.groupsFilter.root.innerHTML = html;
+        this.groupsDictionary = _GroupHelper.convertGroupsListToDictionary(result);
+        let html = _GroupHelper.generateNodeHtml(this.groupsDictionary, 'GroupCompanyId');
+        this.root.innerHTML = html;
 
         // If we had any errors, we want to reset the placeholder text.
         groupInput.placeholder = 'Search for Groups';
+        resolve();
     }    
 
     /**
