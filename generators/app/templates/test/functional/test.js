@@ -175,6 +175,7 @@ describe('User visits addin', () => {
         await page.click('#group-toggle-button');
     });
 
+    
     it('should close the group display box', async () => {
         await page.click('#group-toggle-button');
         await page.click('#group-toggle-button');
@@ -182,13 +183,13 @@ describe('User visits addin', () => {
             visible: false
         });
     });
-
+    
     it('should populate the group dropdown', async () => {
         await page.click('#group-toggle-button');
         await page.waitFor('#group-dropdown', {
             visible: true
         });
-
+        
         let children = await page.$eval('#group-dropdown-ul', el => el.children);
         
         assert.isTrue(Object.keys(children).length === 2, 'Group dropdown is not populated.');
@@ -196,12 +197,26 @@ describe('User visits addin', () => {
         // Cleanup.
         await page.click('#group-toggle-button');
     });
+    
+    it('should close the group dropdown when clicking off of the group-wrapper', async () => {
+        await page.click('#group-toggle-button');
+        await page.waitFor('#group-dropdown', {
+            visible: true
+        });
+        await page.click('#checkmateContent');
+        await page.waitFor('#group-dropdown', {
+            visible: false
+        });
+
+        let dropdownDisplay = await page.$eval('#group-dropdown', el => el.style.display);
+
+        assert.isTrue(dropdownDisplay === 'none', 'Dropdown display value is ' + dropdownDisplay);
+        
+        await page.click('#group-toggle-button');
+    });
 
     it('should filter the group dropdown', async () => {
         let enterKey = 'Enter';
-        let ctrlKey = 'Control';
-        let aKey = 'KeyA';
-        let deleteKey = 'Backspace';
 
         await page.click('#group-toggle-button');
         await page.type('#group-input', 'child');
@@ -212,20 +227,13 @@ describe('User visits addin', () => {
         // Check to make sure the entire dictionary is searched, not just the root node.
         assert.isTrue(Object.keys(children).length === 3, 'Search did not return all related groups');
 
-        // Cleanup. Unfortunately can't have this in a method without redeclaring browser and page.
-        await page.click('#group-input');
-        await page.keyboard.down(ctrlKey);
-        await page.keyboard.press(aKey);
-        await page.keyboard.up(ctrlKey);
-        await page.keyboard.press(deleteKey);
+        // Cleanup.
+        await page.click('#group-toggle-button');
     });
 
     // Should notify when not working?
     it('should store active groups in the state', async () => {
         let enterKey = 'Enter';
-        let ctrlKey = 'Control';
-        let aKey = 'KeyA';
-        let deleteKey = 'Backspace';
 
         await page.click('#group-toggle-button');
         await page.type('#group-input', 'child');
@@ -239,16 +247,10 @@ describe('User visits addin', () => {
             return state.getGroupFilter();
         });
 
-        assert.isTrue(activeGroups.length === 2);
-        assert.isTrue(activeGroups[0].id === 'GroupCompanyId');
-        assert.isTrue(activeGroups[1].id === 'b4');
+        assert.isTrue(activeGroups.length === 1);
+        assert.isTrue(activeGroups[0].id === 'b4');
 
         // Cleanup.
-        await page.click('#group-input');
-        await page.keyboard.down(ctrlKey);
-        await page.keyboard.press(aKey);
-        await page.keyboard.up(ctrlKey);
-        await page.keyboard.press(deleteKey);
         await page.click('#group-toggle-button');
     });
 
