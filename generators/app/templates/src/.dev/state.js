@@ -1,6 +1,6 @@
 const state = {
     // Not available in myGeotab - addin use only.
-    _activeGroups: [{id: 'GroupCompanyId'}],
+    _activeGroups: [],
     getState: function () {
         var hash = location.hash,
             hashLength = hash.length;

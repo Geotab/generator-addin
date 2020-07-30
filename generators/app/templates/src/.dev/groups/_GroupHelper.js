@@ -30,8 +30,7 @@ class _GroupHelper {
     static generateActiveHeaderText(state, stateLength, groupDictionary){
         let text = ``;
 
-        // Starting at 1 to avoid writing out 'GroupCompanyId'.
-        for(let i=1; i<stateLength; i++){
+        for(let i=0; i<stateLength; i++){
             let id = state._activeGroups[i].id;
             let name = groupDictionary[id].name;
 

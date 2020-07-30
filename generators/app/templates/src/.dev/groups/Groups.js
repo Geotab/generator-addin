@@ -51,17 +51,17 @@ class Groups {
      */
     resetActiveGroups(){
         this.state._activeGroups.forEach( group => {
-            if(group.id !== 'GroupCompanyId'){
-                this.groupsDictionary[group.id].selected = false;
-            }
+            this.groupsDictionary[group.id].selected = false;
         });
 
-        this.state._activeGroups = [{id: 'GroupCompanyId'}];
+        this.state._activeGroups = [];
 
         this.writeActiveGroups();
 
         let html = _GroupHelper.generateNodeHtml(this.groupsDictionary, 'GroupCompanyId');
         this.root.innerHTML = html;
+
+        geotab.addin.<%= root%>.focus(this.api, this.state);
     }
 
     /**
@@ -79,7 +79,7 @@ class Groups {
             }            
         }
 
-        if(idIndex){
+        if(idIndex !== undefined){
             this.state._activeGroups.splice(idIndex, 1);
             this.groupsDictionary[id].selected = false;
         } else {
@@ -100,7 +100,7 @@ class Groups {
         let text = `Active Groups:`;
         let stateLength = this.state._activeGroups.length;
         
-        if(stateLength > 1){
+        if(stateLength > 0){
             text += _GroupHelper.generateActiveHeaderText(this.state, stateLength, this.groupsDictionary);
             this.deleteAllBtn.style.display = 'inline';
         } else {
