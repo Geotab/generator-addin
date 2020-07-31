@@ -82,6 +82,7 @@ class _GroupHelper {
      */
     static generateSearchHtml(groupsDictionary, regex = /^.*$/g){
         let html = `<ul id="group-dropdown-ul" class="geotabPrimaryFill select-buttons">`;
+        let resultCount = 0;
         
         // When we iterate over all the keys in the groupsDictionary, we get all the groups instead of top level children
         // of GroupsCompanyId (Root).
@@ -95,6 +96,10 @@ class _GroupHelper {
                 }
             }
         });
+
+        if(resultCount === 0){
+            html += `<p style="text-align: center;">No Results Found.</p>`;
+        }
 
         html += `</ul>`;
         return html;
