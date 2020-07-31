@@ -91,8 +91,10 @@ class _GroupHelper {
             if(regex.test(node.name.toLowerCase())){
                 if(node.children.length > 0){
                     html += this.generateFolderListElement(key, 'GroupCompanyId', node);
+                    resultCount++;
                 } else {
                     html += this.generateFilterListElement(key, node);
+                    resultCount++;
                 }
             }
         });
