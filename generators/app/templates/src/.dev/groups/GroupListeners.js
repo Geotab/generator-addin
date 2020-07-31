@@ -43,11 +43,11 @@ class GroupListeners {
         // Making a new one.
         this.changeSearchTimeout = setTimeout( async () => {
             await this._groupSearchListener(event);
-        }, 750);
+        }, 500);
     }
 
     _hideGroupsOnOffClickListener(event){
-        if(!event.target.closest('#group-wrapper')){
+        if(!event.target.closest('#group-wrapper, #group-dropdown-ul')){
             if(this.open){
                 this._groupToggleListener(this.displayBox);
             }
@@ -57,6 +57,7 @@ class GroupListeners {
     _groupResetAllFilters(){
         this.groupBox.resetActiveGroups();
         this.inputBox.value = '';
+        this.groupBox.previousSearchTerm = '';
     }
 
     async _groupSearchListener(event){
@@ -95,6 +96,7 @@ class GroupListeners {
             this.open = true;
         } else {
             this.inputBox.value = '';
+            this.groupBox.previousSearchTerm = '';
             display.style.display = 'none';
             this.open = false;
         }
