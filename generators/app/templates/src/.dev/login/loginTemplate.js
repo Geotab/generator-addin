@@ -73,12 +73,11 @@ let loginExample = `
     }
 
     #group-wrapper {
-        position: absolute;
-        left: 50px;
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-        flex-grow: 5;
+        flex: 1;
+        padding-left: 40px;
     }
 
     #group-toggle-button svg {
