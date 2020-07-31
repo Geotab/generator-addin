@@ -25,6 +25,13 @@ class GroupListeners {
         // Group dropdown box toggle.
         this.groupToggle.addEventListener('click', () => this._groupToggleListener(this.displayBox));
 
+        // Open dropdown on input box click.
+        this.inputBox.addEventListener('click', () => {
+            if(!this.open){
+                this._groupToggleListener(this.displayBox);
+            }
+        });
+
         // Inputbox listener for change - ie. enter presses.
         this.inputBox.addEventListener('change', (event) => this._groupSearchListener(event));
 
