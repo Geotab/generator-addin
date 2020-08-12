@@ -85,7 +85,7 @@ class _GroupHelper {
         let resultCount = 0;
         
         // When we iterate over all the keys in the groupsDictionary, we get all the groups instead of top level children
-        // of GroupsCompanyId (Root).
+        // of user's Root group.
         Object.keys(groupsDictionary).forEach(key => {
             let node = groupsDictionary[key];
             if(regex.test(node.name.toLowerCase())){
@@ -113,13 +113,14 @@ class _GroupHelper {
      * 
      * @param {object} groupsDictionary the dictionary used to generate the folder.
      * @param {string} root the dictionary key we start the folder on.
+     * @param {string} baseNode the user's highest group permission. 
      */
-    static generateNodeHtml(groupsDictionary, root){
+    static generateNodeHtml(groupsDictionary, root, baseNode = root){
         let html = `<ul id="group-dropdown-ul" class="geotabPrimaryFill select-buttons">`
         let name = groupsDictionary[root].name;
         let checked = groupsDictionary[root].selected ? 'checked' : '';
 
-        if(root !== 'GroupCompanyId'){
+        if(root !== baseNode){
             html += `<li onchange="${this.generateFilterEventListener(root)}">
                         <input id="group-go-to-${root}" type="checkbox" class="geotabSwitchButton navButton" ${checked}>
                         <label for="group-go-to-${root}" class="geotabButton" style="width:100%;">

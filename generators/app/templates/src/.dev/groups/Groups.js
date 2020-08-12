@@ -13,6 +13,7 @@ class Groups {
     constructor(api, state, target){
         this.api = api;
         this.state = state;
+        this.baseNode;
         this.groupsDictionary;
         this.root = document.getElementById(target);
         this.activeLabel = document.getElementById('active-group');
@@ -27,7 +28,7 @@ class Groups {
      * collected groups and use this method to just re-generate the base html.
      */
     generateRootHtml(){
-        let html = _GroupHelper.generateNodeHtml(groupsFilter.groupsDictionary, 'GroupCompanyId');
+        let html = _GroupHelper.generateNodeHtml(groupsFilter.groupsDictionary, this.baseNode);
         groupsFilter.root.innerHTML = html;
     }
 
@@ -53,7 +54,7 @@ class Groups {
 
     /**
      * Removes all group names from the 'Active Groups' header.
-     * Removes all groups except for the root group 'GroupCompanyId' from the state.
+     * Removes all groups from the state.
      * Unselects any previously selected groups in the groupsDictionary.
      * Resets the HTML to remove any checked attributes.
      */
@@ -66,7 +67,7 @@ class Groups {
 
         this.writeActiveGroups();
 
-        let html = _GroupHelper.generateNodeHtml(this.groupsDictionary, 'GroupCompanyId');
+        let html = _GroupHelper.generateNodeHtml(this.groupsDictionary, this.baseNode);
         this.root.innerHTML = html;
 
         geotab.addin.<%= root%>.focus(this.api, this.state);
@@ -145,7 +146,7 @@ class Groups {
      */
     changeFocus(previous, current){
         this.previousGroupStack.push(previous);
-        let html = _GroupHelper.generateNodeHtml(this.groupsDictionary, current);
+        let html = _GroupHelper.generateNodeHtml(this.groupsDictionary, current, this.baseNode);
         this.root.innerHTML = html;
     }
 
@@ -155,7 +156,7 @@ class Groups {
      */
     goToPreviousFolder(){
         let previousFolder = this.previousGroupStack.pop();
-        let html = _GroupHelper.generateNodeHtml(this.groupsDictionary, previousFolder);
+        let html = _GroupHelper.generateNodeHtml(this.groupsDictionary, previousFolder, this.baseNode);
         this.root.innerHTML = html;
     }
 
@@ -166,8 +167,9 @@ class Groups {
      */
     _groupSuccessCallback(result, resolve){
         let groupInput = document.getElementById('group-input');
+        this.baseNode = result[0].id;
         this.groupsDictionary = _GroupHelper.convertGroupsListToDictionary(result);
-        let html = _GroupHelper.generateNodeHtml(this.groupsDictionary, 'GroupCompanyId');
+        let html = _GroupHelper.generateNodeHtml(this.groupsDictionary, this.baseNode);
         this.root.innerHTML = html;
 
         // If we had any errors, we want to reset the placeholder text.
@@ -188,7 +190,7 @@ class Groups {
 
         setTimeout(() => {
             groupInput.placeholder = "Retrying...";
-            this.groupsFilter.getAllGroupsInDatabase();
+            groupsFilter.getAllGroupsInDatabase();
         }, 60000);
     }
 }
