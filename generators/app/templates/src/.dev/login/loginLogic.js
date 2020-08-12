@@ -46,11 +46,11 @@ class GeotabLogin {
     }
 
     initializeGeotabApi(GeotabApi) {
-        const self = this;
-        global.api = new GeotabApi(function (detailsCallback) {
-            self.authenticationCallback = detailsCallback;
-            if (!self.elLoginDialog.open) {
-                self.elLoginDialog.showModal();
+        global.api = new GeotabApi((detailsCallback) => {
+            this.authenticationCallback = detailsCallback;
+
+            if (!this.elLoginDialog.open) {
+                this.elLoginDialog.showModal();
             }
         }, {
             rememberMe: true
@@ -74,7 +74,6 @@ class GeotabLogin {
     }
 
     initializeDevice() {
-        let self = this;
         // Mock device for drive addin
         global.api.call('Get', {
             typeName: 'Device',
@@ -82,7 +81,7 @@ class GeotabLogin {
             search: {
                 fromDate: new Date()
             }
-        }, function (devices) {
+        }, (devices) => {
             var options = devices.sort(function (d1, d2) {
                 var name1 = d1.name.toLowerCase();
                 var name2 = d2.name.toLowerCase();
@@ -96,45 +95,44 @@ class GeotabLogin {
             }).map(function (d) {
                 return '<option value="' + d.id + '">' + d.name + '</option>';
             });
-            self.elDevices.innerHTML = '<option>Select Device</option>' + options.join('');
-            self.elDeviceDialog.showModal();
-        }, function (e) {
+            this.elDevices.innerHTML = '<option>Select Device</option>' + options.join('');
+            this.elDeviceDialog.showModal();
+        }, (e) => {
             console.error(`Could not get vehicles: ${e.message}`);
         });
     }
 
     intializeInterface(isDriveAddin) {
-        const self = this;
-
-        this.elLoginBtn.addEventListener('click', function (event) {
-            var server = self.elServer.value || 'my.geotab.com',
-                database = self.elDatabase.value,
-                email = self.elEmail.value,
-                password = self.elPassword.value;
+        this.elLoginBtn.addEventListener('click', (event) => {
+            var server = this.elServer.value || 'my.geotab.com',
+                database = this.elDatabase.value,
+                email = this.elEmail.value,
+                password = this.elPassword.value;
 
             event.preventDefault();
-
             localStorage.setItem('_user', JSON.stringify(email));
+
             global.api.user = email;
+            this.elLoginError.style.display = 'none';
 
-            self.elLoginError.style.display = 'none';
+            this.authenticationCallback(server, database, email, password, (err) => {
+                this.elLoginDialog.showModal();
 
-            self.authenticationCallback(server, database, email, password, function (err) {
-                self.elLoginDialog.showModal();
                 if (err) {
-                    self.elLoginError.textContent = err;
+                    this.elLoginError.textContent = err;
                 }
-                self.elLoginError.style.display = 'block';
+
+                this.elLoginError.style.display = 'block';
             });
 
             if (!isDriveAddin) {
-                self.initalizeAddin();
+                this.initalizeAddin();
             }
 
-            self.elLoginDialog.close();
+            this.elLoginDialog.close();
         });
 
-        this.elLogoutBtn.addEventListener('click', function (event) {
+        this.elLogoutBtn.addEventListener('click', (event) => {
             event.preventDefault();
 
             if (global.api !== undefined) {
@@ -144,35 +142,38 @@ class GeotabLogin {
             Object.keys(global.geotab.addin).forEach(function (name) {
                 global.geotab.addin[name].isInitialize = false;
             });
-            self.device = null;
-            global.state.device = self.device;
-            localStorage.setItem('_device', JSON.stringify(self.device));
+
+            this.device = null;
+            global.state.device = this.device;
+            localStorage.setItem('_device', JSON.stringify(this.device));
+            
             if (isDriveAddin) {
-                self.initializeDevice();
+                this.initializeDevice();
             }
+
             Object.keys(global.geotab.addin).forEach(function (name) {
                 global.geotab.addin[name].blur(global.api, global.state);
             });
         });
 
-        this.elDevices.addEventListener('change', function (event) {
+        this.elDevices.addEventListener('change', (event) => {
             var id = event.target.value;
 
             event.preventDefault();
 
             if (id) {
-                self.device = {
+                this.device = {
                     id: id
                 };
-                global.state.device = self.device;
-                localStorage.setItem('_device', JSON.stringify(self.device));
+                global.state.device = this.device;
+                localStorage.setItem('_device', JSON.stringify(this.device));
             }
         });
 
-        this.elDevicesOkBtn.addEventListener('click', function (event) {
+        this.elDevicesOkBtn.addEventListener('click', (event) => {
             event.preventDefault();
 
-            if (self.device) {
+            if (this.device) {
                 this.initalizeAddin();
 
                 // in this order becasue zombiejs errors out on close
@@ -186,7 +187,7 @@ class GeotabLogin {
                 let app = document.querySelector('#app');
                 let body = document.body;
 
-                if (self.elNightModeToggle.checked) {
+                if (this.elNightModeToggle.checked) {
                     app.classList.add(NightMode);
                     body.classList.add(NightMode);
                 } else {
