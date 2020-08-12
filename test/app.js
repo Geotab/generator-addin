@@ -14,6 +14,8 @@ var commonFiles = [
   'src/app/images/icon.svg',
   'src/.dev/api.js',
   'src/.dev/loaders/css-sandbox/css-sandbox.js',
+  'src/.dev/images/close-round.svg',
+  'src/.dev/images/Font_Awesome_5_solid_chevron-left.svg',
   'src/.dev/login/loginTemplate.js',
   'src/.dev/login/loginLogic.js',
   'src/.dev/navbar/navbar.js',
@@ -41,7 +43,10 @@ describe('generator-addin:page', function () {
     assert.file(commonFiles.concat([
       'src/app/myAddin.html',
       'src/app/scripts/main.js',
-      'src/app/styles/main.css'
+      'src/app/styles/main.css',
+      'src/.dev/groups/Groups.js',
+      'src/.dev/groups/_GroupHelper.js',
+      'src/.dev/groups/GroupListeners.js'
     ]));
   });
 });

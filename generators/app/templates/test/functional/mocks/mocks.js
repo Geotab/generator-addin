@@ -31,10 +31,60 @@ var device = {
   serialNumber: 'G70000000000'
 };
 
+var groups = [
+  {
+    children: [
+      {
+        children: [],
+        id: 'b2'
+      },
+      {
+        children: [],
+        id: 'b4'
+      },
+    ],
+    color: {},
+    comments: '',
+    id: 'GroupCompanyId',
+    name: '',
+    reference: ''
+  },
+  {
+    children: [
+      {
+        children: [],
+        id: 'b3'
+      },
+    ],
+    color: {},
+    comments: '',
+    id: 'b2',
+    name: 'Child 1',
+    reference: ''
+  },
+  {
+    children: [],
+    color: {},
+    comments: '',
+    id: 'b3',
+    name: 'Grandchild',
+    reference: ''
+  },
+  {
+    children: [],
+    color: {},
+    comments: '',
+    id: 'b4',
+    name: 'Child 2',
+    reference: ''
+  }
+];
+
 module.exports = {
   server: server,
   login: login,
   user: user,
   credentials: credentials,
-  device: device
+  device: device,
+  groups: groups
 };

@@ -13,8 +13,6 @@
  * **********************************************
  */
 
-// Allowing babel to work with older versions of IE
-const regeneratorRuntime = require('regenerator-runtime');
 
 // Global object is used to simulate the api, state, and geotab objects
 global.api
@@ -69,6 +67,12 @@ const loginLogic = new GeotabLogin(global.geotab.isDriveAddin, GeotabApi);
 <% if (!isButton && !isDriveAddin) {%>
 // Building translation hierarchy
 require('./lang/languages');
+
+/* Group Filter Module */
+import GroupListeners from './groups/GroupListeners.js';
+let groupListener = new GroupListeners(global.api, global.state, 'group-dropdown');
+groupListener.assignEventListeners();
+
 <% } %>
 // Handling the blur toggle
 require('./ToggleHandler');

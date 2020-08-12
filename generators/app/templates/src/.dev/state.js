@@ -1,4 +1,6 @@
 const state = {
+    // Not available in myGeotab - addin use only.
+    _activeGroups: [],
     getState: function () {
         var hash = location.hash,
             hashLength = hash.length;
@@ -33,9 +35,7 @@ const state = {
         return !!page;
     },
     getGroupFilter: function () {
-        return [{
-            id: 'GroupCompanyId'
-        }];
+        return this._activeGroups;
     }
 };
 

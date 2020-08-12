@@ -385,9 +385,27 @@ module.exports = class extends yeoman {
       this.destinationPath('src/.dev/state.js')
     );
 
-    // Languages
     if(!this.props.isButton && !this.props.isDriveAddin){
+      // Group Filter
+      this.fs.copy(
+        this.templatePath('src/.dev/groups/_GroupHelper.js'),
+        this.destinationPath('src/.dev/groups/_GroupHelper.js')
+      );
+      
+      this.fs.copy(
+        this.templatePath('src/.dev/groups/GroupListeners.js'),
+        this.destinationPath('src/.dev/groups/GroupListeners.js')
+      );
 
+      this.fs.copyTpl(
+        this.templatePath('src/.dev/groups/Groups.js'),
+        this.destinationPath('src/.dev/groups/Groups.js'),
+        {
+          root: this.props.camelName
+        }
+      );
+
+      // Languages
       this.fs.copy(
         this.templatePath('src/.dev/lang/Translator.js'),
         this.destinationPath('src/.dev/lang/Translator.js'),
@@ -487,6 +505,11 @@ module.exports = class extends yeoman {
     this.fs.copy(
       this.templatePath('src/.dev/images/Font_Awesome_5_solid_chevron-left.svg'),
       this.destinationPath('src/.dev/images/Font_Awesome_5_solid_chevron-left.svg')
+    );
+
+    this.fs.copy(
+      this.templatePath('src/.dev/images/close-round.svg'),
+      this.destinationPath('src/.dev/images/close-round.svg')
     );
 
     this.fs.copy(
