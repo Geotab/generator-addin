@@ -42,11 +42,11 @@ geotab.addin.<%= root%> = function () {
      *        might be doing asynchronous operations, you must call this method when the Add-In is ready
      *        for display to the user.
     */
-   startup: function (freshApi, freshState, initializeCallback) { debugger;
+   startup: function (freshApi, freshState, initializeCallback) {
     if(config.onStartup == true){
-        elAddin.querySelector('#newaddin-startstop').textContent = 'Executing startup';
+        elAddin.querySelector('#<%= root %>-startstop').textContent = 'Executing startup';
         setTimeout(() => {
-          elAddin.querySelector('#newaddin-startstop').textContent = '';
+          elAddin.querySelector('#<%= root %>-startstop').textContent = '';
         }, 2000);
         
         // MUST call initializeCallback when done any setup
@@ -64,14 +64,14 @@ geotab.addin.<%= root%> = function () {
    * @param {object} state - The page state object allows access to URL, page navigation and global group filter.
    * @param {function} resolve - call this somewhere so the promise resolves
   */
- shutdown: function (api, state, callback) { debugger;
+ shutdown: function (api, state, callback) {
   if(config.onShutdown == true){
     // alert that shutdown is executed      
     return new Promise (resolve => {
       // Do work, make any api calls etc    
-      elAddin.querySelector('#newaddin-startstop').textContent = 'Executing shutdown';
+      elAddin.querySelector('#<%= root %>-startstop').textContent = 'Executing shutdown';
     setTimeout(() => {
-      elAddin.querySelector('#newaddin-startstop').textContent = '';
+      elAddin.querySelector('#<%= root %>-startstop').textContent = '';
     }, 2000);   
       resolve(); // eventually need to call this somewhere so the promise resolves
     });

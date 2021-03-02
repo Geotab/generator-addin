@@ -13,6 +13,7 @@
 
   <div id="app" <% if (isDriveAddin) { %>class="hidden"<% } %>>
     <% if (isDriveAddin) { %>
+      <span id="<%= root %>-startstop"></span>
       <div class="panel">
         <h2 class="panel__title"><%= root %></h2>
         <p>Driver: <span id="<%= root %>-driver"></span></p>

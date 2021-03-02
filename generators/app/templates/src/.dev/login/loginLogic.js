@@ -30,6 +30,11 @@ class GeotabLogin {
         this.elLogoutBtn = document.querySelector('#logoutBtn');
         this.elAddinButton = document.querySelector('.customButton');
         this.elNightModeToggle = document.querySelector('#nightMode');
+        this.elStartStopToggle = document.querySelector('#startStopBtn');
+        this.elSendNotification = document.querySelector('#sendNotificationBtn');
+        this.elCancelNotification = document.querySelector('#cancelNotificationBtn');
+        this.elUpdateNotification = document.querySelector('#updateNotificationBtn');
+        this.elPermissionNotification = document.querySelector('#permissionNotificationBtn');
     
         if (this.elAddinButton) {
             this.elAddinButton.addEventListener('click', function (e) {
@@ -204,8 +209,7 @@ class GeotabLogin {
                 }
             });
 
-            this.elStartStopToggle.addEventListener('click', evt => { 
-                debugger;
+            this.elStartStopToggle.addEventListener('click', evt => {                 
                 if (this.elStartStopToggle.classList.contains('start')) {
                     this.elStartStopToggle.classList.remove('start');
                     this.elStartStopToggle.classList.add('stop');  
@@ -221,6 +225,19 @@ class GeotabLogin {
                         global.geotab.addin[name].shutdown(global.api, global.state, function(){});                
                     }); 
                 }
+            });
+            var notification;
+            this.elSendNotification.addEventListener('click', evt => {
+                notification = global.api.mobile.notification().notify("test","testing", "t");
+            });
+            this.elUpdateNotification.addEventListener('click', evt => {
+                notification = global.api.mobile.notification().update("test2","testing2", "t");
+            });
+            this.elPermissionNotification.addEventListener('click', evt => {
+                global.api.mobile.notification().requestPermission();                
+            });
+            this.elCancelNotification.addEventListener('click', evt => {
+                global.api.mobile.notification().cancel(notification);
             });
         }
 
@@ -268,7 +285,7 @@ class GeotabLogin {
                                 tag: tag                                                             
                             };
 
-                        if (Notification.permission === 'granted') {debugger;
+                        if (Notification.permission === 'granted') {
                             notification = new Notification(title, options);
                         } else if (Notification.permission !== 'denied') {
                             Notification.requestPermission(function (permission) {
@@ -292,8 +309,8 @@ class GeotabLogin {
                         notification = new Notification(title, options);                        
                         return notification;
                     },
-                    cancel: function(n){                        
-                        n.close();
+                    cancel: function(notification){                        
+                        notification.close();
                     }
                 }
             },            
