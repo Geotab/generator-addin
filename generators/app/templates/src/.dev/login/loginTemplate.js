@@ -235,6 +235,7 @@ let loginExample = `
             <input type="checkbox" id="nightMode" />
         </label>
         <a id="toggleBtn" class="dev-button">Blur add-in</a>
+        <a id="startStopBtn" class="dev-button stop">Stop add-in</a>        
       <% } else { %>
         <div id="group-wrapper">
             <div id="group-selector" class="geotabFormEditField noTranslate">
@@ -259,6 +260,14 @@ let loginExample = `
       <% } %>
       <a id="logoutBtn" class="dev-button">Logout</a>
     </header>
+    <% if (isDriveAddin) { %>
+        <header class="dev-header">
+        <a id="sendNotificationBtn" class="dev-button">Send notification</a>        
+        <a id="updateNotificationBtn" class="dev-button">Update notification</a>
+        <a id="cancelNotificationBtn" class="dev-button">Cancel notification</a>
+        <a id="permissionNotificationBtn" class="dev-button">Request notification Permission</a>
+        </header>
+    <% } %>
 
     <dialog id="loginDialog" class="dev-dialog">
         <form class="dev-form">

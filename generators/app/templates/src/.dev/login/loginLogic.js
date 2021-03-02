@@ -1,4 +1,5 @@
 'use strict';
+const config = require('../../app/config.json');
 
 /**
  * Geotab login class
@@ -135,6 +136,10 @@ class GeotabLogin {
         this.elLogoutBtn.addEventListener('click', (event) => {
             event.preventDefault();
 
+            Object.keys(global.geotab.addin).forEach(function (name) {
+                global.geotab.addin[name].shutdown(global.api, global.state, function(){});                
+            }); 
+
             if (global.api !== undefined) {
                 global.api.forget();
             }
@@ -179,6 +184,9 @@ class GeotabLogin {
                 // in this order becasue zombiejs errors out on close
                 this.elDeviceDialog.close();
             }
+            Object.keys(global.geotab.addin).forEach(function (name) {
+                global.geotab.addin[name].startup(global.api, global.state, function(){});                
+            });  
         });
 
         if (isDriveAddin) {
@@ -193,6 +201,25 @@ class GeotabLogin {
                 } else {
                     app.classList.remove(NightMode);
                     body.classList.remove(NightMode);
+                }
+            });
+
+            this.elStartStopToggle.addEventListener('click', evt => { 
+                debugger;
+                if (this.elStartStopToggle.classList.contains('start')) {
+                    this.elStartStopToggle.classList.remove('start');
+                    this.elStartStopToggle.classList.add('stop');  
+                    this.elStartStopToggle.innerHTML = 'Stop add-in';               
+                    Object.keys(global.geotab.addin).forEach(function (name) {
+                        global.geotab.addin[name].startup(global.api, global.state, function(){});                
+                    }); 
+                } else {
+                    this.elStartStopToggle.classList.remove('stop');
+                    this.elStartStopToggle.classList.add('start');
+                    this.elStartStopToggle.innerHTML = 'Start add-in';
+                    Object.keys(global.geotab.addin).forEach(function (name) {
+                        global.geotab.addin[name].shutdown(global.api, global.state, function(){});                
+                    }); 
                 }
             });
         }
@@ -218,26 +245,58 @@ class GeotabLogin {
                     window.speechSynthesis.speak(utterThis);
                 }
             },
-            notify: function (message, title, id, jsonData, permanent) {
-                var notification,
-                    options = {
-                        tag: id,
-                        body: message,
-                        data: jsonData
-                    };
-
-                if (!('Notification' in window)) {
-                    console.log('This browser does not support notifications');
-                } else if (Notification.permission === 'granted') {
-                    notification = new Notification(title, options);
-                } else if (Notification.permission !== 'denied') {
-                    Notification.requestPermission(function (permission) {
-                        if (permission === 'granted') {
-                            notification = new Notification(title, options);
+            notification: function (){                
+                return{
+                    hasPermission: function(){
+                        var permission = false;
+                        if(Notification.permission === 'granted')
+                        {
+                            permission == true;
                         }
-                    });
+                        return permission;
+                    },
+                    requestPermission: function(){  
+                        var r = Notification.requestPermission().then(function(result){                            
+                                console.log(result);
+                        });              
+                    },
+                    notify: function(message, title, tag){
+                        var notification,
+                            options = {
+                                title: title,                                
+                                body: message,
+                                tag: tag                                                             
+                            };
+
+                        if (Notification.permission === 'granted') {debugger;
+                            notification = new Notification(title, options);
+                        } else if (Notification.permission !== 'denied') {
+                            Notification.requestPermission(function (permission) {
+                                if (permission === 'granted') {
+                                    notification = new Notification(title, options);
+                                }
+                            });
+                        }
+                        return notification;
+                    },     
+                    //tag is used to identify a notification, if a notification with same tag
+                    // exists and has already been dispalyed, previous notification will be closed
+                    //and new one will be displayed             
+                    update: function(message, title, tag){
+                        var notification,
+                            options = {                                
+                                title: title,                                
+                                body: message,
+                                tag: tag                              
+                            };
+                        notification = new Notification(title, options);                        
+                        return notification;
+                    },
+                    cancel: function(n){                        
+                        n.close();
+                    }
                 }
-            },
+            },            
             geolocation: navigator.geolocation
         };
 

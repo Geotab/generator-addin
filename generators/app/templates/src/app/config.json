@@ -15,6 +15,8 @@
     },<% } %>
     "icon": "images/icon.svg"
   }],
+  "onStartup": true,
+  "onShutdown": true,
   "dev": {
     "root": "<%= root %>",
     "dist": {
