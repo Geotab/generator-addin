@@ -71,6 +71,9 @@ class GeotabLogin {
                 addin.focus(global.api, global.state);
             } else {
                 addin = typeof addin === 'function' ? global.geotab.addin[name] = addin(global.api, global.state) : addin;
+                if(config.onStartup){
+                    addin.startup(global.api, global.state, function () {});
+                }
                 addin.initialize(global.api, global.state, function () {
                     addin.isInitialize = true;
                     addin.focus(global.api, global.state);
@@ -140,10 +143,11 @@ class GeotabLogin {
 
         this.elLogoutBtn.addEventListener('click', (event) => {
             event.preventDefault();
-
-            Object.keys(global.geotab.addin).forEach(function (name) {
-                global.geotab.addin[name].shutdown(global.api, global.state, function(){});                
-            }); 
+            if(config.onShutdown && isDriveAddin){
+                Object.keys(global.geotab.addin).forEach(function (name) {
+                    global.geotab.addin[name].shutdown(global.api, global.state, function(){});
+                });
+            }
 
             if (global.api !== undefined) {
                 global.api.forget();
@@ -189,9 +193,6 @@ class GeotabLogin {
                 // in this order becasue zombiejs errors out on close
                 this.elDeviceDialog.close();
             }
-            Object.keys(global.geotab.addin).forEach(function (name) {
-                global.geotab.addin[name].startup(global.api, global.state, function(){});                
-            });  
         });
 
         if (isDriveAddin) {
@@ -213,10 +214,12 @@ class GeotabLogin {
                 if (this.elStartStopToggle.classList.contains('start')) {
                     this.elStartStopToggle.classList.remove('start');
                     this.elStartStopToggle.classList.add('stop');  
-                    this.elStartStopToggle.innerHTML = 'Stop add-in';               
+                    this.elStartStopToggle.innerHTML = 'Stop add-in';
                     Object.keys(global.geotab.addin).forEach(function (name) {
-                        global.geotab.addin[name].startup(global.api, global.state, function(){});                
-                    }); 
+                        var addin = global.geotab.addin[name];
+                        addin.isInitialize = false;
+                    });
+                    this.initalizeAddin();
                 } else {
                     this.elStartStopToggle.classList.remove('stop');
                     this.elStartStopToggle.classList.add('start');
@@ -225,19 +228,6 @@ class GeotabLogin {
                         global.geotab.addin[name].shutdown(global.api, global.state, function(){});                
                     }); 
                 }
-            });
-            var notification;
-            this.elSendNotification.addEventListener('click', evt => {
-                notification = global.api.mobile.notification().notify("test","testing", "t");
-            });
-            this.elUpdateNotification.addEventListener('click', evt => {
-                notification = global.api.mobile.notification().update("test2","testing2", "t");
-            });
-            this.elPermissionNotification.addEventListener('click', evt => {
-                global.api.mobile.notification().requestPermission();                
-            });
-            this.elCancelNotification.addEventListener('click', evt => {
-                global.api.mobile.notification().cancel(notification);
             });
         }
 
@@ -262,58 +252,54 @@ class GeotabLogin {
                     window.speechSynthesis.speak(utterThis);
                 }
             },
-            notification: function (){                
-                return{
-                    hasPermission: function(){
-                        var permission = false;
-                        if(Notification.permission === 'granted')
-                        {
-                            permission == true;
-                        }
-                        return permission;
-                    },
-                    requestPermission: function(){  
-                        var r = Notification.requestPermission().then(function(result){                            
-                                console.log(result);
-                        });              
-                    },
-                    notify: function(message, title, tag){
-                        var notification,
-                            options = {
-                                title: title,                                
-                                body: message,
-                                tag: tag                                                             
-                            };
-
-                        if (Notification.permission === 'granted') {
-                            notification = new Notification(title, options);
-                        } else if (Notification.permission !== 'denied') {
-                            Notification.requestPermission(function (permission) {
-                                if (permission === 'granted') {
-                                    notification = new Notification(title, options);
-                                }
-                            });
-                        }
-                        return notification;
-                    },     
-                    //tag is used to identify a notification, if a notification with same tag
-                    // exists and has already been dispalyed, previous notification will be closed
-                    //and new one will be displayed             
-                    update: function(message, title, tag){
-                        var notification,
-                            options = {                                
-                                title: title,                                
-                                body: message,
-                                tag: tag                              
-                            };
-                        notification = new Notification(title, options);                        
-                        return notification;
-                    },
-                    cancel: function(notification){                        
-                        notification.close();
+            notification: {
+                hasPermission: function(){
+                    var permission = false;
+                    if(Notification.permission === 'granted')
+                    {
+                        permission = true;
                     }
-                }
-            },            
+                    return permission;
+                },
+                requestPermission: function(){
+                    return Notification.requestPermission();
+                },
+                notify: function(message, title, tag){
+                    var notification,
+                        options = {
+                            title: title,
+                            body: message,
+                            tag: tag
+                        };
+
+                    if (Notification.permission === 'granted') {
+                        notification = new Notification(title, options);
+                    } else if (Notification.permission !== 'denied') {
+                        Notification.requestPermission(function (permission) {
+                            if (permission === 'granted') {
+                                notification = new Notification(title, options);
+                            }
+                        });
+                    }
+                    return notification;
+                },
+                //tag is used to identify a notification, if a notification with same tag
+                // exists and has already been dispalyed, previous notification will be closed
+                //and new one will be displayed
+                update: function(message, title, tag){
+                    var notification,
+                        options = {
+                            title: title,
+                            body: message,
+                            tag: tag
+                        };
+                    notification = new Notification(title, options);
+                    return notification;
+                },
+                cancel: function(notification){
+                    notification.close();
+                },
+            },
             geolocation: navigator.geolocation
         };
 

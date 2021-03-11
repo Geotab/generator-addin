@@ -292,7 +292,8 @@ module.exports = class extends yeoman {
         menuName: this.props.menuName,
         root: this.props.camelName,
         host: this.props.host,
-        isButton: this.props.isButton
+        isButton: this.props.isButton,
+        isDriveAddin: this.props.isDriveAddin
       }
     );
   }
