@@ -12,7 +12,7 @@ geotab.addin.<%= root%> = function () {
     var elAddin = document.getElementById('<%= root%>');
   <% } %>
   return {
-
+    <% if (isDriveAddin) { %>
     /**
      * Startup Add-Ins are executed when a driver logs in to the Drive App for the first time. 
      * When the dashboard page is visible, the startup method is only called once. 
@@ -25,12 +25,10 @@ geotab.addin.<%= root%> = function () {
      *        for display to the user.
     */
     startup: function (freshApi, freshState, initializeCallback) {
-      <% if (isDriveAddin) { %>
         // MUST call initializeCallback when done any setup
           initializeCallback();
-      <% } %>
     },
-
+    <% } %>
     /**
      * initialize() is called only once when the Add-In is first loaded. Use this function to initialize the
      * Add-In's state such as default values or make API requests (MyGeotab or external) to ensure interface
@@ -103,27 +101,24 @@ geotab.addin.<%= root%> = function () {
     blur: function () {
       // hide main content
       elAddin.className += ' hidden';
-    },
+    }<% if (isDriveAddin) { %>,
+      /**
+       * Shutdown Add-Ins are executed when the final driver logs out of the Drive App.
+       * If there are co-drivers, and one of the co-drivers logs out (while other drivers remain logged in to the Drive App),
+       * the shutdown Add-In is not executed.
+       * Additionally, the Add-In is expected to return a promise since shutdown Add-Ins have a 15-second time limit
+       * to perform their function before the Add-Ins time out and the logout process is completed.
+       * The time limit prevents the application from freezing in the middle of the logout process as a result of faulty Add-Ins.
+       * @param {object} api - The GeotabApi object for making calls to MyGeotab.
+       * @param {object} state - The page state object allows access to URL, page navigation and global group filter.
+       * @param {function} resolve - call this somewhere so the promise resolves
+      */
+      shutdown: function (api, state, callback) {
+          return new Promise (resolve => {
+            // Do work, make any api calls etc
 
-    /**
-     * Shutdown Add-Ins are executed when the final driver logs out of the Drive App.
-     * If there are co-drivers, and one of the co-drivers logs out (while other drivers remain logged in to the Drive App),
-     * the shutdown Add-In is not executed.
-     * Additionally, the Add-In is expected to return a promise since shutdown Add-Ins have a 15-second time limit
-     * to perform their function before the Add-Ins time out and the logout process is completed.
-     * The time limit prevents the application from freezing in the middle of the logout process as a result of faulty Add-Ins.
-     * @param {object} api - The GeotabApi object for making calls to MyGeotab.
-     * @param {object} state - The page state object allows access to URL, page navigation and global group filter.
-     * @param {function} resolve - call this somewhere so the promise resolves
-    */
-    shutdown: function (api, state, callback) {
-      <% if (isDriveAddin) { %>
-        return new Promise (resolve => {
-          // Do work, make any api calls etc
-
-          resolve(); // eventually need to call this somewhere so the promise resolves
-        });
-      <% } %>
-    }
+            resolve(); // eventually need to call this somewhere so the promise resolves
+          });
+      }<% } %>
   };
 };

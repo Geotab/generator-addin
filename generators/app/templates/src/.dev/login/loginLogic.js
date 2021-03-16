@@ -71,13 +71,21 @@ class GeotabLogin {
                 addin.focus(global.api, global.state);
             } else {
                 addin = typeof addin === 'function' ? global.geotab.addin[name] = addin(global.api, global.state) : addin;
-                if(config.onStartup){
-                    addin.startup(global.api, global.state, function () {});
+                if(config.onStartup && isDriveAddin){
+                    addin.startup(global.api, global.state, function () {
+                        //call initialize after startup
+                        addin.initialize(global.api, global.state, function () {
+                            addin.isInitialize = true;
+                            addin.focus(global.api, global.state);
+                        });
+                    });
                 }
-                addin.initialize(global.api, global.state, function () {
-                    addin.isInitialize = true;
-                    addin.focus(global.api, global.state);
-                });
+                else{
+                    addin.initialize(global.api, global.state, function () {
+                        addin.isInitialize = true;
+                        addin.focus(global.api, global.state);
+                    });
+                }
             }
         });
     }
