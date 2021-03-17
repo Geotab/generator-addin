@@ -1,4 +1,5 @@
 'use strict';
+const config = require('../../app/config.json');
 
 /**
  * Geotab login class
@@ -29,6 +30,11 @@ class GeotabLogin {
         this.elLogoutBtn = document.querySelector('#logoutBtn');
         this.elAddinButton = document.querySelector('.customButton');
         this.elNightModeToggle = document.querySelector('#nightMode');
+        this.elStartStopToggle = document.querySelector('#startStopBtn');
+        this.elSendNotification = document.querySelector('#sendNotificationBtn');
+        this.elCancelNotification = document.querySelector('#cancelNotificationBtn');
+        this.elUpdateNotification = document.querySelector('#updateNotificationBtn');
+        this.elPermissionNotification = document.querySelector('#permissionNotificationBtn');
     
         if (this.elAddinButton) {
             this.elAddinButton.addEventListener('click', function (e) {
@@ -65,10 +71,21 @@ class GeotabLogin {
                 addin.focus(global.api, global.state);
             } else {
                 addin = typeof addin === 'function' ? global.geotab.addin[name] = addin(global.api, global.state) : addin;
-                addin.initialize(global.api, global.state, function () {
-                    addin.isInitialize = true;
-                    addin.focus(global.api, global.state);
-                });
+                if(config.onStartup && isDriveAddin){
+                    addin.startup(global.api, global.state, function () {
+                        //call initialize after startup
+                        addin.initialize(global.api, global.state, function () {
+                            addin.isInitialize = true;
+                            addin.focus(global.api, global.state);
+                        });
+                    });
+                }
+                else{
+                    addin.initialize(global.api, global.state, function () {
+                        addin.isInitialize = true;
+                        addin.focus(global.api, global.state);
+                    });
+                }
             }
         });
     }
@@ -134,6 +151,11 @@ class GeotabLogin {
 
         this.elLogoutBtn.addEventListener('click', (event) => {
             event.preventDefault();
+            if(config.onShutdown && isDriveAddin){
+                Object.keys(global.geotab.addin).forEach(function (name) {
+                    global.geotab.addin[name].shutdown(global.api, global.state, function(){});
+                });
+            }
 
             if (global.api !== undefined) {
                 global.api.forget();
@@ -195,6 +217,26 @@ class GeotabLogin {
                     body.classList.remove(NightMode);
                 }
             });
+
+            this.elStartStopToggle.addEventListener('click', evt => {                 
+                if (this.elStartStopToggle.classList.contains('start')) {
+                    this.elStartStopToggle.classList.remove('start');
+                    this.elStartStopToggle.classList.add('stop');  
+                    this.elStartStopToggle.innerHTML = 'Stop add-in';
+                    Object.keys(global.geotab.addin).forEach(function (name) {
+                        var addin = global.geotab.addin[name];
+                        addin.isInitialize = false;
+                    });
+                    this.initalizeAddin();
+                } else {
+                    this.elStartStopToggle.classList.remove('stop');
+                    this.elStartStopToggle.classList.add('start');
+                    this.elStartStopToggle.innerHTML = 'Start add-in';
+                    Object.keys(global.geotab.addin).forEach(function (name) {
+                        global.geotab.addin[name].shutdown(global.api, global.state, function(){});                
+                    }); 
+                }
+            });
         }
 
         if (!isDriveAddin) {
@@ -218,25 +260,53 @@ class GeotabLogin {
                     window.speechSynthesis.speak(utterThis);
                 }
             },
-            notify: function (message, title, id, jsonData, permanent) {
-                var notification,
-                    options = {
-                        tag: id,
-                        body: message,
-                        data: jsonData
-                    };
+            notification: {
+                hasPermission: function(){
+                    var permission = false;
+                    if(Notification.permission === 'granted')
+                    {
+                        permission = true;
+                    }
+                    return permission;
+                },
+                requestPermission: function(){
+                    return Notification.requestPermission();
+                },
+                notify: function(message, title, tag){
+                    var notification,
+                        options = {
+                            title: title,
+                            body: message,
+                            tag: tag
+                        };
 
-                if (!('Notification' in window)) {
-                    console.log('This browser does not support notifications');
-                } else if (Notification.permission === 'granted') {
+                    if (Notification.permission === 'granted') {
+                        notification = new Notification(title, options);
+                    } else if (Notification.permission !== 'denied') {
+                        Notification.requestPermission(function (permission) {
+                            if (permission === 'granted') {
+                                notification = new Notification(title, options);
+                            }
+                        });
+                    }
+                    return notification;
+                },
+                //tag is used to identify a notification, if a notification with same tag
+                // exists and has already been dispalyed, previous notification will be closed
+                //and new one will be displayed
+                update: function(message, title, tag){
+                    var notification,
+                        options = {
+                            title: title,
+                            body: message,
+                            tag: tag
+                        };
                     notification = new Notification(title, options);
-                } else if (Notification.permission !== 'denied') {
-                    Notification.requestPermission(function (permission) {
-                        if (permission === 'granted') {
-                            notification = new Notification(title, options);
-                        }
-                    });
-                }
+                    return notification;
+                },
+                cancel: function(notification){
+                    notification.close();
+                },
             },
             geolocation: navigator.geolocation
         };

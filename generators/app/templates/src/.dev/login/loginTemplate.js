@@ -235,6 +235,7 @@ let loginExample = `
             <input type="checkbox" id="nightMode" />
         </label>
         <a id="toggleBtn" class="dev-button">Blur add-in</a>
+        <a id="startStopBtn" class="dev-button stop">Stop add-in</a>        
       <% } else { %>
         <div id="group-wrapper">
             <div id="group-selector" class="geotabFormEditField noTranslate">

@@ -15,6 +15,9 @@
     },<% } %>
     "icon": "images/icon.svg"
   }],
+  <% if (isDriveAddin) { %>
+  "onStartup": true,
+  "onShutdown": true,<% } %>
   "dev": {
     "root": "<%= root %>",
     "dist": {
