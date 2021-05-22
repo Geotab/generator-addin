@@ -63,7 +63,7 @@ class GeotabLogin {
         });
     }
 
-    initalizeAddin() {
+    initializeAddin(isDriveAddin) {
         Object.keys(global.geotab.addin).forEach(function (name) {
             var addin = global.geotab.addin[name];
 
@@ -143,7 +143,7 @@ class GeotabLogin {
             });
 
             if (!isDriveAddin) {
-                this.initalizeAddin();
+                this.initializeAddin(isDriveAddin);
             }
 
             this.elLoginDialog.close();
@@ -196,7 +196,7 @@ class GeotabLogin {
             event.preventDefault();
 
             if (this.device) {
-                this.initalizeAddin();
+                this.initializeAddin(isDriveAddin);
 
                 // in this order becasue zombiejs errors out on close
                 this.elDeviceDialog.close();
@@ -227,7 +227,7 @@ class GeotabLogin {
                         var addin = global.geotab.addin[name];
                         addin.isInitialize = false;
                     });
-                    this.initalizeAddin();
+                    this.initializeAddin(isDriveAddin);
                 } else {
                     this.elStartStopToggle.classList.remove('stop');
                     this.elStartStopToggle.classList.add('start');
@@ -240,7 +240,7 @@ class GeotabLogin {
         }
 
         if (!isDriveAddin) {
-            this.initalizeAddin();
+            this.initializeAddin(isDriveAddin);
             return;
         }
         // mock Drive properties
@@ -324,7 +324,7 @@ class GeotabLogin {
         if (!this.device) {
             this.initializeDevice();
         } else {
-            this.initalizeAddin();
+            this.initializeAddin(isDriveAddin);
         }
     }
 }
