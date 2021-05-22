@@ -4,7 +4,7 @@ import xIcon from '../images/close-round.svg';
 import addinIcon from '../../app/images/icon.svg';
 let loginExample = `
 <% if (isDriveAddin) {%>
-    <link rel="stylesheet" href="https://mypreview.geotab.com/drive/app/css/geotabdrive.less">
+    <link rel="stylesheet" href="https://mypreview.geotab.com/drive/app/css/app.less">
 <% } else { %>
     <link rel="stylesheet" href="https://mypreview.geotab.com/geotab/checkmate/app.less?skin=my_geotab">
 <% } %>
