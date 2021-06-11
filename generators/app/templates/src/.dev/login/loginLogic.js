@@ -1,5 +1,8 @@
 'use strict';
 const config = require('../../app/config.json');
+<% if (isDriveAddin) { %>
+const ImageOptions = require('./pictureDialog/ImageOptions');
+<% } %>
 
 /**
  * Geotab login class
@@ -309,286 +312,35 @@ class GeotabLogin {
                 },
             },
             camera: {
-                base64: '',
-                removeDialog: function() {
-                    var imageOptionsDialog = document.getElementById('select-image');
-                    var imageOptionsOverlay = document.getElementById('overlay-select-image');
-                    var cameraInterfaceDialog = document.getElementById('capture-image');
-                    var cameraInterfaceOverlay = document.getElementById('overlay-capture-image');
-                    var submitButton = document.getElementById('submitImage');
-                    var canvas = document.getElementById('canvas');
-
-                    if (imageOptionsOverlay) {
-                        imageOptionsOverlay.remove();
-                    }
-                    if (cameraInterfaceOverlay) {
-                        cameraInterfaceOverlay.remove();
-                    }
-                    if (imageOptionsDialog) {
-                        imageOptionsDialog.remove();
-                    }
-                    if (cameraInterfaceDialog) {
-                        cameraInterfaceDialog.remove();
-                    }
-                    if (submitButton) {
-                        submitButton.remove();
-                    }
-                    if (canvas) {
-                       canvas.remove();
-                   }
-                },
-                setImageUrlFromCanvas: function() {
-                    var canvas = document.getElementById('canvas');
-                    var video = document.getElementById('player');
-                    this.base64 = canvas.toDataURL('image/png');
-                    if (video) {
-                        video.srcObject.getVideoTracks().forEach(track => track.stop());
-                    }
-                },
-                getImageFromVideoFrame: function() {
-                    var canvas = document.getElementById('canvas');
-                    var context = canvas.getContext('2d');
-                    var video = document.getElementById('player');
-                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                    this.setImageUrlFromCanvas();
-                },
-                getImageFromUpload: function(evt) {
-                    var canvas = document.getElementById('canvas');
-                    var context = canvas.getContext('2d');
-                    var imageFile = evt.target.files[0];
-                    var fileReader = new FileReader();
-                    var img = new Image();
-
-                    img.onload = () => {
-                        context.canvas.width = img.width;
-                        context.canvas.height = img.height;
-                        context.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        this.setImageUrlFromCanvas();
-                    }
-                    fileReader.onloadend = () => {
-                        img.src = fileReader.result;
-                    }
-                    fileReader.readAsDataURL(imageFile);
-                },
-                initializeCameraInterface: function() {
-                    var isSupported = 'mediaDevices' in navigator;
-                    if (!isSupported) {
-                        console.error('Media devices not supported in this browser.');
-                        return;
-                    }
-
-                    var overlay = document.createElement('div');
-                    overlay.setAttribute('class', 'dialog-box-overlay');
-                    overlay.setAttribute('id', 'overlay-capture-image');
-                    overlay.style.zIndex = '7000';
-                    overlay.addEventListener('click', () => {
-                        this.removeDialog();
-                    }, false);
-
-                    var dialog = document.createElement('div');
-                    dialog.setAttribute('class', 'dialog-box');
-                    dialog.setAttribute('id', 'capture-image');
-                    dialog.style.zIndex = '8000';
-                    dialog.setAttribute('aria-modal', 'true');
-
-                    var video = document.createElement('video');
-                    video.setAttribute('id', 'player');
-                    video.setAttribute('controls', '');
-                    video.setAttribute('autoplay', '');
-                    video.setAttribute('width', 320);
-                    video.setAttribute('height', 240);
-                    video.style.marginLeft = 'auto';
-                    video.style.marginRight = 'auto';
-                    video.style.display = 'block';
-                    
-
-                    var innerDialog = document.createElement('div');
-                    innerDialog.setAttribute('class', 'dialog-box__inner-wrapper');
-                    var dialogContent = document.createElement('div');
-                    dialogContent.setAttribute('class', 'dialog-box__inner');
-                    dialogContent.setAttribute('id', 'capture-image-inner');
-                    dialogContent.appendChild(video);
-                    innerDialog.appendChild(dialogContent);
-                    dialog.appendChild(innerDialog);
-
-                    var buttonRegion = document.createElement('div');
-                    buttonRegion.setAttribute('class', 'dialog-box__button-region');
-                    var buttonRowDiv = document.createElement('div');
-                    buttonRowDiv.setAttribute('class', 'dialog-box__button-row');
-                    buttonRegion.appendChild(buttonRowDiv);
-
-                    var captureImageButton = document.createElement('button');
-                    captureImageButton.setAttribute('class', 'dialog-box__button');
-                    captureImageButton.setAttribute('id', 'takePicture');
-                    captureImageButton.innerHTML = 'Capture';
-                    captureImageButton.addEventListener('click', () => {
-                        this.getImageFromVideoFrame();
-                        // result is ready to be sent off. Simulate submit image click so 
-                        // that promise can be resolved at this point.
-                        var submitButton = document.getElementById('submitImage');
-                        submitButton.click();
-
-                    });
-                    buttonRowDiv.appendChild(captureImageButton);
-                    dialog.appendChild(buttonRegion);
-
-                    var constraints = {
-                        video: true,
-                    };
-
-                    navigator.mediaDevices.getUserMedia(constraints)
-                        .then((stream) => {
-                            video.srcObject = stream;
-                    });
-                    
-                    dialog.style.position = 'absolute';
-                    dialog.style.top = '50%';
-                    dialog.style.left = '50%';
-                    dialog.style.opacity = 1;
-                    dialog.style.transform = 'translate(-50%,-50%)';
-
-                    var app = document.querySelector('#app');
-                    app.appendChild(overlay);
-                    app.appendChild(dialog);
-                    
-                },
-                initializeImageOptionsInterface: function() {
-                    var cameraInterface = document.getElementById('capture-image');
-                    if (cameraInterface) {
-                        console.log('Removing cameraInterface from the DOM');
-                        cameraInterface.remove();
-                    }
-
-                    var imageOptionsExists = document.getElementById('select-image') != null;
-                    if (imageOptionsExists) {
-                        console.log('Image Option Interface already exists');
-                        return;
-                    }
-
-                    var overlay = document.createElement('div');
-                    overlay.setAttribute('class', 'dialog-box-overlay');
-                    overlay.setAttribute('id', 'overlay-select-image');
-                    overlay.style.zIndex = '7000';
-                    overlay.addEventListener('click', () => {
-                        this.removeDialog();
-                    }, false);
-
-                    var dialog = document.createElement('div');
-                    dialog.setAttribute('class', 'dialog-box');
-                    dialog.setAttribute('id', 'select-image');
-                    dialog.style.zIndex = '8000';
-                    dialog.setAttribute('aria-modal', 'true');
-
-                    var titleBar = document.createElement('div');
-                    titleBar.setAttribute('class', 'dialog-box__header');
-                    var title = document.createElement('span');
-                    title.setAttribute('class', 'dialog-box__title heading-3');
-                    title.setAttribute('id', 'select-image-title');
-                    title.innerHTML = 'Adding Image...';
-                    titleBar.appendChild(title);
-                    dialog.classList.add('_titled');
-                    dialog.appendChild(titleBar);
-                    dialog.setAttribute('aria-labelledby', 'select-image-title');
-
-                    let closeButton = document.createElement('button');
-                    closeButton.setAttribute('class', 'dialog-box__close-button');
-                    closeButton.setAttribute('id', 'closeButton-select-image');
-                    dialog.classList.add('_closable');
-                    closeButton.innerHTML = '<span style="color: #066ea8">&times</span>';
-                    closeButton.setAttribute("aria-label", 'Close');
-                    closeButton.addEventListener("click", () => {
-                        this.removeDialog();
-                    }, false);
-                    titleBar.appendChild(closeButton);
-
-                    var innerDialog = document.createElement('div');
-                    innerDialog.setAttribute('class', 'dialog-box__inner-wrapper');
-                    var dialogContent = document.createElement('div');
-                    dialogContent.setAttribute('class', 'dialog-box__inner');
-                    dialogContent.setAttribute('id', 'select-image-inner');
-                    dialogContent.innerHTML = 'Please choose an option to add an image.';
-                    innerDialog.appendChild(dialogContent);
-                    dialog.appendChild(innerDialog);
-
-                    var buttonRegion = document.createElement('div');
-                    buttonRegion.setAttribute('class', 'dialog-box__button-region');
-                    var buttonRowDiv = document.createElement('div');
-                    buttonRowDiv.setAttribute('class', 'dialog-box__button-row');
-                    buttonRegion.appendChild(buttonRowDiv);
-
-                    var newPictureButton = document.createElement('button');
-                    newPictureButton.setAttribute('class', 'dialog-box__button');
-                    newPictureButton.setAttribute('id', 'takePicture');
-                    newPictureButton.innerHTML = 'New Picture';
-                    newPictureButton.addEventListener('click', () => {
-                        dialog.remove();
-                        overlay.remove();
-                        this.initializeCameraInterface();
-                    }, false)
-                    buttonRowDiv.appendChild(newPictureButton);
-
-                    var uploadPictureInput = document.createElement('input');
-                    uploadPictureInput.setAttribute('type', 'file');
-                    uploadPictureInput.setAttribute('accept', 'image/*');
-                    uploadPictureInput.setAttribute('id', 'file-upload');
-                    uploadPictureInput.style.display = 'none';
-                    uploadPictureInput.addEventListener('change', (evt) => {
-                        this.getImageFromUpload(evt);
-                        // result is ready to be sent off. Simulate submit image click so 
-                        // that promise can be resolved at this point.
-                        var submitButton = document.getElementById('submitImage');
-                        setTimeout(() => {
-                            submitButton.click();
-                        }, 100);
-
-                    });
-                    
-                    var uploadPictureButton = document.createElement('button');
-                    uploadPictureButton.setAttribute('class', 'dialog-box__button');
-                    uploadPictureButton.setAttribute('id', 'uploadPicture');
-                    uploadPictureButton.innerHTML = 'Upload';
-                    uploadPictureButton.addEventListener('click', () => {
-                        uploadPictureInput.click();
-                    });
-                    buttonRowDiv.appendChild(uploadPictureButton);
-                    buttonRowDiv.appendChild(uploadPictureInput);
-                    dialog.appendChild(buttonRegion);
-                    
-                    var canvas = document.createElement('canvas');
-                    canvas.setAttribute('id', 'canvas');
-                    canvas.setAttribute('width', 320);
-                    canvas.setAttribute('height', 240);
-                    canvas.setAttribute('class', 'hidden');
-
-                    dialog.style.position = 'absolute';
-                    dialog.style.top = '50%';
-                    dialog.style.left = '50%';
-                    dialog.style.opacity = 1;
-                    dialog.style.transform = 'translate(-50%,-50%)';
-                    dialog.style.msTransform = 'translate(-50%,-50%)';
-
-                    // Used to tie event and promise together. When event occurs, promise resolves.
-                    var submitImageButton = document.createElement('button');
-                    submitImageButton.setAttribute('id', 'submitImage');
-                    submitImageButton.style.display = 'none';
-
-                    var app = document.querySelector('#app');
-                    app.appendChild(overlay);
-                    app.appendChild(dialog);
-                    app.appendChild(canvas);
-                    app.appendChild(submitImageButton);
-
-                },
                 takePicture: function() {
-                    
-                    this.base64 = '';
-                    this.initializeImageOptionsInterface();
+                    var imageOptions = new ImageOptions();
+                    imageOptions.generateContent();
                     var submitButton = document.getElementById('submitImage');
+                    var exitBtn = document.getElementById('exit');
 
-                    return new Promise(resolve => {
+                    return new Promise((resolve, reject) => {
+                        exitBtn.onclick = () => {
+                            // Making sure UI and recording stopped before returning
+                            var removed = imageOptions.dialog.cleanUp();
+                            if (removed) {
+                                reject('Exited.');
+                            }
+                        }
                         submitButton.onclick = () => {
-                            this.removeDialog();
-                            resolve(this.base64);
+                            var canvas = document.getElementById('canvas');
+                            var base64;
+                            if (canvas) {
+                                base64 = canvas.toDataURL('image/png');
+                            }
+                            // Making sure UI and recording stopped before returning
+                            var removed = imageOptions.dialog.cleanUp();
+                            if (removed) {
+                                if (base64) {
+                                    resolve(base64);
+                                } else {
+                                    reject('Image not loaded correctly.');
+                                }
+                            }
                         };
                     });
                 },
