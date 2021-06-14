@@ -50,8 +50,8 @@ class UploadImageDialog {
         closeButton.setAttribute('class', 'dialog-box__close-button');
         closeButton.setAttribute('id', 'closeButton-select-image');
         closeButton.innerHTML = '<span style="color: #066ea8">&times</span>';
-        closeButton.setAttribute("aria-label", 'Close');
-        closeButton.addEventListener("click", () => {
+        closeButton.setAttribute('aria-label', 'Close');
+        closeButton.addEventListener('click', () => {
             // Simulate exit button click so api promise can be rejected
             var exitBtn = document.getElementById('exit');
             exitBtn.click();
