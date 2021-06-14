@@ -456,18 +456,18 @@ module.exports = class extends yeoman {
 
     if (this.props.isDriveAddin) {
       this.fs.copyTpl(
-        this.templatePath('src/.dev/login/pictureDialog/Dialog.js'),
-        this.destinationPath('src/.dev/login/pictureDialog/Dialog.js'),
+        this.templatePath('src/.dev/login/takePictureDialog/Dialog.js'),
+        this.destinationPath('src/.dev/login/takePictureDialog/Dialog.js'),
       );
 
       this.fs.copyTpl(
-        this.templatePath('src/.dev/login/pictureDialog/ImageOptions.js'),
-        this.destinationPath('src/.dev/login/pictureDialog/ImageOptions.js'),
+        this.templatePath('src/.dev/login/takePictureDialog/UploadImageDialog.js'),
+        this.destinationPath('src/.dev/login/takePictureDialog/UploadImageDialog.js'),
       );
 
       this.fs.copyTpl(
-        this.templatePath('src/.dev/login/pictureDialog/TakePicture.js'),
-        this.destinationPath('src/.dev/login/pictureDialog/TakePicture.js'),
+        this.templatePath('src/.dev/login/takePictureDialog/CaptureImageDialog.js'),
+        this.destinationPath('src/.dev/login/takePictureDialog/CaptureImageDialog.js'),
       );
     }
 
