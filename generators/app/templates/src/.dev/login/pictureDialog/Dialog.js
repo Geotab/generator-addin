@@ -1,25 +1,50 @@
+/**
+ * Dialog class for generating a dialog box with overlay
+ * 
+ * Returns dialog box for appending dialog content
+ */
+
 class Dialog {
 
+    /**
+    * Param handed in for adding id's to dialog
+    * 
+    * @param {string} dialogID - dialog component id
+    */
     constructor(dialogID) {
         this.dialogID = dialogID;
         this.app = document.querySelector('#app');
     }
 
+    /**
+     * Attempts to remove all dialog
+     * 
+     * Returns true or false based on success of removal
+     */
     cleanUp() {
         var removeSuccess = this.removeAllDialog();
         if (removeSuccess) {
+            // Utility buttons exit and submit should only be removed when exit can be made safely
             this.removeUtilityButtons();
             return removeSuccess;
         }
         return !removeSuccess;
     }
 
+    /**
+     * Removes visible dialog from the DOM
+     * 
+     * Stops removing dialog if video component exists and is not loaded yet.
+     * This prevents from user closing UI before video is loaded so that on exit, camera
+     * recording can be stopped properly.
+     */
     removeAllDialog() {
         var dialogBox = document.getElementById(`${this.dialogID}`);
         var overlay = document.getElementById(`overlay-${this.dialogID}`);
         var canvas = document.getElementById('canvas');
         var video = document.getElementById('player');
 
+        // Attempt to stop video first and return false if not able to
         if (video) {
             try {
                 video.srcObject.getVideoTracks().forEach(track => track.stop());
@@ -42,7 +67,11 @@ class Dialog {
         return true;
     }
 
+    /**
+     * Removes invisible utility buttons
+     */
     removeUtilityButtons() {
+        // These buttons are specifically used to resolve or reject api.mobile.camera.takePicture() promise on click
         var submitBtn = document.getElementById('submitImage');
         var exitBtn = document.getElementById('exit');
 
@@ -107,6 +136,11 @@ class Dialog {
         return exitButton;
     }
 
+    /**
+     * Generates dialog HTML and appends to app component of drive addin
+     * 
+     * Returns dialog box for appending content
+     */
     generateDialog() {
         var canvas = this.generateCanvas();
         var submitBtn = this.generateSubmitButton();

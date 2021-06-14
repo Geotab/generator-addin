@@ -1,6 +1,11 @@
 const TakePicture = require('./TakePicture');
 const Dialog = require('./Dialog');
 
+/**
+ * Generates image options dialog content
+ * 
+ * Initial dialog box displayed when api.mobile.camera.takePicture() called
+ */
 class ImageOptions {
 
     constructor () {
@@ -9,6 +14,11 @@ class ImageOptions {
         this.app = document.querySelector('#app');
     }
 
+    /**
+     * Reads file input by user and draws it to canvas element for later base64 extraction
+     * 
+     * @param {event} evt Change event for file input 
+     */
     setImageFromUpload(evt) {
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
@@ -42,6 +52,7 @@ class ImageOptions {
         closeButton.innerHTML = '<span style="color: #066ea8">&times</span>';
         closeButton.setAttribute("aria-label", 'Close');
         closeButton.addEventListener("click", () => {
+            // Simulate exit button click so api promise can be rejected
             var exitBtn = document.getElementById('exit');
             exitBtn.click();
         });
@@ -60,6 +71,9 @@ class ImageOptions {
         return innerDialog;
     }
 
+    /**
+     * Generates button region and adds event listeners to buttons
+     */
     generateButtonRegion() {
         var buttonRegion = document.createElement('div');
         buttonRegion.setAttribute('class', 'dialog-box__button-region');
@@ -72,7 +86,7 @@ class ImageOptions {
         newPictureButton.setAttribute('id', 'takePicture');
         newPictureButton.innerHTML = 'New Picture';
         newPictureButton.addEventListener('click', () => {
-            // check if media devices are supported before generating the camera interface.
+            // Check if media devices are supported before generating the camera interface
             var isSupported = 'mediaDevices' in navigator;
             if (!isSupported) {
                 console.error('Media devices not supported in this browser.');
@@ -94,12 +108,15 @@ class ImageOptions {
         uploadPictureInput.addEventListener('change', (evt) => {
             this.setImageFromUpload(evt);
             var submitButton = document.getElementById('submitImage');
-            // small timeout needed to load image before base64 is extracted from canvas
+            // small timeout needed to load image before base64 can be extracted from canvas
             setTimeout(() => {
+                // Simulate submit button click so that api promise can be resolved
                 submitButton.click();
             }, 50);
         });
         
+        // HTML file input styling does not match other buttons
+        // This button is used for simulating click on file input
         var uploadPictureButton = document.createElement('button');
         uploadPictureButton.setAttribute('class', 'dialog-box__button');
         uploadPictureButton.setAttribute('id', 'uploadPicture');
@@ -112,6 +129,9 @@ class ImageOptions {
         return buttonRegion;
     }
 
+    /**
+     * Generates upload image options content then appends it to the dialog box
+     */
     generateContent() {
         this.dialog.generateDialog();
         var dialogBox = document.getElementById(`${this.id}`);

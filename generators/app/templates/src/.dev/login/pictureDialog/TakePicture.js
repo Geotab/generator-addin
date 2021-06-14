@@ -1,5 +1,10 @@
 const Dialog = require('./Dialog');
 
+/**
+ * Generates take picture dialog content
+ * 
+ * Displayed when user chooses to upload a new picture
+ */
 class TakePicture {
 
     constructor() {
@@ -8,6 +13,9 @@ class TakePicture {
         this.app = document.querySelector('#app');
     }
 
+    /**
+     * Draws image to canvas element using camera and video element as the source
+     */
     setImageFromVideoFrame() {
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
@@ -61,13 +69,16 @@ class TakePicture {
         captureImageButton.addEventListener('click', () => {
             this.setImageFromVideoFrame();
             var submitButton = document.getElementById('submitImage');
+            // Simulate submit button click so that api promise can be resolved
             submitButton.click();
         });
         buttonRowDiv.appendChild(captureImageButton);
-        
         return buttonRegion;
     }
 
+    /**
+     * Generates take picture content and appends it to the dialog box
+     */
     generateContent() {
         var dialogBox = this.dialog.generateDialog();
         var video = this.generateVideo();
