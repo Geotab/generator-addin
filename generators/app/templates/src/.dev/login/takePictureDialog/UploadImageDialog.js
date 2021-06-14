@@ -1,4 +1,4 @@
-const TakePicture = require('./TakePicture');
+const CaptureImageDialog = require('./CaptureImageDialog');
 const Dialog = require('./Dialog');
 
 /**
@@ -6,7 +6,7 @@ const Dialog = require('./Dialog');
  * 
  * Initial dialog box displayed when api.mobile.camera.takePicture() called
  */
-class ImageOptions {
+class UploadImageDialog {
 
     constructor () {
         this.id = 'select-image';
@@ -94,9 +94,9 @@ class ImageOptions {
             }
             this.dialog.removeAllDialog();
             // TODO - need better name for this class this doesnt read well
-            var takePictureDialog = new TakePicture();
-            this.dialog = takePictureDialog.dialog;
-            takePictureDialog.generateContent();
+            var captureImageDialog = new CaptureImageDialog();
+            this.dialog = captureImageDialog.dialog;
+            captureImageDialog.generateContent();
         });
         buttonRowDiv.appendChild(newPictureButton);
 
@@ -149,4 +149,4 @@ class ImageOptions {
     }
 }
 
-module.exports = ImageOptions;
+module.exports = UploadImageDialog;

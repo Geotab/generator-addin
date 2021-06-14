@@ -5,7 +5,7 @@ const Dialog = require('./Dialog');
  * 
  * Displayed when user chooses to upload a new picture
  */
-class TakePicture {
+class CaptureImageDialog {
 
     constructor() {
         this.id = 'capture-image';
@@ -91,4 +91,4 @@ class TakePicture {
     }
 }
 
-module.exports = TakePicture;
+module.exports = CaptureImageDialog;
