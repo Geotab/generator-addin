@@ -48,7 +48,7 @@ class UploadImageDialog {
 
         let closeButton = document.createElement('button');
         closeButton.setAttribute('class', 'dialog-box__close-button');
-        closeButton.setAttribute('id', 'closeButton-select-image');
+        closeButton.setAttribute('id', `closeButton-${this.id}`);
         closeButton.innerHTML = '<span style="color: #066ea8">&times</span>';
         closeButton.setAttribute('aria-label', 'Close');
         closeButton.addEventListener('click', () => {
@@ -141,7 +141,7 @@ class UploadImageDialog {
         var header = this.generateDialogHeader();
         dialogBox.classList.add('_closable');
         dialogBox.classList.add('_titled');
-        dialogBox.setAttribute('aria-labelledby', 'select-image-title');
+        dialogBox.setAttribute('aria-labelledby', `${this.id}-title`);
         var innerDialog = this.generateInnerDialog();
         var buttonRegion = this.generateButtonRegion();
 
