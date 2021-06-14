@@ -1,7 +1,7 @@
 'use strict';
 const config = require('../../app/config.json');
 <% if (isDriveAddin) { %>
-const ImageOptions = require('./pictureDialog/ImageOptions');
+const ImageOptions = require('./takePictureDialog/UploadImageDialog');
 <% } %>
 
 /**
