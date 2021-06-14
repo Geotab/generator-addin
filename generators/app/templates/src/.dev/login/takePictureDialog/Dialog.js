@@ -141,18 +141,26 @@ class Dialog {
      * 
      * Returns dialog box for appending content
      */
-    generateDialog() {
+     generateDialog() {
+        // Need single instance of these buttons
+        var exitBtnExists = document.getElementById('exit') != null;
+        var submitBtnExists = document.getElementById('submitImage') != null;
+        if (!exitBtnExists)  {
+            var exitBtn = this.generateExitButton();
+            this.app.appendChild(exitBtn);
+        }
+        if (!submitBtnExists) {
+            var submitBtn = this.generateSubmitButton();
+            this.app.appendChild(submitBtn);
+        }
+
         var canvas = this.generateCanvas();
-        var submitBtn = this.generateSubmitButton();
-        var exitBtn = this.generateExitButton();
         var dialogBox = this.generateDialogBox();
         var overlay = this.generateOverlay();
 
         this.app.appendChild(dialogBox);
         this.app.appendChild(overlay);
         this.app.appendChild(canvas);
-        this.app.appendChild(submitBtn);
-        this.app.appendChild(exitBtn);
 
         return dialogBox;
     }
