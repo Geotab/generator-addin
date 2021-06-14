@@ -92,11 +92,13 @@ class UploadImageDialog {
                 console.error('Media devices not supported in this browser.');
                 return;
             }
-            this.dialog.removeAllDialog();
-            // TODO - need better name for this class this doesnt read well
-            var captureImageDialog = new CaptureImageDialog();
-            this.dialog = captureImageDialog.dialog;
-            captureImageDialog.generateContent();
+            // Do not want to remove utility buttons and their event listeners, only visible dialog
+            var removedVisibleDialog = this.dialog.removeAllDialog();
+            if (removedVisibleDialog) {
+                var captureImageDialog = new CaptureImageDialog();
+                this.dialog = captureImageDialog.dialog;
+                captureImageDialog.generateContent();
+            }
         });
         buttonRowDiv.appendChild(newPictureButton);
 
