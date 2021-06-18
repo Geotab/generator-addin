@@ -1,5 +1,8 @@
 'use strict';
 const config = require('../../app/config.json');
+<% if (isDriveAddin) { %>
+const ImageOptions = require('./takePictureDialog/UploadImageDialog');
+<% } %>
 
 /**
  * Geotab login class
@@ -306,6 +309,40 @@ class GeotabLogin {
                 },
                 cancel: function(notification){
                     notification.close();
+                },
+            },
+            camera: {
+                takePicture: function() {
+                    var imageOptions = new ImageOptions();
+                    imageOptions.generateContent();
+                    var submitButton = document.getElementById('submitImage');
+                    var exitBtn = document.getElementById('exit');
+
+                    return new Promise((resolve, reject) => {
+                        exitBtn.onclick = () => {
+                            // Making sure UI and recording stopped before returning
+                            var removed = imageOptions.dialog.cleanUp();
+                            if (removed) {
+                                reject('Exited.');
+                            }
+                        }
+                        submitButton.onclick = () => {
+                            var canvas = document.getElementById('canvas');
+                            var base64;
+                            if (canvas) {
+                                base64 = canvas.toDataURL('image/png');
+                            }
+                            // Making sure UI and recording stopped before returning
+                            var removed = imageOptions.dialog.cleanUp();
+                            if (removed) {
+                                if (base64) {
+                                    resolve(base64);
+                                } else {
+                                    reject('Image not loaded correctly.');
+                                }
+                            }
+                        };
+                    });
                 },
             },
             geolocation: navigator.geolocation

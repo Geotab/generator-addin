@@ -454,6 +454,23 @@ module.exports = class extends yeoman {
       }
     );
 
+    if (this.props.isDriveAddin) {
+      this.fs.copyTpl(
+        this.templatePath('src/.dev/login/takePictureDialog/Dialog.js'),
+        this.destinationPath('src/.dev/login/takePictureDialog/Dialog.js'),
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('src/.dev/login/takePictureDialog/UploadImageDialog.js'),
+        this.destinationPath('src/.dev/login/takePictureDialog/UploadImageDialog.js'),
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('src/.dev/login/takePictureDialog/CaptureImageDialog.js'),
+        this.destinationPath('src/.dev/login/takePictureDialog/CaptureImageDialog.js'),
+      );
+    }
+
     // Navbar      
     this.fs.copyTpl(
       this.templatePath('src/.dev/navbar/navbar.js'),
@@ -497,10 +514,10 @@ module.exports = class extends yeoman {
     );
 
     // Loaders
-      this.fs.copy(
-        this.templatePath('src/.dev/loaders/css-sandbox/css-sandbox.js'),
-        this.destinationPath('src/.dev/loaders/css-sandbox/css-sandbox.js')
-      );
+    this.fs.copy(
+      this.templatePath('src/.dev/loaders/css-sandbox/css-sandbox.js'),
+      this.destinationPath('src/.dev/loaders/css-sandbox/css-sandbox.js')
+    );
 
     // Other
     this.fs.copy(
