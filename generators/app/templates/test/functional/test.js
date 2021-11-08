@@ -241,7 +241,7 @@ describe('User visits addin', () => {
         await page.waitForSelector('#group-dropdown-ul', {
             visible: true
         });
-        await page.click('#group-item-b4');
+        await page.click('#group-use-b4-label');
 
         let activeGroups = await page.evaluate( async () => {
             return state.getGroupFilter();
@@ -262,7 +262,7 @@ describe('User visits addin', () => {
             geotab.addin.<%= root%>.count = 0;
             geotab.addin.<%= root%>.focus = () => { geotab.addin.<%= root%>.count++; };
         });
-        await page.click('#group-item-b4');
+        await page.click('#group-use-b4-label');
 
         let invocations = await page.evaluate( () => {
             return geotab.addin.<%= root%>.count;
