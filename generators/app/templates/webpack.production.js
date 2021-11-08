@@ -88,9 +88,7 @@ module.exports = merge(common, {
             {
                 test: /\.(png|svg|jpg|gif)$/,
                 exclude: /\.dev/,
-                use: [
-                    'file-loader'
-                ]
+                type: 'asset/resource'
             }
         ]
     },
