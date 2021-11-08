@@ -36,8 +36,8 @@ module.exports = merge(common, {
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    'file-loader'
+                type: 'asset/resource'
+            }
                 ]
     },
     optimization: {
