@@ -1,5 +1,6 @@
 const path = require('path');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { merge } = require('webpack-merge');
@@ -93,9 +94,15 @@ module.exports = merge(common, {
             }
         ]
     },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new CssMinimizerPlugin(),
             new TerserPlugin({
                 test: /\.js(\?.*)?$/i
             })
+        ]
+    },
     plugins: [
         new FixStyleOnlyEntriesPlugin(),
         new OptimizeCSSAssetsPlugin({}),
