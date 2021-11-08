@@ -6,8 +6,8 @@
   "scripts": {
     <% if(!isButton && !isDriveAddin) {%>"build:template": "node ./utils/templateBuilder.js",
       "template": "start-server-and-test serve http://localhost:9000 build:template",<% } %>
-    "build": "webpack --mode=production --config webpack.production.js",
-    "serve": "webpack-dev-server --mode=development --config webpack.development.js",
+    "build": "webpack --mode production --config webpack.production.js",
+    "serve": "webpack serve --mode development --config webpack.development.js",
     "test": "start-server-and-test serve http://localhost:9000 mocha",
     "mocha": "mocha test/**/*.js"
   },
