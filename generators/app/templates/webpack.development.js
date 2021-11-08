@@ -38,7 +38,7 @@ module.exports = merge(common, {
                 test: /\.(png|svg|jpg|gif)$/,
                 type: 'asset/resource'
             }
-                ]
+        ]
     },
     optimization: {
         minimizer: [
@@ -53,8 +53,8 @@ module.exports = merge(common, {
         }),
         new CopyWebpackPlugin({
             patterns: [
-            { from: './src/app/images/icon.svg', to: 'images/'},
-            { from: './src/app/config.json'}
+                { from: './src/app/images/icon.svg', to: 'images/'},
+                { from: './src/app/config.json'}
             ]
         }),
         new MiniCssExtractPlugin(),
