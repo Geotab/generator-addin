@@ -13,25 +13,7 @@ module.exports = merge(common, {
         rules: [
             {
                 test: /\.css$/,
-                use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                    },
-                    'css-loader'
-                ]
-            },
-            {
-                enforce: 'pre',
-                test: /\.js$/,
-                exclude: [/node_modules/, /\.dev/],
-                use: [
-                    {
-                        loader: 'eslint-loader',
-                        options: {
-                        formatter: require('eslint/lib/cli-engine/formatters/stylish')
-                        },
-                    },
-                ],
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
             },
             {
                 test: /\.js$/,
