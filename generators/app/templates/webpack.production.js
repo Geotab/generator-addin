@@ -2,6 +2,7 @@ const path = require('path');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
@@ -109,19 +110,27 @@ module.exports = merge(common, {
             formatter: 'stylish'
         }),
         new FixStyleOnlyEntriesPlugin(),
-        new OptimizeCSSAssetsPlugin({}),
-        new UglifyJsPlugin({
-            test: /\.js(\?.*)?$/i
-        }),
-        new ImageminPlugin({
+        new ImageMinimizerPlugin({
             exclude: /dev/,
             test: /\.(jpe?g|png|gif|svg)$/,
+            minimizerOptions: {
             plugins: [
-                ImageminMozjpeg(),
-                ImageminPngquant(),
-                ImageminGiflossy(),
-                ImageminSvgo({ cleanupIDs: false})
+                    ['gifsicle'],
+                    ['mozjpeg'],
+                    ['pngquant'],
+                    [
+                        'svgo',
+                        {
+                            plugins: [
+                                {
+                                    name: "cleanupIDs",
+                                    active: false 
+                                }
             ]
+                        }
+                    ]
+                ]
+            }
         }),
         new CopyWebpackPlugin([
             { from: './src/app/images/icon.svg', to: 'images/'},
