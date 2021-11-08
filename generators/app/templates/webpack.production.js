@@ -1,12 +1,6 @@
 const path = require('path');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const ImageminPlugin = require('imagemin-webpack');
-const ImageminMozjpeg = require('imagemin-mozjpeg');
-const ImageminPngquant = require('imagemin-pngquant');
-const ImageminGiflossy = require('imagemin-giflossy');
-const ImageminSvgo = require('imagemin-svgo');
+const TerserPlugin = require("terser-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
@@ -99,6 +93,9 @@ module.exports = merge(common, {
             }
         ]
     },
+            new TerserPlugin({
+                test: /\.js(\?.*)?$/i
+            })
     plugins: [
         new FixStyleOnlyEntriesPlugin(),
         new OptimizeCSSAssetsPlugin({}),
