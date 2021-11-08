@@ -132,14 +132,13 @@ module.exports = merge(common, {
                 ]
             }
         }),
-        new CopyWebpackPlugin([
-            { from: './src/app/images/icon.svg', to: 'images/'},
-            { 
-                from: './src/app/config.json',
-                transform: transform
-            },
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: './src/app/images/icon.svg', to: 'images/' },
+                { from: './src/app/config.json', transform: transform },
             { from: './src/app/translations/', to: 'translations/' }
-        ])
+            ]
+        }) 
     ],
     output: {
         publicPath: config.dev.dist.host
