@@ -63,8 +63,11 @@ module.exports = merge(common, {
         static: {
             directory: path.join(__dirname)
         },
+        devMiddleware: {
+            index: '<%= name%>.html'
+        },
         compress: true,
         port: 9000,
-        index: '<%= name%>.html'
+        open: false
     }
 });
