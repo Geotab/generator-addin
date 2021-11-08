@@ -55,19 +55,6 @@ module.exports = merge(common, {
                 ]
             },
             {
-                enforce: 'pre',
-                test: /\.js$/,
-                exclude: [/node_modules/, /\.dev/],
-                use: [
-                    {
-                        loader: 'eslint-loader',
-                        options: {
-                        formatter: require('eslint/lib/cli-engine/formatters/stylish')
-                        },
-                    },
-                ],
-            },
-            {
                 test: /\.js$/,
                 exclude: [/node_modules/, /\.dev/],
                 use: {
@@ -114,7 +101,7 @@ module.exports = merge(common, {
             exclude: /dev/,
             test: /\.(jpe?g|png|gif|svg)$/,
             minimizerOptions: {
-            plugins: [
+                plugins: [
                     ['gifsicle'],
                     ['mozjpeg'],
                     ['pngquant'],
@@ -126,7 +113,7 @@ module.exports = merge(common, {
                                     name: "cleanupIDs",
                                     active: false 
                                 }
-            ]
+                            ]
                         }
                     ]
                 ]
@@ -136,7 +123,7 @@ module.exports = merge(common, {
             patterns: [
                 { from: './src/app/images/icon.svg', to: 'images/' },
                 { from: './src/app/config.json', transform: transform },
-            { from: './src/app/translations/', to: 'translations/' }
+                { from: './src/app/translations/', to: 'translations/' }
             ]
         }) 
     ],
