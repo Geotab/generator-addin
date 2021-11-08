@@ -4,6 +4,7 @@ const common = require('./webpack.common.js');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = merge(common, {
     entry: './src/.dev/index.js',
@@ -62,7 +63,11 @@ module.exports = merge(common, {
         ]
     },
     plugins: [
-        new CopyWebpackPlugin([
+        new ESLintPlugin({
+            extensions: ['js'],
+            exclude: ['/node_modules/', '/\.dev/'],
+            formatter: 'stylish'
+        }),
             { from: './src/app/images/icon.svg', to: 'images/'},
             { from: './src/app/config.json'}
         new MiniCssExtractPlugin(),
