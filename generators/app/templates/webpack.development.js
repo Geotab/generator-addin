@@ -51,8 +51,12 @@ module.exports = merge(common, {
             exclude: ['/node_modules/', '/\.dev/'],
             formatter: 'stylish'
         }),
+        new CopyWebpackPlugin({
+            patterns: [
             { from: './src/app/images/icon.svg', to: 'images/'},
             { from: './src/app/config.json'}
+            ]
+        }),
         new MiniCssExtractPlugin(),
     ],
     devServer: {
