@@ -7,6 +7,7 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = merge(common, {
+    mode: 'development',
     entry: './src/.dev/index.js',
     module: {
         rules: [
