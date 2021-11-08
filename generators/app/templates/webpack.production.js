@@ -36,7 +36,7 @@ const transform = function (content, path) {
 }
 
 module.exports = merge(common, {
-    devtool: '',
+    mode: 'production',
     entry: './src/app/index.js',
     module: {
         rules: [
