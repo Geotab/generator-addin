@@ -63,7 +63,7 @@ class _GroupHelper {
         let checked = childNode.selected ? 'checked' : '';
         return `<li id="group-item-${childId}" onchange="${this.generateFilterEventListener(childId)}">
                     <input id="group-use-${childId}" type="checkbox" class="geotabSwitchButton navButton" ${checked}>
-                    <label for="group-use-${childId}" class="geotabButton" style="width: 100%;">${childNode.name}</label>
+                    <label id="group-use-${childId}-label" for="group-use-${childId}" class="geotabButton" style="width: 100%;">${childNode.name}</label>
                 </li>`;
     }
 

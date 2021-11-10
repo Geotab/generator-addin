@@ -13,7 +13,7 @@ module.exports = {
             filename: './<%= name%>.html'
         }),
         new MiniCssExtractPlugin({
-            name: '[name].css',
+            filename: '[name].css',
             chunkFilename: '[id].css'
         }),
     ],
