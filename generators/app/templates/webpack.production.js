@@ -1,5 +1,5 @@
 const path = require('path');
-const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
@@ -96,7 +96,7 @@ module.exports = merge(common, {
             exclude: ['/node_modules/', '/\.dev/'],
             formatter: 'stylish'
         }),
-        new FixStyleOnlyEntriesPlugin(),
+        new RemoveEmptyScriptsPlugin(),
         new ImageMinimizerPlugin({
             exclude: /dev/,
             test: /\.(jpe?g|png|gif|svg)$/,
