@@ -550,4 +550,10 @@ module.exports = class extends yeoman {
       }
     )
   }
+
+  end() {
+    // Run npm install again to resolve dependencies.
+    this.log('\n' + chalk.green('(generator-addin) Resolving dependencies...'));
+    this.spawnCommand('npm', ['install']);
+  }
 };
