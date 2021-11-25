@@ -282,7 +282,7 @@ module.exports = class extends yeoman {
     );
   }
 
-  config() {
+  configuration() {
     this.fs.copyTpl(
       this.templatePath('src/app/config.json'),
       this.destinationPath('src/app/config.json'), {
