@@ -20,7 +20,11 @@
     "add-in",
     "yeoman-generator"
   ],
+  "resolutions": {
+    "ansi-regex": "5.0.1"
+  },
   "dependencies": {
+    "ansi-regex": "^5.0.1",
     "camelcase": "^3.0.0",
     "chalk": "^1.0.0",
     "yeoman-generator": "^5.4.2",
@@ -54,6 +58,7 @@
   },
   "repository": "https://github.com/Geotab/generator-addin",
   "scripts": {
+    "preinstall": "npm install --package-lock-only --ignore-scripts && npx npm-force-resolutions",
     "test": "mocha test --timeout 10000"
   },
   "license": "Apache-2.0"
