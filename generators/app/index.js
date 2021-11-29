@@ -15,6 +15,8 @@ module.exports = class extends yeoman {
 
   constructor(args, opts){
     super(args, opts);
+
+    this.env.options.nodePackageManager = 'npm';
   }
 
   initializing() {
@@ -280,7 +282,7 @@ module.exports = class extends yeoman {
     );
   }
 
-  config() {
+  configuration() {
     this.fs.copyTpl(
       this.templatePath('src/app/config.json'),
       this.destinationPath('src/app/config.json'), {
@@ -547,13 +549,5 @@ module.exports = class extends yeoman {
         root: this.props.camelName
       }
     )
-  }
-
-  install() {
-    this.installDependencies({
-      npm: true,
-      bower: false,
-      yarn: false
-    });
   }
 };
