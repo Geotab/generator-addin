@@ -126,7 +126,7 @@ Currently supported languages are:
 No. Webpack handles this automatically
 
 **_What version of node do I need?_**
-We support node 12.x and above.
+We support node 8.x and above.
 
 **_I keep getting an error telling me regeneratorRuntime is not defined. What does this mean?_**
 Webpack compiles with compatibility in mind, and will attempt to transpile async functions for compatibility with older IE browsers. There is currently a bug with Webpack causing transpilations to fail unless the `regeneratorRuntime` is manually defined. Run `npm i -D regenerator-runtime` and place `const regeneratorRuntime = require('regenerator-runtime');` in the effected files

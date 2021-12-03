@@ -82,7 +82,7 @@ describe('User visits addin', () => {
         if(loggedIn){
             await page.click('#logoutBtn');
         }
-        await page.waitForSelector('#loginDialog');
+        await page.waitFor('#loginDialog');
         await page.type('#email', mocks.login.userName);
         await page.type('#password', mocks.login.password);
         await page.type('#database', mocks.login.database);
@@ -92,7 +92,7 @@ describe('User visits addin', () => {
 
     // Confirm page has loaded
     it('should be loaded', async () => {
-        await page.waitForSelector('html', {
+        await page.waitFor('html', {
             visible: true
         });      
     });
@@ -100,11 +100,11 @@ describe('User visits addin', () => {
    // Confirm page displaying after initialized and focus is called
     it('should display root div', async () => {
         <% if (!isDriveAddin) { %>
-        await page.waitForSelector('#<%= root %>', {
+        await page.waitFor('#<%= root %>', {
             visible: true
         });
         <% } else { %>
-        await page.waitForSelector('#app', {
+        await page.waitFor('#app', {
             visible: false
         });
         <% } %>
@@ -167,7 +167,7 @@ describe('User visits addin', () => {
     // Group Search logic
     it('should open the group display box', async () => {
         await page.click('#group-toggle-button');
-        await page.waitForSelector('#group-dropdown', {
+        await page.waitFor('#group-dropdown', {
             visible: true
         });
 
@@ -179,14 +179,14 @@ describe('User visits addin', () => {
     it('should close the group display box', async () => {
         await page.click('#group-toggle-button');
         await page.click('#group-toggle-button');
-        await page.waitForSelector('#group-dropdown', {
+        await page.waitFor('#group-dropdown', {
             visible: false
         });
     });
     
     it('should populate the group dropdown', async () => {
         await page.click('#group-toggle-button');
-        await page.waitForSelector('#group-dropdown', {
+        await page.waitFor('#group-dropdown', {
             visible: true
         });
         
@@ -200,11 +200,11 @@ describe('User visits addin', () => {
     
     it('should close the group dropdown when clicking off of the group-wrapper', async () => {
         await page.click('#group-toggle-button');
-        await page.waitForSelector('#group-dropdown', {
+        await page.waitFor('#group-dropdown', {
             visible: true
         });
         await page.click('#checkmateContent');
-        await page.waitForSelector('#group-dropdown', {
+        await page.waitFor('#group-dropdown', {
             visible: false
         });
 
@@ -238,10 +238,10 @@ describe('User visits addin', () => {
         await page.click('#group-toggle-button');
         await page.type('#group-input', 'child');
         await page.keyboard.press(enterKey);
-        await page.waitForSelector('#group-dropdown-ul', {
+        await page.waitFor('#group-dropdown-ul', {
             visible: true
         });
-        await page.click('#group-use-b4-label');
+        await page.click('#group-item-b4');
 
         let activeGroups = await page.evaluate( async () => {
             return state.getGroupFilter();
@@ -262,7 +262,7 @@ describe('User visits addin', () => {
             geotab.addin.<%= root%>.count = 0;
             geotab.addin.<%= root%>.focus = () => { geotab.addin.<%= root%>.count++; };
         });
-        await page.click('#group-use-b4-label');
+        await page.click('#group-item-b4');
 
         let invocations = await page.evaluate( () => {
             return geotab.addin.<%= root%>.count;
