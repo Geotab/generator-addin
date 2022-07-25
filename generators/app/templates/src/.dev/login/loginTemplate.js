@@ -257,6 +257,7 @@ let loginExample = `
         <a id="toggleBtn" class="dev-button">Blur add-in</a>
         <% } %>
         <a target="_blank" href="src/.dev/styles/styleGuideMyGeotab.html" class="dev-button">Style Guide</a>
+        <a target="_blank" href="https://geotab.github.io/sdk/software/guides/developing-addins/addin-icon-validator.html" class="dev-button">SVG Icon Validor</a>
       <% } %>
       <a id="logoutBtn" class="dev-button">Logout</a>
     </header>
