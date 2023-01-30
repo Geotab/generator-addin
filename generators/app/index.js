@@ -235,6 +235,17 @@ module.exports = class extends yeoman {
         isButton: this.props.isButton,
       }
     );
+
+    this.fs.copyTpl(
+      this.templatePath('webpack.local.js'),
+      this.destinationPath('webpack.local.js'), {
+        date: new Date().toISOString().split('T')[0],
+        name: this.props.camelName,
+        pkgname: this.pkg.name,
+        version: this.pkg.version,
+        isButton: this.props.isButton,
+      }
+    );
   }
 
   packageJSON() {
@@ -360,6 +371,10 @@ module.exports = class extends yeoman {
         this.destinationPath('utils/templateBuilder.js')
       );
     }
+    this.fs.copy(
+      this.templatePath('zip.util.js'),
+      this.destinationPath('zip.util.js')
+    );
   }
 
   dev() {

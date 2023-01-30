@@ -10,7 +10,10 @@
     "build": "webpack --mode production --config webpack.production.js",
     "serve": "webpack serve --mode development --config webpack.development.js",
     "test": "start-server-and-test serve http://localhost:9000 mocha",
-    "mocha": "mocha test/**/*.js"
+    "mocha": "mocha test/**/*.js",
+    "zip": "node zip.util.js",
+    "build-dev": "webpack --mode=production --config webpack.local.js",
+    "postbuild-dev": "node zip.util.js"
   },
   "resolutions": {
     "semver-regex": "4.0.1"
@@ -21,6 +24,7 @@
   "devDependencies": {
     "@babel/core": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
+    "archiver": "^5.3.0",
     "babel-loader": "^8.2.3",
     "before-build-webpack": "^0.2.11",
     "chai": "^4.3.4",
