@@ -21,9 +21,9 @@ const transform = function (content, path) {
     let host = config.dev.dist.host;
     let len = config.items.length;
     // Appending the host to all item's url and icon
-    for(let i=0;i<len;i++){
+    for (let i = 0; i < len; i++) {
         config.items[i].url = host + config.items[i].url;
-        config.items[i].icon = host + config.items[i].icon; 
+        config.items[i].icon = host + config.items[i].icon;
     }
 
     delete config['dev'];
@@ -111,7 +111,7 @@ module.exports = merge(common, {
                             plugins: [
                                 {
                                     name: "cleanupIDs",
-                                    active: false 
+                                    active: false
                                 }
                             ]
                         }
@@ -125,9 +125,10 @@ module.exports = merge(common, {
                 { from: './src/app/config.json', transform: transform },
                 { from: './src/app/translations/', to: 'translations/' }
             ]
-        }) 
+        })
     ],
     output: {
-        publicPath: config.dev.dist.host
+        publicPath: config.dev.dist.host,
+        assetModuleFilename: '[name][ext][query]'
     }
 });
