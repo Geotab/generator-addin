@@ -41,6 +41,7 @@ Leverage [NPM](https://www.npmjs.com/)
 - Run `npm install <package>` to install frontend dependencies
 - Run `npm run test` to run the tests
 - Run `npm run build` to build your addin for production
+- Run `npm run build-dev` to build and package your addin for production testing (Uploading the zip file)
 - Run `npm run template` to create a translation template
 ## Documentation
 
