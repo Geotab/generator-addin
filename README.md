@@ -2,6 +2,8 @@
 
 > Yeoman generator for MyGeotab/Geotab Drive add-ins
 
+> [!IMPORTANT]
+> The add-in generator currently works with Yeoman version [4.3.1](https://github.com/yeoman/yo/releases/tag/v4.3.1). Yeoman v5.x.x is currently not supported.
 ## Features
 
 ### Package Management
@@ -30,7 +32,7 @@ Leverage [NPM](https://www.npmjs.com/)
 ## Getting Started
 
 ### Installation
-- Install dependencies: `npm install -g yo`
+- Install dependencies: `npm install -g yo@4.3.1`
 - Install the generator: `npm install -g generator-addin`
 - Create a directory for your project `mkdir <projdir>`
 - Change to your project `cd <projdir>`
