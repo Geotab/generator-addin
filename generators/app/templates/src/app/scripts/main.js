@@ -6,7 +6,7 @@ geotab.addin.<%= root%> = function () {
 
   <% if (isDriveAddin) { %>
     // the root container
-    var elAddin = document.getElementById('app');
+    var elAddin = document.getElementById('<%= root %>-app');
   <% } else { %>  
     // the root container
     var elAddin = document.getElementById('<%= root%>');
@@ -83,9 +83,6 @@ geotab.addin.<%= root%> = function () {
           freshApi.getSession(session => {
             elAddin.querySelector('#<%= root%>-user').textContent = session.userName;
           });
-          
-          
-          elAddin.className = '';
       // show main content
       <% } %>
     },
@@ -99,8 +96,7 @@ geotab.addin.<%= root%> = function () {
      * @param {object} freshState - The page state object allows access to URL, page navigation and global group filter.
     */
     blur: function () {
-      // hide main content
-      elAddin.className += ' hidden';
+      
     }<% if (isDriveAddin) { %>,
       /**
        * Shutdown Add-Ins are executed when the final driver logs out of the Drive App.

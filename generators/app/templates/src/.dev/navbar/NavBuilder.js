@@ -13,5 +13,5 @@ handler.updateMenuItem();
 handler.generateContent();
 <% } %>
 <% if (!isButton) { %>
-handler.enableDisplayToggle();
+// handler.enableDisplayToggle();
 <% } %>

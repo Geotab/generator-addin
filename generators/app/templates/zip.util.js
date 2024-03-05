@@ -2,7 +2,7 @@
 const fs = require('fs');
 const archiver = require('archiver');
 const path = require('path');
-const config = require('./src/app/config.json');
+const config = require('./src/config.json');
 
 const { name: appName } = config;
 const output = fs.createWriteStream(`${appName}.zip`);
