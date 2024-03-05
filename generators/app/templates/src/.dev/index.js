@@ -80,8 +80,10 @@ let filterListener = new AdvancedGroupFilterListener()
 filterListener.assignListeners()
 
 <% } %>
+<% if (!isButton) {%>
 // Handling the blur toggle
 require('./ToggleHandler');
+<% } %>
 <% if (isButton) { %>
     let config = require('../config.json');
     let icon = document.querySelector('.icon');

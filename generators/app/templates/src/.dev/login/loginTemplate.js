@@ -5,9 +5,9 @@ import addinIcon from '../../app/images/icon.svg';
 import '../styles/styleGuide.css'
 let loginExample = `
 <% if (isDriveAddin) {%>
-    <link rel="stylesheet" href="https://mypreview.geotab.com/drive/app/css/main.css">
+    <link rel="stylesheet" href="https://my.geotab.com/geotab/checkmate/main.css">
 <% } else { %>
-    <link rel="stylesheet" href="https://mypreview.geotab.com/geotab/checkmate/main.css?skin=my_geotab">
+    <link rel="stylesheet" href="https://my.geotab.com/geotab/checkmate/main.css?skin=my_geotab">
 <% } %>
 <style>
     body {
@@ -262,9 +262,8 @@ let loginExample = `
         <% if (!isButton) {%>
         <a id="toggleBtn" class="dev-button">Blur add-in</a>
         <% } %>
-        <a target="_blank" href="./style-guide.html" class="dev-button">Style Guide</a>
-        <a target="_blank" href="https://geotab.github.io/sdk/software/guides/developing-addins/addin-icon-validator.html" class="dev-button">SVG Icon Validor</a>
       <% } %>
+      <a target="_blank" href="https://geotab.github.io/sdk/software/guides/developing-addins/addin-icon-validator.html" class="dev-button">SVG Icon Validor</a>
       <a id="logoutBtn" class="dev-button">Logout</a>
     </header>
 

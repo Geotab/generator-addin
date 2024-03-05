@@ -199,8 +199,7 @@ class AdvancedGroupFilterListener {
             }
         }
         window.state._advancedGroupsFilter = filter_obj
-        geotab.addin.demo.focus(global.api, global.state);
-        console.log(window.state.getAdvancedGroupsFilter())
+        global.geotab.addin.<%= root %>.focus(global.api, global.state);
     }
 
     _writeAdvancedFilter() {

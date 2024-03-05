@@ -47,7 +47,13 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
+            <% if(isReactBased) {%>
+            presets: ['@babel/preset-env', ["@babel/preset-react", {
+              "runtime": "automatic"
+            }]]
+            <% } else {%>
             presets: ['@babel/preset-env']
+            <%}%>
           }
         }
       },

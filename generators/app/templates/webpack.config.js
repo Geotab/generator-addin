@@ -13,13 +13,29 @@ const transform = function (content, path) {
   const { name } = config;
 
   for (let i = 0; i < len; i++) {
+    <% if(!isButton) {%>
     config.items[i].url = `${name}/` + config.items[i].url;
+    <% } %>
+    <% if(isButton) {%>
+      config.items[i].click = `${name}/` + config.items[i].click;
+    <% } %>
+    <% if(!isDriveAddin) {%>
+    config.items[i].icon = `${name}/` + config.items[i].icon;
+    <% } %>
   }
 
   delete config['dev'];
   let response = JSON.stringify(config, null, 2);
   // Returned string is written to file
   return response;
+}
+
+const jsFileName = () => {
+  let fileName = '[name]-[contenthash].js'
+  <% if(isButton) {%>
+    fileName = '<%= name%>.js'
+  <% } %>
+  return fileName
 }
 
 module.exports = {
@@ -29,7 +45,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name]-[contenthash].js',
+    filename: jsFileName,
     assetModuleFilename: '[name][ext]',
     clean: true
   },
@@ -67,7 +83,13 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
+            <% if(isReactBased) {%>
+            presets: ['@babel/preset-env', ["@babel/preset-react", {
+              "runtime": "automatic"
+            }]]
+            <% } else {%>
             presets: ['@babel/preset-env']
+            <%}%>
           }
         }
       },

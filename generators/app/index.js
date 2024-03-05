@@ -22,6 +22,45 @@ module.exports = class extends yeoman {
     this.pkg = require('../../package.json');
   }
 
+  _generateGuid() {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1)
+    }
+    return (
+      s4() +
+      s4() +
+      '-' +
+      s4() +
+      '-' +
+      s4() +
+      '-' +
+      s4() +
+      '-' +
+      s4() +
+      s4() +
+      s4()
+    )
+  }
+
+  _getAddinId = () => (
+      new Promise((resolve, reject) => {
+        var encoded = Buffer.from(this._generateGuid()).toString('base64')
+        for (var i = 0; i < 22; i++) {
+          switch (encoded[i].charCodeAt(0)) {
+            case 47:
+              encoded[i] = '\u005F'
+              break
+            case 43:
+              encoded[i] = '-'
+              break
+          }
+        }
+        resolve('a' + encoded.substring(1, 23));
+      })
+    )
+
   async prompting() {
     var done = this.async();
 
@@ -35,6 +74,10 @@ module.exports = class extends yeoman {
       name: 'name',
       message: 'What is the name of your add-in?',
       default: this.appname
+    }, {
+      type: 'confirm',
+      name: 'isReactBased',
+      message: 'Are you using React to develop this add-in?'
     }, {
       type: 'list',
       name: 'type',
@@ -115,9 +158,6 @@ module.exports = class extends yeoman {
         value: 'device'
       }, {
         name: 'Zones',
-        value: 'zones'
-      }, {
-        name: 'Zone Add/Edit',
         value: 'zones'
       }, {
         name: 'Users',
@@ -201,14 +241,36 @@ module.exports = class extends yeoman {
     done();
   }
 
+  reactFiles() {
+    const { isReactBased } = this.props;
+    if (isReactBased) {
+      this.fs.copyTpl(
+        this.templatePath('react/components/App.jsx'),
+        this.destinationPath('src/app/scripts/components/App.jsx')
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('react/components/DevicePage.jsx'),
+        this.destinationPath('src/app/scripts/components/DevicePage.jsx')
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('react/contexts/Geotab.js'),
+        this.destinationPath('src/app/scripts/contexts/Geotab.js')
+      );
+    }
+  }
+
   webpack() {
     const webpackDevPath = 'webpack.dev.js'
     const webpackProdPath = 'webpack.config.js'
+    const { isReactBased } = this.props;
 
     this.fs.copyTpl(
       this.templatePath(webpackDevPath),
       this.destinationPath(webpackDevPath),
       {
+        isReactBased,
         date: new Date().toISOString().split('T')[0],
         name: this.props.camelName,
         pkgname: this.pkg.name,
@@ -221,6 +283,7 @@ module.exports = class extends yeoman {
       this.templatePath(webpackProdPath),
       this.destinationPath(webpackProdPath),
       {
+        isReactBased,
         date: new Date().toISOString().split('T')[0],
         name: this.props.camelName,
         pkgname: this.pkg.name,
@@ -232,8 +295,10 @@ module.exports = class extends yeoman {
   }
 
   packageJSON() {
+    const { isReactBased } = this.props;
+    const packageJsonPath = isReactBased ? 'react/_package.json' : '_package.json'
     this.fs.copyTpl(
-      this.templatePath('_package.json'),
+      this.templatePath(packageJsonPath),
       this.destinationPath('package.json'), {
         name: this.props.camelName,
         isButton: this.props.isButton,
@@ -300,6 +365,8 @@ module.exports = class extends yeoman {
   }
 
   scripts() {
+    const { isReactBased } = this.props;
+
     if (this.props.isButton) {
       this.fs.copyTpl(
         this.templatePath('src/app/scripts/button.js'),
@@ -308,13 +375,17 @@ module.exports = class extends yeoman {
         }
       );
     } else {
-      this.fs.copyTpl(
-        this.templatePath('src/app/scripts/main.js'),
-        this.destinationPath('src/app/scripts/main.js'), {
-          root: this.props.camelName,
-          isDriveAddin: this.props.isDriveAddin
-        }
-      );
+      this._getAddinId().then(addInId => {
+        this.fs.copyTpl(
+          this.templatePath('src/app/scripts/main.js'),
+          this.destinationPath('src/app/scripts/main.js'), {
+            isReactBased,
+            addInId,
+            root: this.props.camelName,
+            isDriveAddin: this.props.isDriveAddin
+          }
+        );
+      });
     }
   }
 
@@ -340,6 +411,11 @@ module.exports = class extends yeoman {
     this.fs.copy(
       this.templatePath('zip.util.js'),
       this.destinationPath('zip.util.js')
+    );
+
+    this.fs.copy(
+      this.templatePath('src/app/scripts/utils/logger.js'),
+      this.destinationPath('src/app/scripts/utils/logger.js')
     );
   }
 
@@ -441,17 +517,23 @@ module.exports = class extends yeoman {
     if (this.props.isDriveAddin) {
       this.fs.copyTpl(
         this.templatePath('src/.dev/login/takePictureDialog/Dialog.js'),
-        this.destinationPath('src/.dev/login/takePictureDialog/Dialog.js'),
+        this.destinationPath('src/.dev/login/takePictureDialog/Dialog.js'), {
+          root: this.props.camelName
+        }
       );
 
       this.fs.copyTpl(
         this.templatePath('src/.dev/login/takePictureDialog/UploadImageDialog.js'),
-        this.destinationPath('src/.dev/login/takePictureDialog/UploadImageDialog.js'),
+        this.destinationPath('src/.dev/login/takePictureDialog/UploadImageDialog.js'), {
+          root: this.props.camelName
+        }
       );
 
       this.fs.copyTpl(
         this.templatePath('src/.dev/login/takePictureDialog/CaptureImageDialog.js'),
-        this.destinationPath('src/.dev/login/takePictureDialog/CaptureImageDialog.js'),
+        this.destinationPath('src/.dev/login/takePictureDialog/CaptureImageDialog.js'), {
+          root: this.props.camelName
+        }
       );
     }
 
@@ -528,18 +610,22 @@ module.exports = class extends yeoman {
       this.templatePath('src/.dev/ToggleHandler.js'),
       this.destinationPath('src/.dev/ToggleHandler.js'),
       {
-        root: this.props.camelName
+        root: this.props.camelName,
       }
     )
 
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath('src/.dev/advancedGroupFilter/advancedGroupFilter.js'),
-      this.destinationPath('src/.dev/advancedGroupFilter/advancedGroupFilter.js')
+      this.destinationPath('src/.dev/advancedGroupFilter/advancedGroupFilter.js'), {
+        root: this.props.camelName
+      }
     );
 
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath('src/.dev/advancedGroupFilter/advancedGroupFilterListener.js'),
-      this.destinationPath('src/.dev/advancedGroupFilter/advancedGroupFilterListener.js')
+      this.destinationPath('src/.dev/advancedGroupFilter/advancedGroupFilterListener.js'), {
+        root: this.props.camelName
+      }
     );
   }
 
