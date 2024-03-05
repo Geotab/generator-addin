@@ -66,7 +66,7 @@ module.exports = class extends yeoman {
 
     // Have Yeoman greet the user.
     this.log(yosay(
-      chalk.blue('GEOTAB Generator')
+      chalk.blue('Add-in Generator')
     ));
 
     var prompts = [{
