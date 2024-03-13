@@ -10,14 +10,17 @@ const _GroupHelper = require('./_GroupHelper.js');
  */
 class Groups {
     
-    constructor(api, state, target){
+    constructor(api, state, label, target, searchbar, removeBtn, activeGroupsid, parent){
         this.api = api;
         this.state = state;
+        this.label = label;
         this.baseNode;
         this.groupsDictionary;
         this.root = document.getElementById(target);
-        this.activeLabel = document.getElementById('active-group');
-        this.deleteAllBtn = document.getElementById('group-remove-all');
+        this.activeLabel = document.getElementById(activeGroupsid);
+        this.deleteAllBtn = document.getElementById(removeBtn);
+        this.searchbar = searchbar
+        this.parent = parent
         this.previousGroupStack = [];
         this.activeGroups = [];
         this.previousSearchTerm;
@@ -28,8 +31,8 @@ class Groups {
      * collected groups and use this method to just re-generate the base html.
      */
     generateRootHtml(){
-        let html = _GroupHelper.generateNodeHtml(groupsFilter.groupsDictionary, this.baseNode);
-        groupsFilter.root.innerHTML = html;
+        let html = _GroupHelper.generateNodeHtml(this.label, this.groupsDictionary, this.baseNode, this.parent);
+        this.root.innerHTML = html;
     }
 
     /**
@@ -67,7 +70,7 @@ class Groups {
 
         this.writeActiveGroups();
 
-        let html = _GroupHelper.generateNodeHtml(this.groupsDictionary, this.baseNode);
+        let html = _GroupHelper.generateNodeHtml(this.label, this.groupsDictionary, this.baseNode, this.parent);
         this.root.innerHTML = html;
 
         geotab.addin.<%= root%>.focus(this.api, this.state);
@@ -98,7 +101,7 @@ class Groups {
 
         this.writeActiveGroups();
 
-        geotab.addin.<%= root%>.focus(this.api, this.state);
+        geotab.addin.<%= root%>.focus(this.api, global.state);
     }
 
     /**
@@ -110,7 +113,7 @@ class Groups {
         let stateLength = this.state._activeGroups.length;
         
         if(stateLength > 0){
-            text += _GroupHelper.generateActiveHeaderText(this.state, stateLength, this.groupsDictionary);
+            text += _GroupHelper.generateActiveHeaderText(this.state, stateLength, this.groupsDictionary, this.state.operator);
             this.deleteAllBtn.style.display = 'inline';
         } else {
             text += ` All`;
@@ -128,7 +131,7 @@ class Groups {
      */
     groupSearch(query){
         let regex = this._createRegex(query.toLowerCase());
-        let html = _GroupHelper.generateSearchHtml(this.groupsDictionary, regex);
+        let html = _GroupHelper.generateSearchHtml(this.label, this.groupsDictionary, `${this.parent}-ul`, regex);
         this.root.innerHTML = html;
     }
 
@@ -146,7 +149,7 @@ class Groups {
      */
     changeFocus(previous, current){
         this.previousGroupStack.push(previous);
-        let html = _GroupHelper.generateNodeHtml(this.groupsDictionary, current, this.baseNode);
+        let html = _GroupHelper.generateNodeHtml(this.label, this.groupsDictionary, current, this.parent, this.baseNode);
         this.root.innerHTML = html;
     }
 
@@ -156,7 +159,7 @@ class Groups {
      */
     goToPreviousFolder(){
         let previousFolder = this.previousGroupStack.pop();
-        let html = _GroupHelper.generateNodeHtml(this.groupsDictionary, previousFolder, this.baseNode);
+        let html = _GroupHelper.generateNodeHtml(this.label, this.groupsDictionary, previousFolder, this.parent, this.baseNode);
         this.root.innerHTML = html;
     }
 
@@ -166,10 +169,10 @@ class Groups {
      * @param {object} result Response from the server - should contain a list of all the groups on the DB.
      */
     _groupSuccessCallback(result, resolve){
-        let groupInput = document.getElementById('group-input');
+        let groupInput = document.getElementById(this.searchbar);
         this.baseNode = result[0].id;
         this.groupsDictionary = _GroupHelper.convertGroupsListToDictionary(result);
-        let html = _GroupHelper.generateNodeHtml(this.groupsDictionary, this.baseNode);
+        let html = _GroupHelper.generateNodeHtml(this.label, this.groupsDictionary, this.baseNode, this.parent);
         this.root.innerHTML = html;
 
         // If we had any errors, we want to reset the placeholder text.
@@ -184,13 +187,13 @@ class Groups {
      * @param {string} error Error message from failed api call/Group object instantiation.
      */
     _groupErrorCallback(error){
-        let groupInput = document.getElementById('group-input');
+        let groupInput = document.getElementById(this.searchbar);
         groupInput.placeholder = "Unable to retrieve Groups";
         console.log(error);
 
         setTimeout(() => {
             groupInput.placeholder = "Retrying...";
-            groupsFilter.getAllGroupsInDatabase();
+            this.getAllGroupsInDatabase();
         }, 60000);
     }
 }

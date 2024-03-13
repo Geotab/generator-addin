@@ -13,7 +13,7 @@ class Dialog {
     */
     constructor(dialogID) {
         this.dialogID = dialogID;
-        this.app = document.querySelector('#app');
+        this.app = document.querySelector('#<%= root%>-app');
     }
 
     /**

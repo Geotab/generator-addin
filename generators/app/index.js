@@ -1,4 +1,3 @@
-'use strict';
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
@@ -23,12 +22,51 @@ module.exports = class extends yeoman {
     this.pkg = require('../../package.json');
   }
 
+  _generateGuid() {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1)
+    }
+    return (
+      s4() +
+      s4() +
+      '-' +
+      s4() +
+      '-' +
+      s4() +
+      '-' +
+      s4() +
+      '-' +
+      s4() +
+      s4() +
+      s4()
+    )
+  }
+
+  _getAddinId = () => (
+      new Promise((resolve, reject) => {
+        var encoded = Buffer.from(this._generateGuid()).toString('base64')
+        for (var i = 0; i < 22; i++) {
+          switch (encoded[i].charCodeAt(0)) {
+            case 47:
+              encoded[i] = '\u005F'
+              break
+            case 43:
+              encoded[i] = '-'
+              break
+          }
+        }
+        resolve('a' + encoded.substring(1, 23));
+      })
+    )
+
   async prompting() {
     var done = this.async();
 
     // Have Yeoman greet the user.
     this.log(yosay(
-      'Welcome to the spectacular ' + chalk.red('generator-addin') + ' generator!'
+      chalk.blue('Add-in Generator')
     ));
 
     var prompts = [{
@@ -36,6 +74,10 @@ module.exports = class extends yeoman {
       name: 'name',
       message: 'What is the name of your add-in?',
       default: this.appname
+    }, {
+      type: 'confirm',
+      name: 'isReactBased',
+      message: 'Are you using React to develop this add-in?'
     }, {
       type: 'list',
       name: 'type',
@@ -116,9 +158,6 @@ module.exports = class extends yeoman {
         value: 'device'
       }, {
         name: 'Zones',
-        value: 'zones'
-      }, {
-        name: 'Zone Add/Edit',
         value: 'zones'
       }, {
         name: 'Users',
@@ -202,55 +241,64 @@ module.exports = class extends yeoman {
     done();
   }
 
-  webpack(){
-    this.fs.copyTpl(
-      this.templatePath('webpack.common.js'),
-      this.destinationPath('webpack.common.js'), {
-        date: new Date().toISOString().split('T')[0],
-        name: this.props.camelName,
-        pkgname: this.pkg.name,
-        version: this.pkg.version,
-        isButton: this.props.isButton,
-      }
-    );
+  reactFiles() {
+    const { isReactBased } = this.props;
+    if (isReactBased) {
+      this.fs.copyTpl(
+        this.templatePath('react/components/App.jsx'),
+        this.destinationPath('src/app/scripts/components/App.jsx')
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('react/components/DevicePage.jsx'),
+        this.destinationPath('src/app/scripts/components/DevicePage.jsx')
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('react/contexts/Geotab.js'),
+        this.destinationPath('src/app/scripts/contexts/Geotab.js')
+      );
+    }
+  }
+
+  webpack() {
+    const webpackDevPath = 'webpack.dev.js'
+    const webpackProdPath = 'webpack.config.js'
+    const { isReactBased } = this.props;
 
     this.fs.copyTpl(
-      this.templatePath('webpack.development.js'),
-      this.destinationPath('webpack.development.js'), {
+      this.templatePath(webpackDevPath),
+      this.destinationPath(webpackDevPath),
+      {
+        isReactBased,
         date: new Date().toISOString().split('T')[0],
         name: this.props.camelName,
         pkgname: this.pkg.name,
         version: this.pkg.version,
         isButton: this.props.isButton,
-      }
-    );
+      },
+    )
 
     this.fs.copyTpl(
-      this.templatePath('webpack.production.js'),
-      this.destinationPath('webpack.production.js'), {
+      this.templatePath(webpackProdPath),
+      this.destinationPath(webpackProdPath),
+      {
+        isReactBased,
         date: new Date().toISOString().split('T')[0],
         name: this.props.camelName,
         pkgname: this.pkg.name,
         version: this.pkg.version,
         isButton: this.props.isButton,
-      }
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('webpack.local.js'),
-      this.destinationPath('webpack.local.js'), {
-        date: new Date().toISOString().split('T')[0],
-        name: this.props.camelName,
-        pkgname: this.pkg.name,
-        version: this.pkg.version,
-        isButton: this.props.isButton,
-      }
-    );
+        isDriveAddin: this.props.isDriveAddin,
+      },
+    )
   }
 
   packageJSON() {
+    const { isReactBased } = this.props;
+    const packageJsonPath = isReactBased ? 'react/_package.json' : '_package.json'
     this.fs.copyTpl(
-      this.templatePath('_package.json'),
+      this.templatePath(packageJsonPath),
       this.destinationPath('package.json'), {
         name: this.props.camelName,
         isButton: this.props.isButton,
@@ -270,7 +318,7 @@ module.exports = class extends yeoman {
   }
 
   index() {
-    var indexLocation = this.props.isButton ? `src/.dev/${this.props.camelName}.html` : `src/app/${this.props.camelName}.html`;
+    var indexLocation = `src/app/${this.props.camelName}.html`;
     this.fs.copyTpl(
       this.templatePath('src/app/index.html'),
       this.destinationPath(indexLocation), {
@@ -295,9 +343,10 @@ module.exports = class extends yeoman {
 
   configuration() {
     this.fs.copyTpl(
-      this.templatePath('src/app/config.json'),
-      this.destinationPath('src/app/config.json'), {
-        title: this.props.name,
+      this.templatePath('src/config.json'),
+      this.destinationPath('src/config.json'),
+      {
+        name: this.props.name,
         supportEmail: this.props.supportEmail,
         url: this.props.camelName + (this.props.isButton ? '.js' : '.html'),
         path: this.props.path,
@@ -306,12 +355,18 @@ module.exports = class extends yeoman {
         root: this.props.camelName,
         host: this.props.host,
         isButton: this.props.isButton,
-        isDriveAddin: this.props.isDriveAddin
-      }
-    );
+        isTab: this.props.isTab,
+        tabTitle: this.props.tabTitle,
+        isDriveAddin: this.props.isDriveAddin,
+        hasStartup: this.props.hasStartup,
+        hasShutdown: this.props.hasShutdown,
+      },
+    )
   }
 
   scripts() {
+    const { isReactBased } = this.props;
+
     if (this.props.isButton) {
       this.fs.copyTpl(
         this.templatePath('src/app/scripts/button.js'),
@@ -320,13 +375,17 @@ module.exports = class extends yeoman {
         }
       );
     } else {
-      this.fs.copyTpl(
-        this.templatePath('src/app/scripts/main.js'),
-        this.destinationPath('src/app/scripts/main.js'), {
-          root: this.props.camelName,
-          isDriveAddin: this.props.isDriveAddin
-        }
-      );
+      this._getAddinId().then(addInId => {
+        this.fs.copyTpl(
+          this.templatePath('src/app/scripts/main.js'),
+          this.destinationPath('src/app/scripts/main.js'), {
+            isReactBased,
+            addInId,
+            root: this.props.camelName,
+            isDriveAddin: this.props.isDriveAddin
+          }
+        );
+      });
     }
   }
 
@@ -348,32 +407,15 @@ module.exports = class extends yeoman {
     );
   }
 
-  test() {
-    this.fs.copy(
-      this.templatePath('test/functional/mocks/mocks.js'),
-      this.destinationPath('test/functional/mocks/mocks.js')
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('test/functional/test.js'),
-      this.destinationPath('test/functional/test.js'), {
-        isButton: this.props.isButton,
-        isDriveAddin: this.props.isDriveAddin,
-        root: this.props.camelName
-      }
-    );
-  }
-
   utils() {
-    if(!this.props.isButton && !this.props.isDriveAddin){
-      this.fs.copy(
-        this.templatePath('utils/templateBuilder.js'),
-        this.destinationPath('utils/templateBuilder.js')
-      );
-    }
     this.fs.copy(
       this.templatePath('zip.util.js'),
       this.destinationPath('zip.util.js')
+    );
+
+    this.fs.copy(
+      this.templatePath('src/app/scripts/utils/logger.js'),
+      this.destinationPath('src/app/scripts/utils/logger.js')
     );
   }
 
@@ -467,24 +509,31 @@ module.exports = class extends yeoman {
       this.templatePath('src/.dev/login/loginLogic.js'),
       this.destinationPath('src/.dev/login/loginLogic.js'), {
         isButton: this.props.isButton,
-        isDriveAddin: this.props.isDriveAddin
+        isDriveAddin: this.props.isDriveAddin,
+        root: this.props.camelName
       }
     );
 
     if (this.props.isDriveAddin) {
       this.fs.copyTpl(
         this.templatePath('src/.dev/login/takePictureDialog/Dialog.js'),
-        this.destinationPath('src/.dev/login/takePictureDialog/Dialog.js'),
+        this.destinationPath('src/.dev/login/takePictureDialog/Dialog.js'), {
+          root: this.props.camelName
+        }
       );
 
       this.fs.copyTpl(
         this.templatePath('src/.dev/login/takePictureDialog/UploadImageDialog.js'),
-        this.destinationPath('src/.dev/login/takePictureDialog/UploadImageDialog.js'),
+        this.destinationPath('src/.dev/login/takePictureDialog/UploadImageDialog.js'), {
+          root: this.props.camelName
+        }
       );
 
       this.fs.copyTpl(
         this.templatePath('src/.dev/login/takePictureDialog/CaptureImageDialog.js'),
-        this.destinationPath('src/.dev/login/takePictureDialog/CaptureImageDialog.js'),
+        this.destinationPath('src/.dev/login/takePictureDialog/CaptureImageDialog.js'), {
+          root: this.props.camelName
+        }
       );
     }
 
@@ -561,9 +610,23 @@ module.exports = class extends yeoman {
       this.templatePath('src/.dev/ToggleHandler.js'),
       this.destinationPath('src/.dev/ToggleHandler.js'),
       {
-        root: this.props.camelName
+        root: this.props.camelName,
       }
     )
+
+    this.fs.copyTpl(
+      this.templatePath('src/.dev/advancedGroupFilter/advancedGroupFilter.js'),
+      this.destinationPath('src/.dev/advancedGroupFilter/advancedGroupFilter.js'), {
+        root: this.props.camelName
+      }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('src/.dev/advancedGroupFilter/advancedGroupFilterListener.js'),
+      this.destinationPath('src/.dev/advancedGroupFilter/advancedGroupFilterListener.js'), {
+        root: this.props.camelName
+      }
+    );
   }
 
   end() {

@@ -41,7 +41,7 @@ import './navbar/NavBuilder';
 /* Translations */
 import Translator from './lang/Translator';
 let language = localStorage.language ? localStorage.language : 'en';
-global.translator = new Translator('#app', language);
+global.translator = new Translator('#<%= root%>', language);
 <% } %>
 // Global Translate function
 global.state.translate = function(target, language) {
@@ -69,21 +69,29 @@ const loginLogic = new GeotabLogin(global.geotab.isDriveAddin, GeotabApi);
 require('./lang/languages');
 
 /* Group Filter Module */
+window.conditions = {}
 import GroupListeners from './groups/GroupListeners.js';
-let groupListener = new GroupListeners(global.api, global.state, 'group-dropdown');
+let groupListener = new GroupListeners(global.api, global.state, 'original_filter', 'filter-dropdown', 'group-dropdown', 'group-input', 'group-toggle-button', 'group-remove-all', 'active-group');
 groupListener.assignEventListeners();
 
+import'./advancedGroupFilter/advancedGroupFilter.js'
+import AdvancedGroupFilterListener from './advancedGroupFilter/advancedGroupFilterListener.js';
+let filterListener = new AdvancedGroupFilterListener()
+filterListener.assignListeners()
+
 <% } %>
+<% if (!isButton) {%>
 // Handling the blur toggle
 require('./ToggleHandler');
+<% } %>
 <% if (isButton) { %>
-    let config = require('../app/config.json');
+    let config = require('../config.json');
     let icon = document.querySelector('.icon');
-    icon.style['background-image'] = `url(src/app/${config.items[0].icon})`;
+    icon.style['background-image'] = `url(src/${config.items[0].icon})`;
 <% } %>
 <% if (!isButton && !isDriveAddin) { %>
 // Setting up mock display panel
-let mainPanel = document.querySelector('#app');
+let mainPanel = document.querySelector('#<%= root%>');
 mainPanel.id = 'checkmateContent';
 mainPanel.className = 'centerPane';
 mainPanel.style.top = '40px';

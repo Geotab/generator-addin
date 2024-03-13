@@ -1,5 +1,5 @@
 'use strict';
-const config = require('../../app/config.json');
+const config = require('../../config.json');
 <% if (isDriveAddin) { %>
 const ImageOptions = require('./takePictureDialog/UploadImageDialog');
 <% } %>
@@ -209,7 +209,7 @@ class GeotabLogin {
         if (isDriveAddin) {
             this.elNightModeToggle.addEventListener('click', evt => {
                 const NightMode = 'nightMode';
-                let app = document.querySelector('#app');
+                let app = document.querySelector('#<%= root%>-app');
                 let body = document.body;
 
                 if (this.elNightModeToggle.checked) {

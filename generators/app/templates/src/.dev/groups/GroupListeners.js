@@ -2,20 +2,20 @@ const Groups = require('./Groups.js');
 let xIconSvg = require('../images/close-round.svg').default;
 let chevron = require('../images/Font_Awesome_5_solid_chevron-left.svg').default;
 const regeneratorRuntime = require('regenerator-runtime');
-
 class GroupListeners {
 
-    constructor(api, state, target){
-        this.groupBox = new Groups(api, state, target);
-        window.groupsFilter = this.groupBox;
-        this.displayBox = document.getElementById(target);
-        this.inputBox = document.getElementById('group-input');
-        this.groupToggle = document.getElementById('group-toggle-button');
-        this.deleteAllBtn = document.getElementById('group-remove-all');
+    constructor(api, state, label, target, parent, searchbar, dropdownToggle, removeBtn, activeGroupsid){
+        this.groupBox = new Groups(api, state, label, target, searchbar, removeBtn, activeGroupsid, parent);
+        conditions[label] = {'groupsFilter': this.groupBox}
+        this.displayBox = document.getElementById(parent)
+        this.inputBox = document.getElementById(searchbar);
+        this.groupToggle = document.getElementById(dropdownToggle);
+        this.deleteAllBtn = document.getElementById(removeBtn);
         this.firstOpen = true;
         this.open = false;
         this.closeListener;
         this.changeSearchTimeout;
+        this.parent = parent
     }
 
     assignEventListeners(){
@@ -54,7 +54,7 @@ class GroupListeners {
     }
 
     _hideGroupsOnOffClickListener(event){
-        if(!event.target.closest('#group-wrapper, #group-dropdown-ul')){
+        if(!event.target.closest(`#group-wrapper, #${this.parent}-ul`)){
             if(this.open){
                 this._groupToggleListener(this.displayBox);
             }
@@ -106,6 +106,7 @@ class GroupListeners {
             this.groupBox.previousSearchTerm = '';
             display.style.display = 'none';
             this.open = false;
+            this.groupBox.generateRootHtml()
         }
 
         this._rotateToggleButton();

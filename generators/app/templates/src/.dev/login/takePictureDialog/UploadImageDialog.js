@@ -11,7 +11,7 @@ class UploadImageDialog {
     constructor () {
         this.id = 'select-image';
         this.dialog = new Dialog(this.id);
-        this.app = document.querySelector('#app');
+        this.app = document.querySelector('#<%= root%>-app');
     }
 
     /**

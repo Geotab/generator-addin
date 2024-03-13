@@ -27,7 +27,7 @@ class _GroupHelper {
         return dict;
     }
 
-    static generateActiveHeaderText(state, stateLength, groupDictionary){
+    static generateActiveHeaderText(state, stateLength, groupDictionary, operator){
         let text = ``;
 
         for(let i=0; i<stateLength; i++){
@@ -37,38 +37,38 @@ class _GroupHelper {
             if(i === state._activeGroups.length-1){
                 text += ' ' + name;
             } else {
-                text += ' ' + name + ` OR`;
+                text += ' ' + name + ` ${operator}`;
             }
         }
 
         return text;
     }
 
-    static generateFolderEventListener(previous, current){
-        let listener = `groupsFilter.changeFocus('${previous}', '${current}');`;
+    static generateFolderEventListener(label, previous, current){
+        let listener = `conditions.${label}.groupsFilter.changeFocus('${previous}', '${current}');`;
         return listener;
     }
 
-    static generateFilterEventListener(filter){
-        let listener = `groupsFilter.toggleGroupFilter('${filter}');`;
+    static generateFilterEventListener(label, filter){
+        let listener = `conditions.${label}.groupsFilter.toggleGroupFilter('${filter}');`;
         return listener;
     }
 
-    static generatePreviousFolderEventListener(){
-        let listener = `groupsFilter.goToPreviousFolder()`;
+    static generatePreviousFolderEventListener(label){
+        let listener = `conditions.${label}.groupsFilter.goToPreviousFolder()`;
         return listener;
     }
 
-    static generateFilterListElement(childId, childNode){
+    static generateFilterListElement(label, childId, childNode){
         let checked = childNode.selected ? 'checked' : '';
-        return `<li id="group-item-${childId}" onchange="${this.generateFilterEventListener(childId)}">
+        return `<li id="group-item-${childId}" onchange="${this.generateFilterEventListener(label, childId)}">
                     <input id="group-use-${childId}" type="checkbox" class="geotabSwitchButton navButton" ${checked}>
                     <label id="group-use-${childId}-label" for="group-use-${childId}" class="geotabButton" style="width: 100%;">${childNode.name}</label>
                 </li>`;
     }
 
-    static generateFolderListElement(id, root, node){
-        return `<li id="group-folder-${node.id}" class="geotabButton navButton" onclick="${this.generateFolderEventListener(root, id)}">
+    static generateFolderListElement(label, id, root, node){
+        return `<li id="group-folder-${node.id}" class="geotabButton navButton" onclick="${this.generateFolderEventListener(label, root, id)}">
                     <span class="icon geotabIcons_folder"></span>
                     ${node.name}
                </li>`;
@@ -80,8 +80,8 @@ class _GroupHelper {
      * @param {object} groupsDictionary dictionary used in search.
      * @param {RegExp} regex Regex defining search term.
      */
-    static generateSearchHtml(groupsDictionary, regex = /^.*$/g){
-        let html = `<ul id="group-dropdown-ul" class="geotabPrimaryFill select-buttons">`;
+    static generateSearchHtml(label, groupsDictionary, id, regex = /^.*$/g){
+        let html = `<ul id=${id} class="geotabPrimaryFill select-buttons">`;
         let resultCount = 0;
         
         // When we iterate over all the keys in the groupsDictionary, we get all the groups instead of top level children
@@ -90,10 +90,10 @@ class _GroupHelper {
             let node = groupsDictionary[key];
             if(regex.test(node.name.toLowerCase())){
                 if(node.children.length > 0){
-                    html += this.generateFolderListElement(key, 'GroupCompanyId', node);
+                    html += this.generateFolderListElement(label, key, 'GroupCompanyId', node);
                     resultCount++;
                 } else {
-                    html += this.generateFilterListElement(key, node);
+                    html += this.generateFilterListElement(label, key, node);
                     resultCount++;
                 }
             }
@@ -115,20 +115,20 @@ class _GroupHelper {
      * @param {string} root the dictionary key we start the folder on.
      * @param {string} baseNode the user's highest group permission. 
      */
-    static generateNodeHtml(groupsDictionary, root, baseNode = root){
-        let html = `<ul id="group-dropdown-ul" class="geotabPrimaryFill select-buttons">`
+    static generateNodeHtml(label, groupsDictionary, root, parent, baseNode = root){
+        let html = `<ul id="${parent}-ul" class="geotabPrimaryFill select-buttons">`
         let name = groupsDictionary[root].name;
         let checked = groupsDictionary[root].selected ? 'checked' : '';
 
         if(root !== baseNode){
-            html += `<li onchange="${this.generateFilterEventListener(root)}">
+            html += `<li onchange="${this.generateFilterEventListener(label, root)}">
                         <input id="group-go-to-${root}" type="checkbox" class="geotabSwitchButton navButton" ${checked}>
                         <label for="group-go-to-${root}" class="geotabButton" style="width:100%;">
                             <span class='icon geotabIcons_status'></span>
                             Everything in ${name}
                         </label>
                      </li>`;
-            html += `<li onchange="${this.generatePreviousFolderEventListener()}">
+            html += `<li onchange="${this.generatePreviousFolderEventListener(label)}">
                         <input id="group-use-${root}" type="checkbox" class="geotabSwitchButton navButton">
                         <label for="group-use-${root}" class="geotabButton" style="width:100%;">
                         <span class='icon geotabIcons_level_up'></span>
@@ -137,7 +137,7 @@ class _GroupHelper {
                      </li>`;
         }
         
-        html += this.generateFolderHtml(groupsDictionary, root);
+        html += this.generateFolderHtml(label, groupsDictionary, root);
         html += `</ul>`;
 
         return html;
@@ -149,7 +149,7 @@ class _GroupHelper {
      * @param {object} groupsDictionary 
      * @param {string} root Base level to use for html generation
      */
-    static generateFolderHtml(groupsDictionary, root){
+    static generateFolderHtml(label, groupsDictionary, root){
         let html = ``;
 
         groupsDictionary[root].children.forEach( child => {
@@ -157,9 +157,9 @@ class _GroupHelper {
             let childNode = groupsDictionary[childId];
 
             if(childNode.children.length > 0){
-                html += this.generateFolderListElement(childId, root, childNode);
+                html += this.generateFolderListElement(label, childId, root, childNode);
             } else {
-                html += this.generateFilterListElement(childId, childNode);
+                html += this.generateFilterListElement(label, childId, childNode);
             }
         });
 
