@@ -3,9 +3,6 @@
   "supportEmail": "<%= supportEmail %>",
   "version": "0.0.1",
   "items": [{
-    <% if(!isButton) {%>
-    "url": "<%= name %>.html",
-    <% } %>
     <% if(!isTab) {%>
     <% if (isButton) { %>
     "page": "<%= page %>",
