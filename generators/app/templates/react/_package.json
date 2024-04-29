@@ -7,7 +7,6 @@
     "preinstall": "npm install --package-lock-only --ignore-scripts && npx npm-force-resolutions",
     "build": "webpack",
     "dev": "webpack serve --config webpack.dev.js",
-    "serve": "webpack serve --config webpack.dev.js",
     "postbuild": "node zip.util.js"
   },
   "keywords": [],
@@ -16,6 +15,7 @@
   "devDependencies": {
     "@babel/core": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
+    "@babel/preset-react": "^7.23.3",
     "archiver": "^5.3.0",
     "babel-loader": "^8.2.3",
     "copy-webpack-plugin": "9.0.1",
@@ -51,5 +51,10 @@
       "GeotabApi": true,
       "rison": true
     }
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1"
   }
 }

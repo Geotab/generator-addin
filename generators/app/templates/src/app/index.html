@@ -11,13 +11,14 @@
 
 <body>
 
-  <div id="app" <% if (isDriveAddin) { %>class="hidden"<% } %>>
+  <div id="<%= root %>-app" <% if (isDriveAddin) { %>class="hidden"<% } %>>
     <% if (isDriveAddin) { %>
-      <span id="<%= root %>-startstop"></span>
-      <div class="panel">
-        <h2 class="panel__title"><%= root %></h2>
-        <p>Driver: <span id="<%= root %>-driver"></span></p>
-        <p>Vehicle: <span id="<%= root %>-vehicle"></span></p>
+      <div id="<%= root%>" style="overflow: auto; height: 100%;font-size: 14px;">
+        <div class="panel">
+          <h2 class="panel__title"><%= root %></h2>
+          <p>Driver: <span id="<%= root %>-driver"></span></p>
+          <p>Vehicle: <span id="<%= root %>-vehicle"></span></p>
+        </div>
       </div>
     <% } else if (isButton) { %>
       <div id="<%= root%>">
@@ -31,7 +32,7 @@
     <% } else { %>
       <div id="<%= root%>">
         <header class="geotabPageHeader">
-          <h1 class="geotabPageName"><%= root %> <span class="subdued">sub title</span></h1>
+          <h1 class="geotabPageName"><%= root %> <span class="subdued">subtitle</span></h1>
           <div class="pageNameSecondary">
             <h3 class="geotabSecondaryTitle">by: <span id="<%= root %>-user"></span></h3>
           </div>

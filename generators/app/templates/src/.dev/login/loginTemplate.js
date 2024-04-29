@@ -2,11 +2,12 @@ let body = document.getElementsByTagName('body')[0];
 import icon from '../images/Font_Awesome_5_solid_chevron-left.svg';
 import xIcon from '../images/close-round.svg';
 import addinIcon from '../../app/images/icon.svg';
+import '../styles/styleGuide.css'
 let loginExample = `
 <% if (isDriveAddin) {%>
-    <link rel="stylesheet" href="https://mypreview.geotab.com/drive/app/css/main.css">
+    <link rel="stylesheet" href="https://my.geotab.com/geotab/checkmate/main.css">
 <% } else { %>
-    <link rel="stylesheet" href="https://mypreview.geotab.com/geotab/checkmate/main.css?skin=my_geotab">
+    <link rel="stylesheet" href="https://my.geotab.com/geotab/checkmate/main.css?skin=my_geotab">
 <% } %>
 <style>
     body {
@@ -26,7 +27,7 @@ let loginExample = `
         outline: none;
     }
 
-    #app {
+    #<%= root%> {
         width: initial;
     }
 
@@ -72,21 +73,21 @@ let loginExample = `
         border-bottom: 1px solid #ccc;
     }
 
-    #group-wrapper {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        flex: 1;
-        padding-left: 40px;
-    }
-
-    #group-toggle-button svg {
+    .group-toggle-button svg {
         mask-image: url(${icon});
         mask-repeat: no-repeat;
         -webkit-mask-image: url(${icon});
         -webkit-mask-repeat: no-repeat;
         background-color: #666;
         transform: rotate(-90deg);
+    }
+
+    .group-wrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        flex: 1;
+        padding-left: 40px;
     }
 
     #group-selector {
@@ -237,11 +238,11 @@ let loginExample = `
         <a id="toggleBtn" class="dev-button">Blur add-in</a>
         <a id="startStopBtn" class="dev-button stop">Stop add-in</a>        
       <% } else { %>
-        <div id="group-wrapper">
+        <div id="group-wrapper" class="group-wrapper">
             <div id="group-selector" class="geotabFormEditField noTranslate">
                 <input type="text" id="group-input" placeholder="Search for Groups">
             </div>
-            <button id="group-toggle-button" class="dev-button">
+            <button id="group-toggle-button" class="dev-button group-toggle-button">
                 <svg class="svgIcon geotabIcons_chevron" style="height: 15px; width: 15px;"></svg>
             </button>
             <div id="active-group">
@@ -250,15 +251,19 @@ let loginExample = `
             <button id="group-remove-all">
                 <svg class="svgIcon" style="height: 15px; width: 15px"></svg>
             </button>
-            <div id="group-dropdown" class="geotabPrimaryFill"></div>
+            <div id="group-dropdown" class="geotabPrimaryFill">
+                <button id="open-filter-button" class="geo-form organization-filter-popup__item organization-filter-advanced-link">
+                    <span class="organization-filter-advanced-link__label">Advanced group filter</span>
+                </button>
+                <div id="filter-dropdown" class="geotabPrimaryFill"></div>
+            </div>
         </div>
         <div id="languages-target"></div>
         <% if (!isButton) {%>
         <a id="toggleBtn" class="dev-button">Blur add-in</a>
         <% } %>
-        <a target="_blank" href="src/.dev/styles/styleGuideMyGeotab.html" class="dev-button">Style Guide</a>
-        <a target="_blank" href="https://geotab.github.io/sdk/software/guides/developing-addins/addin-icon-validator.html" class="dev-button">SVG Icon Validor</a>
       <% } %>
+      <a target="_blank" href="https://geotab.github.io/sdk/software/guides/developing-addins/addin-icon-validator.html" class="dev-button">SVG Icon Validor</a>
       <a id="logoutBtn" class="dev-button">Logout</a>
     </header>
 

@@ -1,15 +1,26 @@
+<% if (isReactBased) {  %>/* eslint-disable */
+import { createRoot } from 'react-dom/client';
+import App from './components/App.jsx'
+<% } %>
+
 /**
  * @returns {{initialize: Function, focus: Function, blur: Function, startup; Function, shutdown: Function}}
  */
 geotab.addin.<%= root%> = function () {
   'use strict';
-
+  const appName = '<%=root%>';
+  const addinId = '<%= addInId %>';
   <% if (isDriveAddin) { %>
-    // the root container
-    var elAddin = document.getElementById('app');
+  // the root container
+  
+  var elAddin = document.getElementById('<%= root %>-app');
   <% } else { %>  
     // the root container
-    var elAddin = document.getElementById('<%= root%>');
+    var elAddin = document.getElementById(appName);
+  <% } %>
+
+  <% if (isReactBased) {%>
+  let reactRoot;
   <% } %>
   return {
     <% if (isDriveAddin) { %>
@@ -44,6 +55,9 @@ geotab.addin.<%= root%> = function () {
       if (freshState.translate) {
         freshState.translate(elAddin || '');
       }
+      <% if (isReactBased) {%>
+        reactRoot = createRoot(elAddin);
+      <% } %>
       // MUST call initializeCallback when done any setup
         initializeCallback();
     },
@@ -60,7 +74,11 @@ geotab.addin.<%= root%> = function () {
      * @param {object} freshState - The page state object allows access to URL, page navigation and global group filter.
     */
     focus: function (freshApi, freshState) {
-      <% if (isDriveAddin) { %> // getting the current user to display in the UI
+      <% if (isReactBased) { %>
+        elAddin.className = elAddin.className.replace('hidden', '').trim();
+        reactRoot.render(<App geotabApi={freshApi} geotabState={freshState} appName={appName} addinId={addinId} />);
+      <% } else { %> // getting the current user to display in the UI
+        <% if (isDriveAddin) { %>
         freshApi.getSession(session => {
           freshApi.call('Get', {
             typeName: 'Device',
@@ -83,11 +101,9 @@ geotab.addin.<%= root%> = function () {
           freshApi.getSession(session => {
             elAddin.querySelector('#<%= root%>-user').textContent = session.userName;
           });
-          
-          
-          elAddin.className = '';
+      
+      <% } }%>
       // show main content
-      <% } %>
     },
 
     /**
@@ -99,8 +115,7 @@ geotab.addin.<%= root%> = function () {
      * @param {object} freshState - The page state object allows access to URL, page navigation and global group filter.
     */
     blur: function () {
-      // hide main content
-      elAddin.className += ' hidden';
+      
     }<% if (isDriveAddin) { %>,
       /**
        * Shutdown Add-Ins are executed when the final driver logs out of the Drive App.

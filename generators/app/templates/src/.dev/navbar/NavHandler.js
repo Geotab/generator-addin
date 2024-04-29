@@ -92,7 +92,7 @@ class NavHandler {
         // Referencing the new navbar
         let navigationBar         = document.getElementById('menuId');
         let toggleButton          = document.getElementById('menuToggle');
-        let centerPane            = document.getElementById('app');
+        let centerPane            = document.getElementById('<%= root %>');
         let chevronIcon           = toggleButton.children.item(0);
         let menuHeaders           = document.getElementsByClassName('mainMenuHeader');
         let floatingMenu          = document.getElementById('hiddenMenu');

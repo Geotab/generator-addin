@@ -1,0 +1,32 @@
+{
+  "name": "<%= name %>",
+  "supportEmail": "<%= supportEmail %>",
+  "version": "0.0.1",
+  "items": [{
+    <% if(!isTab) {%>
+    <% if (isButton) { %>
+    "page": "<%= page %>",
+    "click": "<%= url %>",
+    "buttonName": {
+      "en": "<%= menuName %>"
+    },<% } else { %>
+    "url": "<%= url %>",
+    "path": "<%= path %>",
+    "menuName": {
+      "en": "<%= menuName %>"
+    },<% } %>
+    <% } else {%>
+    "page": "device",
+    "tabTitle": "<%= tabTitle %>"
+    <%}%>
+    "icon": "images/icon.svg"
+  }],
+  <% if (hasStartup) { %>"onStartup": true,<% } %>
+  <% if (hasShutdown) { %>"onShutdown": true,<% } %>
+  "dev": {
+    "root": "<%= root %>",
+    "dist": {
+      "host": "<%= host %>"
+    }
+  }
+}

@@ -24,11 +24,6 @@ Leverage [NPM](https://www.npmjs.com/)
 - Sandbox CSS as to not effect parent document CSS
 - Convert URLs to deployment location
 
-### Unit testing
-
-- Spec testing with [Mocha](https://mochajs.org/) and [Chai](http://chaijs.com/)
-- Functional testing with [Puppeteer](https://pptr.dev/)
-
 ## Getting Started
 
 ### Installation
@@ -39,17 +34,14 @@ Leverage [NPM](https://www.npmjs.com/)
 - Run `yo addin` to scaffold your addin
 
 ### Using
-- Run `npm run serve` to preview and watch for changes
 - Run `npm install <package>` to install frontend dependencies
-- Run `npm run test` to run the tests
-- Run `npm run build` to build your addin for production
-- Run `npm run build-dev` to build and package your addin for production testing (Uploading the zip file)
-- Run `npm run template` to create a translation template
+- Run `npm run dev` or `npm run serve` to preview and watch for changes
+- Run `npm run build` to build your addin for production (Creates a Zip File with the production files for testing in MyG)
 ## Documentation
 
 ### MyGeotab
 
-For information on MyGeotab and Geotab Drive addins or the MyGeotab API head over to the [MyGeotab SDK](https://my.geotab.com/sdk/default.html)
+For information on MyGeotab and Geotab Drive addins or the MyGeotab API head over to the [MyGeotab SDK](https://developers.geotab.com/myGeotab/introduction)
 
 ### Addin Generator
 
@@ -106,22 +98,7 @@ You can also translate sentences by directly passing them in using `state.transl
     }
 ```
 
-Any text that requires translation needs to be added into a `{language}.json` file, where `{language}` is a supported abbreviation. An example file can be generated based on the HTML present in the addin's HTML file by running `npm run template`. 
-
-Currently supported languages are:
-
-| Language | Abbreviation |
-| ---------|--------------|
-| English | `en` |
-| German | `de` |
-| Spanish | `es` |
-| French | `fr` |
-| Italian | `it` |
-| Dutch | `nl` |
-| Polish | `pl` |
-| Portuguese (Brazil) | `pt-BR` |
-| Japanese | `ja` |
-| Simplified Chinese | `zh-hans` |
+Any text that requires translation needs to be added into a `{language}.json` file, where `{language}` is a supported abbreviation.
 
 ## FAQ
 
@@ -129,7 +106,7 @@ Currently supported languages are:
 No. Webpack handles this automatically
 
 **_What version of node do I need?_**
-We support node 12.x and above.
+We support node 12.x and above. Node v20.x recommended.
 
 **_I keep getting an error telling me regeneratorRuntime is not defined. What does this mean?_**
 Webpack compiles with compatibility in mind, and will attempt to transpile async functions for compatibility with older IE browsers. There is currently a bug with Webpack causing transpilations to fail unless the `regeneratorRuntime` is manually defined. Run `npm i -D regenerator-runtime` and place `const regeneratorRuntime = require('regenerator-runtime');` in the effected files

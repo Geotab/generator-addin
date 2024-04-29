@@ -1,4 +1,4 @@
-const config = require('../../app/config.json');
+const config = require('../../config.json');
 /**
  * Props item - Houses all the navbar items and submenu items
  */
