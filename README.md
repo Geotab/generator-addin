@@ -98,22 +98,7 @@ You can also translate sentences by directly passing them in using `state.transl
     }
 ```
 
-Any text that requires translation needs to be added into a `{language}.json` file, where `{language}` is a supported abbreviation. An example file can be generated based on the HTML present in the addin's HTML file by running `npm run template`. 
-
-Currently supported languages are:
-
-| Language | Abbreviation |
-| ---------|--------------|
-| English | `en` |
-| German | `de` |
-| Spanish | `es` |
-| French | `fr` |
-| Italian | `it` |
-| Dutch | `nl` |
-| Polish | `pl` |
-| Portuguese (Brazil) | `pt-BR` |
-| Japanese | `ja` |
-| Simplified Chinese | `zh-hans` |
+Any text that requires translation needs to be added into a `{language}.json` file, where `{language}` is a supported abbreviation.
 
 ## FAQ
 
