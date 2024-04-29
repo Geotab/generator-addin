@@ -24,11 +24,6 @@ Leverage [NPM](https://www.npmjs.com/)
 - Sandbox CSS as to not effect parent document CSS
 - Convert URLs to deployment location
 
-### Unit testing
-
-- Spec testing with [Mocha](https://mochajs.org/) and [Chai](http://chaijs.com/)
-- Functional testing with [Puppeteer](https://pptr.dev/)
-
 ## Getting Started
 
 ### Installation
@@ -39,17 +34,14 @@ Leverage [NPM](https://www.npmjs.com/)
 - Run `yo addin` to scaffold your addin
 
 ### Using
-- Run `npm run serve` to preview and watch for changes
 - Run `npm install <package>` to install frontend dependencies
-- Run `npm run test` to run the tests
-- Run `npm run build` to build your addin for production
-- Run `npm run build-dev` to build and package your addin for production testing (Uploading the zip file)
-- Run `npm run template` to create a translation template
+- Run `npm run dev` or `npm run serve` to preview and watch for changes
+- Run `npm run build` to build your addin for production (Creates a Zip File with the production files for testing in MyG)
 ## Documentation
 
 ### MyGeotab
 
-For information on MyGeotab and Geotab Drive addins or the MyGeotab API head over to the [MyGeotab SDK](https://my.geotab.com/sdk/default.html)
+For information on MyGeotab and Geotab Drive addins or the MyGeotab API head over to the [MyGeotab SDK](https://developers.geotab.com/myGeotab/introduction)
 
 ### Addin Generator
 
