@@ -1,5 +1,9 @@
+# v4.0.1
+## May 22, 2024
+- Updated dependencies to address vulnerabilities in npm packages.
+
 # v4.0.0
-## May 29, 2024
+## March 29, 2024
 - Updated dependencies to address vulnerabilities in npm packages.
 - Removed unit testing capabilities to remove additional vulnerabilities.
 - Added React as a development option.
