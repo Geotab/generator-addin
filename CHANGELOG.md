@@ -1,3 +1,11 @@
+# v4.0.3
+## August 16, 2024
+- Added meta object as part of the main callback function for the add-in
+
+# v4.0.2
+## August 02, 2024
+- Updated dependencies to address vulnerabilities in npm packages.
+
 # v4.0.1
 ## May 22, 2024
 - Updated dependencies to address vulnerabilities in npm packages.

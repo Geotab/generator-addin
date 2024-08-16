@@ -67,13 +67,14 @@ class GeotabLogin {
     }
 
     initializeAddin(isDriveAddin) {
+        const meta = { solutionId: config?.solutionId ? config?.solutionId : '' }
         Object.keys(global.geotab.addin).forEach(function (name) {
             var addin = global.geotab.addin[name];
 
             if (addin.isInitialize) {
                 addin.focus(global.api, global.state);
             } else {
-                addin = typeof addin === 'function' ? global.geotab.addin[name] = addin(global.api, global.state) : addin;
+                addin = typeof addin === 'function' ? global.geotab.addin[name] = addin(global.api, global.state, meta) : addin;
                 if(config.onStartup && isDriveAddin){
                     addin.startup(global.api, global.state, function () {
                         //call initialize after startup

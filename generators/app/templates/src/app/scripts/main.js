@@ -6,7 +6,7 @@ import App from './components/App.jsx'
 /**
  * @returns {{initialize: Function, focus: Function, blur: Function, startup; Function, shutdown: Function}}
  */
-geotab.addin.<%= root%> = function () {
+geotab.addin.<%= root%> = function (api, state, meta) {
   'use strict';
   const appName = '<%=root%>';
   const addinId = '<%= addInId %>';
