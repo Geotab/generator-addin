@@ -1,6 +1,7 @@
 # v4.0.3
 ## August 16, 2024
 - Added meta object as part of the main callback function for the add-in
+- Added api and state callback objects as part of the main callback function for the add-in.
 
 # v4.0.2
 ## August 02, 2024
