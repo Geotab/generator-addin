@@ -1,7 +1,10 @@
-var yeoman = require('yeoman-generator');
-var chalk = require('chalk');
-var yosay = require('yosay');
-var camelCase = require('camelcase');
+import Generator from 'yeoman-generator'
+import chalk from 'chalk'
+import yosay from 'yosay'
+import camelCase from 'camelcase'
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const packageJson = require('../../package.json');
 
 /**
  * As per release 2.0.0 (https://github.com/yeoman/generator/releases/tag/v2.0.0) .extends was depreciated in favor of es6 classes
@@ -10,16 +13,16 @@ var camelCase = require('camelcase');
  * 
  * More info on the class system for yeoman: https://yeoman.io/authoring/#extending-generator
  */
-module.exports = class extends yeoman {
+export default class extends Generator {
 
-  constructor(args, opts){
+  constructor(args, opts) {
     super(args, opts);
 
     this.env.options.nodePackageManager = 'npm';
   }
 
   initializing() {
-    this.pkg = require('../../package.json');
+    this.pkg = packageJson;
   }
 
   _generateGuid() {
@@ -45,25 +48,23 @@ module.exports = class extends yeoman {
   }
 
   _getAddinId = () => (
-      new Promise((resolve, reject) => {
-        var encoded = Buffer.from(this._generateGuid()).toString('base64')
-        for (var i = 0; i < 22; i++) {
-          switch (encoded[i].charCodeAt(0)) {
-            case 47:
-              encoded[i] = '\u005F'
-              break
-            case 43:
-              encoded[i] = '-'
-              break
-          }
+    new Promise((resolve, reject) => {
+      var encoded = Buffer.from(this._generateGuid()).toString('base64')
+      for (var i = 0; i < 22; i++) {
+        switch (encoded[i].charCodeAt(0)) {
+          case 47:
+            encoded[i] = '\u005F'
+            break
+          case 43:
+            encoded[i] = '-'
+            break
         }
-        resolve('a' + encoded.substring(1, 23));
-      })
-    )
+      }
+      resolve('a' + encoded.substring(1, 23));
+    })
+  )
 
   async prompting() {
-    var done = this.async();
-
     // Have Yeoman greet the user.
     this.log(yosay(
       chalk.blue('Add-in Generator ') + chalk.green(`(v${this.pkg.version})`)
@@ -104,6 +105,17 @@ module.exports = class extends yeoman {
       message: 'What is the deployment host URL?',
       default: 'https://www.example.com/myaddin/'
     }];
+
+    // Getting the props values that yeoman stored before
+    this.props = await this.prompt(prompts);
+  }
+
+  async processAnswers() {
+    this.props.camelName = camelCase(this.props.name);
+
+    if (this.props.host && this.props.host.indexOf('/', this.props.host.length - 1) === -1) {
+      this.props.host += '/';
+    }
 
     var MyGeotabPagePrompts = [{
       type: 'list',
@@ -212,14 +224,6 @@ module.exports = class extends yeoman {
       default: this.appname
     }];
 
-    // Getting the props values that yeoman stored before
-    this.props = await this.prompt(prompts);
-    this.props.camelName = camelCase(this.props.name);
-
-    if (this.props.host && this.props.host.indexOf('/', this.props.host.length - 1) === -1) {
-      this.props.host += '/';
-    }
-
     let nextPrompts;
     switch (this.props.type) {
       case 'MyGeotabPage':
@@ -238,7 +242,6 @@ module.exports = class extends yeoman {
 
     let secondaryAnswers = await this.prompt(nextPrompts);
     Object.assign(this.props, secondaryAnswers);
-    done();
   }
 
   reactFiles() {
@@ -300,10 +303,10 @@ module.exports = class extends yeoman {
     this.fs.copyTpl(
       this.templatePath(packageJsonPath),
       this.destinationPath('package.json'), {
-        name: this.props.camelName,
-        isButton: this.props.isButton,
-        isDriveAddin: this.props.isDriveAddin
-      }
+      name: this.props.camelName,
+      isButton: this.props.isButton,
+      isDriveAddin: this.props.isDriveAddin
+    }
     );
   }
 
@@ -322,12 +325,12 @@ module.exports = class extends yeoman {
     this.fs.copyTpl(
       this.templatePath('src/app/index.html'),
       this.destinationPath(indexLocation), {
-        title: this.props.name,
-        root: this.props.camelName,
-        isDriveAddin: this.props.isDriveAddin,
-        isButton: this.props.isButton,
-        click: this.props.camelName + (this.props.isButton ? '.js' : '.html')
-      }
+      title: this.props.name,
+      root: this.props.camelName,
+      isDriveAddin: this.props.isDriveAddin,
+      isButton: this.props.isButton,
+      click: this.props.camelName + (this.props.isButton ? '.js' : '.html')
+    }
     );
   }
 
@@ -335,9 +338,9 @@ module.exports = class extends yeoman {
     this.fs.copyTpl(
       this.templatePath('src/app/index.js'),
       this.destinationPath('src/app/index.js'), {
-        root: this.props.camelName,
-        isButton: this.props.isButton
-      }
+      root: this.props.camelName,
+      isButton: this.props.isButton
+    }
     );
   }
 
@@ -371,19 +374,19 @@ module.exports = class extends yeoman {
       this.fs.copyTpl(
         this.templatePath('src/app/scripts/button.js'),
         this.destinationPath('src/app/scripts/' + this.props.camelName + '.js'), {
-          root: this.props.camelName
-        }
+        root: this.props.camelName
+      }
       );
     } else {
       this._getAddinId().then(addInId => {
         this.fs.copyTpl(
           this.templatePath('src/app/scripts/main.js'),
           this.destinationPath('src/app/scripts/main.js'), {
-            isReactBased,
-            addInId,
-            root: this.props.camelName,
-            isDriveAddin: this.props.isDriveAddin
-          }
+          isReactBased,
+          addInId,
+          root: this.props.camelName,
+          isDriveAddin: this.props.isDriveAddin
+        }
         );
       });
     }
@@ -394,8 +397,8 @@ module.exports = class extends yeoman {
       this.fs.copyTpl(
         this.templatePath('src/app/styles/main.css'),
         this.destinationPath('src/app/styles/main.css'), {
-          isDriveAddin: this.props.isDriveAddin
-        }
+        isDriveAddin: this.props.isDriveAddin
+      }
       );
     }
   }
@@ -434,10 +437,10 @@ module.exports = class extends yeoman {
     this.fs.copyTpl(
       this.templatePath('src/.dev/index.js'),
       this.destinationPath('src/.dev/index.js'), {
-        root: this.props.camelName,
-        isButton: this.props.isButton,
-        isDriveAddin: this.props.isDriveAddin
-      }
+      root: this.props.camelName,
+      isButton: this.props.isButton,
+      isDriveAddin: this.props.isDriveAddin
+    }
     );
 
     this.fs.copy(
@@ -445,13 +448,13 @@ module.exports = class extends yeoman {
       this.destinationPath('src/.dev/state.js')
     );
 
-    if(!this.props.isButton && !this.props.isDriveAddin){
+    if (!this.props.isButton && !this.props.isDriveAddin) {
       // Group Filter
       this.fs.copy(
         this.templatePath('src/.dev/groups/_GroupHelper.js'),
         this.destinationPath('src/.dev/groups/_GroupHelper.js')
       );
-      
+
       this.fs.copy(
         this.templatePath('src/.dev/groups/GroupListeners.js'),
         this.destinationPath('src/.dev/groups/GroupListeners.js')
@@ -499,41 +502,41 @@ module.exports = class extends yeoman {
     this.fs.copyTpl(
       this.templatePath('src/.dev/login/loginTemplate.js'),
       this.destinationPath('src/.dev/login/loginTemplate.js'), {
-        isDriveAddin: this.props.isDriveAddin,
-        isButton: this.props.isButton,
-        root: this.props.camelName
-      }
+      isDriveAddin: this.props.isDriveAddin,
+      isButton: this.props.isButton,
+      root: this.props.camelName
+    }
     );
 
     this.fs.copyTpl(
       this.templatePath('src/.dev/login/loginLogic.js'),
       this.destinationPath('src/.dev/login/loginLogic.js'), {
-        isButton: this.props.isButton,
-        isDriveAddin: this.props.isDriveAddin,
-        root: this.props.camelName
-      }
+      isButton: this.props.isButton,
+      isDriveAddin: this.props.isDriveAddin,
+      root: this.props.camelName
+    }
     );
 
     if (this.props.isDriveAddin) {
       this.fs.copyTpl(
         this.templatePath('src/.dev/login/takePictureDialog/Dialog.js'),
         this.destinationPath('src/.dev/login/takePictureDialog/Dialog.js'), {
-          root: this.props.camelName
-        }
+        root: this.props.camelName
+      }
       );
 
       this.fs.copyTpl(
         this.templatePath('src/.dev/login/takePictureDialog/UploadImageDialog.js'),
         this.destinationPath('src/.dev/login/takePictureDialog/UploadImageDialog.js'), {
-          root: this.props.camelName
-        }
+        root: this.props.camelName
+      }
       );
 
       this.fs.copyTpl(
         this.templatePath('src/.dev/login/takePictureDialog/CaptureImageDialog.js'),
         this.destinationPath('src/.dev/login/takePictureDialog/CaptureImageDialog.js'), {
-          root: this.props.camelName
-        }
+        root: this.props.camelName
+      }
       );
     }
 
@@ -541,42 +544,42 @@ module.exports = class extends yeoman {
     this.fs.copyTpl(
       this.templatePath('src/.dev/navbar/navbar.js'),
       this.destinationPath('src/.dev/navbar/navbar.js'), {
-        root: this.props.camelName,
-      }
+      root: this.props.camelName,
+    }
     );
-      
+
     this.fs.copyTpl(
       this.templatePath('src/.dev/navbar/NavBuilder.js'),
       this.destinationPath('src/.dev/navbar/NavBuilder.js'), {
-        root: this.props.camelName,
-        isButton: this.props.isButton,
-        isDriveAddin: this.props.isDriveAddin
-      }
+      root: this.props.camelName,
+      isButton: this.props.isButton,
+      isDriveAddin: this.props.isDriveAddin
+    }
     );
-      
+
     this.fs.copyTpl(
       this.templatePath('src/.dev/navbar/NavFactory.js'),
       this.destinationPath('src/.dev/navbar/NavFactory.js'), {
-        root: this.props.camelName,
-        isButton: this.props.isButton
-      }
+      root: this.props.camelName,
+      isButton: this.props.isButton
+    }
     );
 
     this.fs.copyTpl(
       this.templatePath('src/.dev/navbar/NavHandler.js'),
       this.destinationPath('src/.dev/navbar/NavHandler.js'), {
-        root: this.props.camelName,
-        isButton: this.props.isButton
-      }
+      root: this.props.camelName,
+      isButton: this.props.isButton
+    }
     );
-      
+
     this.fs.copyTpl(
       this.templatePath('src/.dev/navbar/props.js'),
       this.destinationPath('src/.dev/navbar/props.js'), {
-        path: this.props.path,
-        root: this.props.camelName,
-        label: this.props.menuName
-      }
+      path: this.props.path,
+      root: this.props.camelName,
+      label: this.props.menuName
+    }
     );
 
     // Loaders
@@ -617,15 +620,15 @@ module.exports = class extends yeoman {
     this.fs.copyTpl(
       this.templatePath('src/.dev/advancedGroupFilter/advancedGroupFilter.js'),
       this.destinationPath('src/.dev/advancedGroupFilter/advancedGroupFilter.js'), {
-        root: this.props.camelName
-      }
+      root: this.props.camelName
+    }
     );
 
     this.fs.copyTpl(
       this.templatePath('src/.dev/advancedGroupFilter/advancedGroupFilterListener.js'),
       this.destinationPath('src/.dev/advancedGroupFilter/advancedGroupFilterListener.js'), {
-        root: this.props.camelName
-      }
+      root: this.props.camelName
+    }
     );
   }
 
