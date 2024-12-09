@@ -1,7 +1,7 @@
 # v4.0.5
-## November 26, 2024
+## November 9, 2024
 - Updated dependencies to address vulnerabilities in npm packages.
-- Updated Yeoman title to include the current version of the add-in generator.
+- Updated project to use yo v5.0.0 and yeoman-generator v7.3.x
 
 # v4.0.4
 ## November 26, 2024

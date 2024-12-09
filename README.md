@@ -3,7 +3,7 @@
 > Yeoman generator for MyGeotab/Geotab Drive add-ins
 
 > [!IMPORTANT]
-> The add-in generator currently works with Yeoman version [4.3.1](https://github.com/yeoman/yo/releases/tag/v4.3.1). Yeoman v5.x.x is currently not supported.
+> The add-in generator currently works with Yeoman version [5.0.0](https://github.com/yeoman/yo/releases/tag/v5.0.0).
 ## Features
 
 ### Package Management
@@ -27,7 +27,7 @@ Leverage [NPM](https://www.npmjs.com/)
 ## Getting Started
 
 ### Installation
-- Install dependencies: `npm install -g yo@4.3.1`
+- Install dependencies: `npm install -g yo@5.0.0`
 - Install the generator: `npm install -g generator-addin`
 - Create a directory for your project `mkdir <projdir>`
 - Change to your project `cd <projdir>`
@@ -106,7 +106,7 @@ Any text that requires translation needs to be added into a `{language}.json` fi
 No. Webpack handles this automatically
 
 **_What version of node do I need?_**
-We support node 12.x and above. Node v20.x recommended.
+We support node 17.x and above. Node v22.12.0 recommended
 
 **_I keep getting an error telling me regeneratorRuntime is not defined. What does this mean?_**
 Webpack compiles with compatibility in mind, and will attempt to transpile async functions for compatibility with older IE browsers. There is currently a bug with Webpack causing transpilations to fail unless the `regeneratorRuntime` is manually defined. Run `npm i -D regenerator-runtime` and place `const regeneratorRuntime = require('regenerator-runtime');` in the effected files
