@@ -53,6 +53,9 @@
     }
   },
   "dependencies": {
+    <% if(isZenithBased) {%>
+    "@dev/zenith": "^1.11.1",
+    <%}%>
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }

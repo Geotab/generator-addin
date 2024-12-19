@@ -244,6 +244,20 @@ export default class extends Generator {
     Object.assign(this.props, secondaryAnswers);
   }
 
+  async reactPrompts() {
+    const { isReactBased } = this.props;
+    if (!isReactBased) return
+
+    let reactAnswers = await this.prompt([{
+      type: 'confirm',
+      name: 'isZenithBased',
+      message: 'Do you want to use Zenith components to develop the add-in?',
+      default: 'y'
+    }])
+
+    Object.assign(this.props, reactAnswers);
+  }
+
   reactFiles() {
     const { isReactBased } = this.props;
     if (isReactBased) {
@@ -262,6 +276,11 @@ export default class extends Generator {
         this.destinationPath('src/app/scripts/contexts/Geotab.js')
       );
     }
+  }
+
+  zenith() {
+    if (!this.props.isZenithBased) return
+    
   }
 
   webpack() {
@@ -305,7 +324,8 @@ export default class extends Generator {
       this.destinationPath('package.json'), {
       name: this.props.camelName,
       isButton: this.props.isButton,
-      isDriveAddin: this.props.isDriveAddin
+      isDriveAddin: this.props.isDriveAddin,
+      isZenithBased: this.props.isZenithBased ? this.props.isZenithBased : false
     }
     );
   }
