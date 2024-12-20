@@ -263,7 +263,10 @@ export default class extends Generator {
     if (isReactBased) {
       this.fs.copyTpl(
         this.templatePath('react/components/App.jsx'),
-        this.destinationPath('src/app/scripts/components/App.jsx')
+        this.destinationPath('src/app/scripts/components/App.jsx'),
+        {
+          isZenithBased: this.props.isZenithBased ? this.props.isZenithBased : false
+        }
       );
 
       this.fs.copyTpl(
@@ -276,11 +279,6 @@ export default class extends Generator {
         this.destinationPath('src/app/scripts/contexts/Geotab.js')
       );
     }
-  }
-
-  zenith() {
-    if (!this.props.isZenithBased) return
-    
   }
 
   webpack() {
