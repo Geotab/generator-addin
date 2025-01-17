@@ -260,25 +260,32 @@ export default class extends Generator {
 
   reactFiles() {
     const { isReactBased } = this.props;
-    if (isReactBased) {
-      this.fs.copyTpl(
-        this.templatePath('react/components/App.jsx'),
-        this.destinationPath('src/app/scripts/components/App.jsx'),
-        {
-          isZenithBased: this.props.isZenithBased ? this.props.isZenithBased : false
-        }
-      );
+    if (!isReactBased) return
 
+    this.fs.copyTpl(
+      this.templatePath('react/components/App.jsx'),
+      this.destinationPath('src/app/scripts/components/App.jsx'),
+      {
+        isZenithBased: this.props.isZenithBased ? this.props.isZenithBased : false
+      }
+    );
+
+    if (this.props.isZenithBased) {
+      this.fs.copyTpl(
+        this.templatePath('react/components/DutyStatusLogs.jsx'),
+        this.destinationPath('src/app/scripts/components/DutyStatusLogs.jsx')
+      );
+    } else {
       this.fs.copyTpl(
         this.templatePath('react/components/DevicePage.jsx'),
         this.destinationPath('src/app/scripts/components/DevicePage.jsx')
       );
-
-      this.fs.copyTpl(
-        this.templatePath('react/contexts/Geotab.js'),
-        this.destinationPath('src/app/scripts/contexts/Geotab.js')
-      );
     }
+
+    this.fs.copyTpl(
+      this.templatePath('react/contexts/Geotab.js'),
+      this.destinationPath('src/app/scripts/contexts/Geotab.js')
+    );
   }
 
   webpack() {
