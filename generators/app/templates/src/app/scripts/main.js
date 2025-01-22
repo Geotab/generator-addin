@@ -76,7 +76,10 @@ geotab.addin.<%= root%> = function (api, state, meta) {
     focus: function (freshApi, freshState) {
       <% if (isReactBased) { %>
         elAddin.className = elAddin.className.replace('hidden', '').trim();
-        reactRoot.render(<App geotabApi={freshApi} geotabState={freshState} appName={appName} addinId={addinId} />);
+        freshApi.getSession(session => {
+          freshState.currentSession = session
+          reactRoot.render(<App geotabApi={freshApi} geotabState={freshState} appName={appName} addinId={addinId} />);
+        })
       <% } else { %> // getting the current user to display in the UI
         <% if (isDriveAddin) { %>
         freshApi.getSession(session => {

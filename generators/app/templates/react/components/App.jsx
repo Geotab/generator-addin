@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
+<% if(isZenithBased) {%>
+import DutyStatusLogs from './DutyStatusLogs.jsx';
+<%} else {%>
 import DevicesPage from './DevicePage.jsx';
+<%}%>
 import GeotabContext from '../contexts/Geotab';
 import Logger from '../utils/logger';
 <% if(isZenithBased) {%>
@@ -13,7 +17,11 @@ const App = ({ geotabApi, geotabState, appName }) => {
   return (
     <>
       <GeotabContext.Provider value={[context, setContext]}>
+        <% if(isZenithBased) {%>
+        <DutyStatusLogs />
+        <%} else {%>
         <DevicesPage />
+        <%}%>
       </GeotabContext.Provider>
     </>
   );
