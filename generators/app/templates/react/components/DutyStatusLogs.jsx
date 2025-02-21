@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
 import GeotabContext from '../contexts/Geotab';
 
-import { Header } from '@dev/zenith/dist/header/header'
-import { SummaryTile } from '@dev/zenith/dist/summaryTile/summaryTile'
+import { Header } from '@dev/zenith'
+import { SummaryTile } from '@dev/zenith'
 import { Overview } from '@dev/zenith/dist/overview/overview'
-import { IconCloseSquare } from '@dev/zenith/dist/icons/iconCloseSquare'
-import { IconDrive } from '@dev/zenith/dist/icons/iconDrive'
-import { IconWorkday } from '@dev/zenith/dist/icons/iconWorkday'
-import { IconOnDuty } from '@dev/zenith/dist/icons/iconOnDuty'
-import { IconRotateClockwise } from '@dev/zenith/dist/icons/iconRotateClockwise'
-import { Table } from '@dev/zenith/dist/table/table'
+import { IconCloseSquare } from '@dev/zenith'
+import { IconDrive } from '@dev/zenith'
+import { IconWorkday } from '@dev/zenith'
+import { IconOnDuty } from '@dev/zenith'
+import { IconRotateClockwise } from '@dev/zenith'
+import { Table } from '@dev/zenith'
 
 const DutyStatusLogs = () => {
   const [context] = useContext(GeotabContext);
