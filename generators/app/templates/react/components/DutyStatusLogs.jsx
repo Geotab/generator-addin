@@ -120,7 +120,7 @@ const DutyStatusLogs = () => {
       <Header>
         <Header.Title pageName='Duty Status Logs'></Header.Title>
       </Header>
-      <div style={{ margin: '25px 0px', display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'space-evenly' }}>
+      <div style={{ margin: '25px 0px', display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center' }}>
         <SummaryTile title="Current Status">
           <Overview
             icon={<IconCloseSquare className="zen-summary-tile-test" size="huger" />}
@@ -152,7 +152,7 @@ const DutyStatusLogs = () => {
           />
         </SummaryTile>
       </div>
-      <div style={{ width: "600px", margin: '0 auto' }}>
+      <div style={{ width: "80%", margin: '0 auto' }}>
         <Table height='1000px' description="Duty status logs table." columns={columns} entities={entities || []} expanded={true} options={{}}></Table>
       </div>
     </div >
