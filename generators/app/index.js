@@ -260,21 +260,30 @@ export default class extends Generator {
 
   reactFiles() {
     const { isReactBased } = this.props;
+    const isDriveAddin = this.props.isDriveAddin ? this.props.isDriveAddin : false
     if (!isReactBased) return
 
     this.fs.copyTpl(
       this.templatePath('react/components/App.jsx'),
       this.destinationPath('src/app/scripts/components/App.jsx'),
       {
-        isZenithBased: this.props.isZenithBased ? this.props.isZenithBased : false
+        isZenithBased: this.props.isZenithBased ? this.props.isZenithBased : false,
+        isDriveAddin,
       }
     );
 
     if (this.props.isZenithBased) {
-      this.fs.copyTpl(
-        this.templatePath('react/components/DutyStatusLogs.jsx'),
-        this.destinationPath('src/app/scripts/components/DutyStatusLogs.jsx')
-      );
+      if (isDriveAddin) {
+        this.fs.copyTpl(
+          this.templatePath('react/components/DutyStatusLogs.jsx'),
+          this.destinationPath('src/app/scripts/components/DutyStatusLogs.jsx')
+        );
+      } else {
+        this.fs.copyTpl(
+          this.templatePath('react/components/DevicesPage.jsx'),
+          this.destinationPath('src/app/scripts/components/DevicesPage.jsx')
+        );
+      }
     } else {
       this.fs.copyTpl(
         this.templatePath('react/components/DevicePage.jsx'),
