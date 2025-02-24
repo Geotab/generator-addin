@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
 import GeotabContext from '../contexts/Geotab';
 
-import { ButtonType } from '@dev/zenith'
-import { IconLink2 } from '@dev/zenith'
-import { IconLocationMap } from '@dev/zenith'
-import { IconPackage2 } from '@dev/zenith'
-import { Header } from '@dev/zenith'
-import { Menu } from '@dev/zenith'
-import { Table } from '@dev/zenith'
+import {
+  ButtonType,
+  IconLink2,
+  IconLocationMap,
+  IconPackage2,
+  Header,
+  Menu,
+  Table
+} from '@geotab/zenith'
 
 const DevicesPage = () => {
   const [context] = useContext(GeotabContext);
@@ -54,7 +56,7 @@ const DevicesPage = () => {
   }], []);
   const entities = useMemo(() => devices.map((device, index) => {
     console.log('Device info', device);
-    
+
     return {
       id: index.toString(),
       col1: device.name,

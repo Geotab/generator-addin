@@ -11,7 +11,7 @@ import DevicePage from './DevicePage.jsx';
 import GeotabContext from '../contexts/Geotab';
 import Logger from '../utils/logger';
 <% if(isZenithBased) {%>
-import '@dev/zenith/dist/index.css'
+import '@geotab/zenith/dist/index.css'
 <%}%>
 
 const App = ({ geotabApi, geotabState, appName }) => {
