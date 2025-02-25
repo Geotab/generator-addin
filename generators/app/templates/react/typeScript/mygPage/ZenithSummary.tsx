@@ -7,7 +7,7 @@ export const ZenithSummary = () => {
 
         <div className="za-zenith-summary__row">
             <span className="body-04 za-zenith-summary__label">Current version</span>
-            <span className="body-02-short za-zenith-summary__value">1.13.0</span>
+            <span className="body-02-short za-zenith-summary__value">1.15.0</span>
         </div>
 
         <div className="za-zenith-summary__row">
