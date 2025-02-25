@@ -279,6 +279,14 @@ export default class extends Generator {
 
     if (isTypeScriptBased) {
       this.fs.copyTpl(
+        this.templatePath('react/typeScript/tsconfig.json'),
+        this.destinationPath('tsconfig.json'),
+      );
+      this.fs.copyTpl(
+        this.templatePath('react/typeScript/mygPage/data.ts'),
+        this.destinationPath('src/app/scripts/data.ts'),
+      );
+      this.fs.copyTpl(
         this.templatePath('react/typeScript/addinContext.ts'),
         this.destinationPath('src/app/scripts/contexts/addinContext.ts'),
       );
@@ -350,7 +358,7 @@ export default class extends Generator {
       this.destinationPath(webpackDevPath),
       {
         isReactBased,
-        isTypeScriptBased: this.props.isTypeScriptBased ? this.props.isTypeScriptBased : false,
+        isTypeScriptBased,
         date: new Date().toISOString().split('T')[0],
         name: this.props.camelName,
         pkgname: this.pkg.name,
@@ -364,6 +372,7 @@ export default class extends Generator {
       this.destinationPath(webpackProdPath),
       {
         isReactBased,
+        isTypeScriptBased,
         date: new Date().toISOString().split('T')[0],
         name: this.props.camelName,
         pkgname: this.pkg.name,
@@ -384,7 +393,7 @@ export default class extends Generator {
       isButton: this.props.isButton,
       isDriveAddin: this.props.isDriveAddin,
       isZenithBased: this.props.isZenithBased ? this.props.isZenithBased : false,
-      isTypeScriptBased: this.props.isTypeScriptBased ? this.props.isTypeScriptBased : false,
+      isTypeScriptBased,
     }
     );
   }
@@ -462,7 +471,7 @@ export default class extends Generator {
           this.templatePath('react/typeScript/mygPage/main.js'),
           this.destinationPath('src/app/scripts/main.js'), {
           isReactBased,
-          isTypeScriptBased: this.props.isTypeScriptBased ? this.props.isTypeScriptBased : false,
+          isTypeScriptBased,
           addInId,
           root: this.props.camelName,
           isDriveAddin: this.props.isDriveAddin
@@ -475,7 +484,7 @@ export default class extends Generator {
           this.templatePath('src/app/scripts/main.js'),
           this.destinationPath('src/app/scripts/main.js'), {
           isReactBased,
-          isTypeScriptBased: this.props.isTypeScriptBased ? this.props.isTypeScriptBased : false,
+          isTypeScriptBased,
           addInId,
           root: this.props.camelName,
           isDriveAddin: this.props.isDriveAddin
