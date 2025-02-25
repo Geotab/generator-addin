@@ -1,0 +1,47 @@
+.zda-app {
+    height: calc(100% - 52px);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.zda-app__header {
+    flex: 0 0 auto;
+}
+
+.zda-app__content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.zda-app__sections {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background-color: var(--backgrounds-content-0);
+}
+
+.zda-section {
+    background-color: var(--backgrounds-main);
+}
+
+.zda-section__header {
+    color: var(--text-secondary);
+    padding: 10px 12px;
+    margin: 0;
+}
+
+.zda-section__content {
+    color: var(--text-primary);
+    padding: 12px;
+    margin: 0;
+    min-height: 160px;
+}
+
+@media screen and (max-width: 640px) {
+    .za-table-container {
+        padding: 8px 12px;
+    }
+}

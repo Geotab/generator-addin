@@ -60,6 +60,11 @@ module.exports = {
     historyApiFallback: true
   },
   devtool: 'source-map',
+  <% if(isTypeScriptBased) {%>
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+  },
+  <%}%>
   module: {
     rules: [
       {
@@ -93,6 +98,13 @@ module.exports = {
           }
         }
       },
+      <% if(isTypeScriptBased) {%>
+        {
+          test: /\.(ts|tsx)$/,
+          exclude: /node_modules/,
+          use: 'ts-loader',
+        },
+        <%}%>
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource'

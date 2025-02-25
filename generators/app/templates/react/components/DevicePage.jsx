@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import GeotabContext from '../contexts/Geotab';
 
-const DevicesPage = () => {
+const DevicePage = () => {
   const [context] = useContext(GeotabContext);
   const [devices, setDevices] = useState([]);
 
@@ -34,4 +34,4 @@ const DevicesPage = () => {
   );
 };
 
-export default DevicesPage;
+export default DevicePage;

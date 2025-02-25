@@ -1,3 +1,8 @@
+# v4.1.0
+## February 25, 2025
+- Added Zenith components as a development option.
+- Added TypeScript as a development option when using Zenith components.
+
 # v4.0.5
 ## December 9, 2024
 - Updated dependencies to address vulnerabilities in npm packages.

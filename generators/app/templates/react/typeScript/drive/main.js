@@ -1,7 +1,9 @@
-<% if (isReactBased) {  %>/* eslint-disable */
+/* eslint-disable */
+import React from "react";
 import { createRoot } from 'react-dom/client';
-import App from './components/App.jsx'
-<% } %>
+import { AddinContext, IGeotabApi, IGeotabPage } from "./contexts/addinContext";
+import App from './components/App'
+import "../styles/index.css";
 
 /**
  * @returns {{initialize: Function, focus: Function, blur: Function, startup; Function, shutdown: Function}}
@@ -10,6 +12,7 @@ geotab.addin.<%= root%> = function (api, state, meta) {
   'use strict';
   const appName = '<%=root%>';
   const addinId = '<%= addInId %>';
+  let reactRoot;
   <% if (isDriveAddin) { %>
   // the root container
   
@@ -18,10 +21,35 @@ geotab.addin.<%= root%> = function (api, state, meta) {
     // the root container
     var elAddin = document.getElementById(appName);
   <% } %>
+  function startAddIn() {
+    function initializeReactApp() {
+      try {
+        reactRoot.render(
+          <React.StrictMode>
+            <AddinContext.Provider
+              value={{
+                geoApi: api,
+                pageApi: state,
+                currentUser: null,
+                localizer: {},
+                addinElement: elAddin,
+                userAddInSecurityIdentifiers: [],
+                addAddinListener: () => () => { }
+              }}
+            >
+              <App />
+            </AddinContext.Provider>
+          </React.StrictMode>
+        );
+      } catch (e) {
+        console.log(e);
+        alert(e);
+      }
+    }
 
-  <% if (isReactBased) {%>
-  let reactRoot;
-  <% } %>
+    initializeReactApp();
+  }
+  
   return {
     <% if (isDriveAddin) { %>
     /**
@@ -55,9 +83,7 @@ geotab.addin.<%= root%> = function (api, state, meta) {
       if (freshState.translate) {
         freshState.translate(elAddin || '');
       }
-      <% if (isReactBased) {%>
         reactRoot = createRoot(elAddin);
-      <% } %>
       // MUST call initializeCallback when done any setup
         initializeCallback();
     },
@@ -74,39 +100,8 @@ geotab.addin.<%= root%> = function (api, state, meta) {
      * @param {object} freshState - The page state object allows access to URL, page navigation and global group filter.
     */
     focus: function (freshApi, freshState) {
-      <% if (isReactBased) { %>
         elAddin.className = elAddin.className.replace('hidden', '').trim();
-        freshApi.getSession(session => {
-          freshState.currentSession = session
-          reactRoot.render(<App geotabApi={freshApi} geotabState={freshState} appName={appName} addinId={addinId} />);
-        })
-      <% } else { %> // getting the current user to display in the UI
-        <% if (isDriveAddin) { %>
-        freshApi.getSession(session => {
-          freshApi.call('Get', {
-            typeName: 'Device',
-            search: {
-              id: freshState.device.id
-            }
-          }, result => {
-            let device = result[0];
-  
-            elAddin.querySelector('#<%= root %>-driver').textContent = session.userName;
-            elAddin.querySelector('#<%= root %>-vehicle').textContent = device.name;
-  
-            // show main content
-            elAddin.className = elAddin.className.replace('hidden', '').trim();
-          }, err => {
-            console.error(err);
-          });
-        });<% } else { %>
-          // getting the current user to display in the UI
-          freshApi.getSession(session => {
-            elAddin.querySelector('#<%= root%>-user').textContent = session.userName;
-          });
-      
-      <% } }%>
-      // show main content
+        startAddIn(elAddin, reactRoot)
     },
 
     /**

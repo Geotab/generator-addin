@@ -244,36 +244,141 @@ export default class extends Generator {
     Object.assign(this.props, secondaryAnswers);
   }
 
-  reactFiles() {
+  async reactPrompts() {
     const { isReactBased } = this.props;
-    if (isReactBased) {
+    if (!isReactBased) return
+
+    let reactAnswers = await this.prompt([{
+      type: 'confirm',
+      name: 'isZenithBased',
+      message: 'Do you want to use Zenith components to develop the add-in?',
+      default: 'y'
+    }])
+
+    Object.assign(this.props, reactAnswers);
+  }
+
+  async typeScriptPrompts() {
+    const { isZenithBased } = this.props;
+    if (!isZenithBased) return
+
+    let typeScriptAnswers = await this.prompt([{
+      type: 'confirm',
+      name: 'isTypeScriptBased',
+      message: 'Do you want to use TypeScript along with Zenith components to develop the add-in?',
+      default: 'y'
+    }])
+
+    Object.assign(this.props, typeScriptAnswers);
+  }
+
+  reactFiles() {
+    const { isReactBased, isTypeScriptBased } = this.props;
+    const isDriveAddin = this.props.isDriveAddin ? this.props.isDriveAddin : false
+    if (!isReactBased) return
+
+    if (isTypeScriptBased) {
       this.fs.copyTpl(
-        this.templatePath('react/components/App.jsx'),
-        this.destinationPath('src/app/scripts/components/App.jsx')
+        this.templatePath('react/typeScript/tsconfig.json'),
+        this.destinationPath('tsconfig.json'),
+      );
+      this.fs.copyTpl(
+        this.templatePath('react/typeScript/addinContext.ts'),
+        this.destinationPath('src/app/scripts/contexts/addinContext.ts'),
+      );
+      this.fs.copyTpl(
+        this.templatePath('react/typeScript/index.css'),
+        this.destinationPath('src/app/styles/index.css'),
       );
 
+      if (!isDriveAddin) {
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/mygPage/data.ts'),
+          this.destinationPath('src/app/scripts/data.ts'),
+        );
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/mygPage/App.tsx'),
+          this.destinationPath('src/app/scripts/components/App.tsx'),
+        );
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/mygPage/ProgressChart.tsx'),
+          this.destinationPath('src/app/scripts/components/ProgressChart.tsx'),
+        );
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/mygPage/ZenithSummary.tsx'),
+          this.destinationPath('src/app/scripts/components/ZenithSummary.tsx'),
+        );
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/mygPage/zenithSummary.css'),
+          this.destinationPath('src/app/styles/zenithSummary.css'),
+        );
+      } else {
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/drive/App.tsx'),
+          this.destinationPath('src/app/scripts/components/App.tsx'),
+        );
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/drive/Tab1Content.tsx'),
+          this.destinationPath('src/app/scripts/components/Tab1Content.tsx'),
+        );
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/drive/Tab2Content.tsx'),
+          this.destinationPath('src/app/scripts/components/Tab2Content.tsx'),
+        );
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/drive/app.css'),
+          this.destinationPath('src/app/styles/app.css'),
+        );
+      }
+
+      return
+    }
+
+    this.fs.copyTpl(
+      this.templatePath('react/components/App.jsx'),
+      this.destinationPath('src/app/scripts/components/App.jsx'),
+      {
+        isZenithBased: this.props.isZenithBased ? this.props.isZenithBased : false,
+        isDriveAddin,
+      }
+    );
+
+    if (this.props.isZenithBased) {
+      if (isDriveAddin) {
+        this.fs.copyTpl(
+          this.templatePath('react/components/DutyStatusLogs.jsx'),
+          this.destinationPath('src/app/scripts/components/DutyStatusLogs.jsx')
+        );
+      } else {
+        this.fs.copyTpl(
+          this.templatePath('react/components/DevicesPage.jsx'),
+          this.destinationPath('src/app/scripts/components/DevicesPage.jsx')
+        );
+      }
+    } else {
       this.fs.copyTpl(
         this.templatePath('react/components/DevicePage.jsx'),
         this.destinationPath('src/app/scripts/components/DevicePage.jsx')
       );
-
-      this.fs.copyTpl(
-        this.templatePath('react/contexts/Geotab.js'),
-        this.destinationPath('src/app/scripts/contexts/Geotab.js')
-      );
     }
+
+    this.fs.copyTpl(
+      this.templatePath('react/contexts/Geotab.js'),
+      this.destinationPath('src/app/scripts/contexts/Geotab.js')
+    );
   }
 
   webpack() {
     const webpackDevPath = 'webpack.dev.js'
     const webpackProdPath = 'webpack.config.js'
-    const { isReactBased } = this.props;
+    const { isReactBased, isTypeScriptBased } = this.props;
 
     this.fs.copyTpl(
       this.templatePath(webpackDevPath),
       this.destinationPath(webpackDevPath),
       {
         isReactBased,
+        isTypeScriptBased,
         date: new Date().toISOString().split('T')[0],
         name: this.props.camelName,
         pkgname: this.pkg.name,
@@ -287,6 +392,7 @@ export default class extends Generator {
       this.destinationPath(webpackProdPath),
       {
         isReactBased,
+        isTypeScriptBased,
         date: new Date().toISOString().split('T')[0],
         name: this.props.camelName,
         pkgname: this.pkg.name,
@@ -298,14 +404,16 @@ export default class extends Generator {
   }
 
   packageJSON() {
-    const { isReactBased } = this.props;
+    const { isReactBased, isTypeScriptBased } = this.props;
     const packageJsonPath = isReactBased ? 'react/_package.json' : '_package.json'
     this.fs.copyTpl(
       this.templatePath(packageJsonPath),
       this.destinationPath('package.json'), {
       name: this.props.camelName,
       isButton: this.props.isButton,
-      isDriveAddin: this.props.isDriveAddin
+      isDriveAddin: this.props.isDriveAddin,
+      isZenithBased: this.props.isZenithBased ? this.props.isZenithBased : false,
+      isTypeScriptBased,
     }
     );
   }
@@ -368,7 +476,7 @@ export default class extends Generator {
   }
 
   scripts() {
-    const { isReactBased } = this.props;
+    const { isReactBased, isTypeScriptBased } = this.props;
 
     if (this.props.isButton) {
       this.fs.copyTpl(
@@ -377,12 +485,26 @@ export default class extends Generator {
         root: this.props.camelName
       }
       );
+    } else if (isTypeScriptBased) {
+      this._getAddinId().then(addInId => {
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/mygPage/main.js'),
+          this.destinationPath('src/app/scripts/main.js'), {
+          isReactBased,
+          isTypeScriptBased,
+          addInId,
+          root: this.props.camelName,
+          isDriveAddin: this.props.isDriveAddin
+        }
+        );
+      });
     } else {
       this._getAddinId().then(addInId => {
         this.fs.copyTpl(
           this.templatePath('src/app/scripts/main.js'),
           this.destinationPath('src/app/scripts/main.js'), {
           isReactBased,
+          isTypeScriptBased,
           addInId,
           root: this.props.camelName,
           isDriveAddin: this.props.isDriveAddin
