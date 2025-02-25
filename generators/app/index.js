@@ -326,7 +326,7 @@ export default class extends Generator {
           this.destinationPath('src/app/scripts/components/Tab2Content.tsx'),
         );
         this.fs.copyTpl(
-          this.templatePath('react/typeScript/drive/index.css'),
+          this.templatePath('react/typeScript/drive/app.css'),
           this.destinationPath('src/app/styles/app.css'),
         );
       }
