@@ -283,33 +283,53 @@ export default class extends Generator {
         this.destinationPath('tsconfig.json'),
       );
       this.fs.copyTpl(
-        this.templatePath('react/typeScript/mygPage/data.ts'),
-        this.destinationPath('src/app/scripts/data.ts'),
-      );
-      this.fs.copyTpl(
         this.templatePath('react/typeScript/addinContext.ts'),
         this.destinationPath('src/app/scripts/contexts/addinContext.ts'),
-      );
-      this.fs.copyTpl(
-        this.templatePath('react/typeScript/mygPage/App.tsx'),
-        this.destinationPath('src/app/scripts/components/App.tsx'),
-      );
-      this.fs.copyTpl(
-        this.templatePath('react/typeScript/mygPage/ProgressChart.tsx'),
-        this.destinationPath('src/app/scripts/components/ProgressChart.tsx'),
-      );
-      this.fs.copyTpl(
-        this.templatePath('react/typeScript/mygPage/ZenithSummary.tsx'),
-        this.destinationPath('src/app/scripts/components/ZenithSummary.tsx'),
-      );
-      this.fs.copyTpl(
-        this.templatePath('react/typeScript/mygPage/zenithSummary.css'),
-        this.destinationPath('src/app/styles/zenithSummary.css'),
       );
       this.fs.copyTpl(
         this.templatePath('react/typeScript/index.css'),
         this.destinationPath('src/app/styles/index.css'),
       );
+
+      if (!isDriveAddin) {
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/mygPage/data.ts'),
+          this.destinationPath('src/app/scripts/data.ts'),
+        );
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/mygPage/App.tsx'),
+          this.destinationPath('src/app/scripts/components/App.tsx'),
+        );
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/mygPage/ProgressChart.tsx'),
+          this.destinationPath('src/app/scripts/components/ProgressChart.tsx'),
+        );
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/mygPage/ZenithSummary.tsx'),
+          this.destinationPath('src/app/scripts/components/ZenithSummary.tsx'),
+        );
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/mygPage/zenithSummary.css'),
+          this.destinationPath('src/app/styles/zenithSummary.css'),
+        );
+      } else {
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/drive/App.tsx'),
+          this.destinationPath('src/app/scripts/components/App.tsx'),
+        );
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/drive/Tab1Content.tsx'),
+          this.destinationPath('src/app/scripts/components/Tab1Content.tsx'),
+        );
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/drive/Tab2Content.tsx'),
+          this.destinationPath('src/app/scripts/components/Tab2Content.tsx'),
+        );
+        this.fs.copyTpl(
+          this.templatePath('react/typeScript/drive/index.css'),
+          this.destinationPath('src/app/styles/app.css'),
+        );
+      }
 
       return
     }
