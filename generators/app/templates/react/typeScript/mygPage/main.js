@@ -12,6 +12,7 @@ geotab.addin.<%= root%> = function (api, state, meta) {
   'use strict';
   const appName = '<%=root%>';
   const addinId = '<%= addInId %>';
+  let reactRoot;
   <% if (isDriveAddin) { %>
   // the root container
   
