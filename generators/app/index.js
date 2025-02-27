@@ -3,6 +3,7 @@ import chalk from 'chalk'
 import yosay from 'yosay'
 import camelCase from 'camelcase'
 import { createRequire } from 'module';
+import { mygPageCategories, mygButtonCategories } from './utils/mygCategories.js'
 const require = createRequire(import.meta.url);
 const packageJson = require('../../package.json');
 
@@ -122,28 +123,7 @@ export default class extends Generator {
       name: 'path',
       message: 'Select where your add-in will be located in MyGeotab side nav tree: (Geotab Drive specific add-in must choose "Geotab Drive")',
       default: false,
-      choices: [{
-        name: 'Root',
-        value: ''
-      }, {
-        name: 'Getting Started',
-        value: 'GettingStartedLink/'
-      }, {
-        name: 'Activity',
-        value: 'ActivityLink/'
-      }, {
-        name: 'Engine & Maintenance',
-        value: 'EngineMaintenanceLink/'
-      }, {
-        name: 'Zones & Messages',
-        value: 'ZoneAndMessagesLink/'
-      }, {
-        name: 'Rules & Groups',
-        value: 'RuleAndGroupsLink/'
-      }, {
-        name: 'Administration',
-        value: 'AdministrationLink/'
-      }]
+      choices: mygPageCategories
     }, {
       type: 'input',
       name: 'menuName',
@@ -156,67 +136,7 @@ export default class extends Generator {
       name: 'page',
       message: 'Select which page your add-in button will be located in MyGeotab',
       default: 'Map',
-      choices: [{
-        name: 'Map',
-        value: 'map'
-      }, {
-        name: 'Trips History',
-        value: 'tripsHistory'
-      }, {
-        name: 'Vehicles',
-        value: 'devices'
-      }, {
-        name: 'Vehicle Add/Edit',
-        value: 'device'
-      }, {
-        name: 'Zones',
-        value: 'zones'
-      }, {
-        name: 'Users',
-        value: 'users'
-      }, {
-        name: 'User Add/Edit',
-        value: 'user'
-      }, {
-        name: 'Rules',
-        value: 'rules'
-      }, {
-        name: 'Rule Add/Edit',
-        value: 'rule'
-      }, {
-        name: 'Exceptions',
-        value: 'exceptions'
-      }, {
-        name: 'Custom Reports',
-        value: 'customReports'
-      }, {
-        name: 'Custom Report Edit',
-        value: 'customReport'
-      }, {
-        name: 'Engine Faults',
-        value: 'engineFaults'
-      }, {
-        name: 'Speed Profile',
-        value: 'speedProfile'
-      }, {
-        name: 'Duty Status Logs',
-        value: 'hosLogs'
-      }, {
-        name: 'HOS Log Add/Edit',
-        value: 'hosLog'
-      }, {
-        name: 'Groups',
-        value: 'groupsTree'
-      }, {
-        name: 'Routes',
-        value: 'routes'
-      }, {
-        name: 'Fuel Usage',
-        value: 'fuelUsage'
-      }, {
-        name: 'Engine Measurements',
-        value: 'engineMeasurements'
-      }]
+      choices: mygButtonCategories
     }, {
       type: 'input',
       name: 'menuName',

@@ -11,7 +11,7 @@
       "en": "<%= menuName %>"
     },<% } else { %>
     "url": "<%= url %>",
-    "path": "<%= path %>",
+    "category": "<%= path %>",
     "menuName": {
       "en": "<%= menuName %>"
     },<% } %>
