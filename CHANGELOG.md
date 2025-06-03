@@ -1,5 +1,9 @@
 # v4.1.1
 ## February 27, 2025
+# v4.1.1
+- Updated dependencies to address vulnerabilities in npm packages.
+
+## February 27, 2025
 - Updated MyGeotab page category options to use the updated [redesigned left-hand navigation menu categories](https://developers.geotab.com/myGeotab/addIns/developingAddIns#geotab-redesigned-left-hand-navigation-menu)
 # v4.1.0
 ## February 25, 2025
