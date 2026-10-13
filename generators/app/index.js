@@ -675,8 +675,8 @@ export default class extends Generator {
   }
 
   end() {
-    // Run npm install again to resolve dependencies.
+    // Resolve audit findings in the generated project.
     this.log('\n' + chalk.green('(generator-addin) Resolving dependencies...'));
-    this.spawnCommand('npm', ['audit', 'fix']);
+    this.spawn('npm', ['audit', 'fix']);
   }
 };

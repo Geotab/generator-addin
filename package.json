@@ -1,6 +1,6 @@
 {
   "name": "generator-addin",
-  "version": "4.1.2",
+  "version": "5.0.0",
   "description": "MyGeotab/Geotab Drive add-in generator",
   "homepage": "https://github.com/geotab/generator-addin",
   "type": "module",
@@ -24,8 +24,11 @@
   "dependencies": {
     "camelcase": "^8.0.0",
     "chalk": "^5.3.0",
-    "yeoman-generator": "^7.3.3",
+    "yeoman-generator": "^10.0.1",
     "yosay": "^3.0.0"
+  },
+  "engines": {
+    "node": "^22.18.0 || >=24.11.0"
   },
   "eslintConfig": {
     "env": {

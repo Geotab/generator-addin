@@ -1,3 +1,8 @@
+# v5.0.0
+## October 13, 2026
+- Updated to yeoman-generator v10 and resolved transitive dependency audit vulnerabilities.
+- **Breaking:** The generator now requires Node.js 22.18.0 or later in the 22.x line, or 24.11.0 or later. Generated add-ins are unaffected.
+
 # v4.1.1
 ## February 27, 2025
 # v4.1.1
