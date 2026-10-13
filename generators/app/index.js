@@ -624,12 +624,6 @@ export default class extends Generator {
     }
     );
 
-    // Loaders
-    this.fs.copy(
-      this.templatePath('src/.dev/loaders/css-sandbox/css-sandbox.js'),
-      this.destinationPath('src/.dev/loaders/css-sandbox/css-sandbox.js')
-    );
-
     // Other
     this.fs.copy(
       this.templatePath('src/.dev/images/Font_Awesome_5_solid_chevron-left.svg'),

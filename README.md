@@ -30,6 +30,7 @@ Leverage [NPM](https://www.npmjs.com/)
 - Install dependencies: `npm install -g yo@5.0.0`
 - Install the generator: `npm install -g generator-addin`
 - Use Node.js `22.18.0` or later in the 22.x line, or `24.11.0` or later, to run the generator.
+- Generated add-in projects require Node.js `22.15.0` or later to install dependencies and run the development server.
 - Create a directory for your project `mkdir <projdir>`
 - Change to your project `cd <projdir>`
 - Run `yo addin` to scaffold your addin
@@ -108,6 +109,9 @@ No. Webpack handles this automatically
 
 **_What version of node do I need?_**
 To run `yo addin`, use Node.js `22.18.0` or later in the 22.x line, or `24.11.0` or later. This requirement applies to the generator; Node.js requirements for a generated add-in depend on its build tools.
+
+**_What Node.js version do generated add-ins need?_**
+Generated add-in projects require Node.js `22.15.0` or later for dependency installation and the development server.
 
 **_I keep getting an error telling me regeneratorRuntime is not defined. What does this mean?_**
 Webpack compiles with compatibility in mind, and will attempt to transpile async functions for compatibility with older IE browsers. There is currently a bug with Webpack causing transpilations to fail unless the `regeneratorRuntime` is manually defined. Run `npm i -D regenerator-runtime` and place `const regeneratorRuntime = require('regenerator-runtime');` in the effected files

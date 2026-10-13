@@ -13,7 +13,6 @@ const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const config = require('./src/app/config.json');
-const ESLintPlugin = require('eslint-webpack-plugin');
 
 /**
  * Removes "dev" element of the config tree on production build
@@ -54,11 +53,7 @@ module.exports = merge(common, {
                             publicPath: ''
                         }
                     },
-                    'css-loader',
-                    {
-                        loader: './src/.dev/loaders/css-sandbox/css-sandbox.js',
-                        options: { prefix: '#driverProductivity' }
-                    }
+                    'css-loader'
                 ]
             },
             {
@@ -92,9 +87,6 @@ module.exports = merge(common, {
     },
     plugins: [
         // new FixStyleOnlyEntriesPlugin(),
-        new ESLintPlugin({
-            exclude: ['node_modules', '.dev'],
-        }),
         // new OptimizeCSSAssetsPlugin({}),
         // new UglifyJsPlugin({
         //     test: /\.js(\?.*)?$/i

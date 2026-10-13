@@ -1,7 +1,9 @@
 # v5.0.0
 ## October 13, 2026
 - Updated to yeoman-generator v10 and resolved transitive dependency audit vulnerabilities.
-- **Breaking:** The generator now requires Node.js 22.18.0 or later in the 22.x line, or 24.11.0 or later. Generated add-ins are unaffected.
+- Updated generated-project dependencies to address audit findings; removed unused CSS sandbox and ESLint webpack plugin dependencies.
+- The `braces` advisory remains in the webpack development-server dependency chain; see `DEPENDENCY-AUDIT.md`.
+- **Breaking:** The generator requires Node.js 22.18.0 or later in the 22.x line, or 24.11.0 or later. Generated add-in projects require Node.js 22.15.0 or later.
 
 # v4.1.1
 ## February 27, 2025
